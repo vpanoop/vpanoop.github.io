@@ -4,23 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anoop V. P.</title>
+    <meta name="description" content="Official website of Anoop V. P., Assistant Professor of Mathematics.">
+    <meta property="og:title" content="Anoop V. P.">
+    <meta property="og:description" content="Official website of Anoop V. P., Assistant Professor of Mathematics.">
+    <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Apply Inter font globally */
+        /* Apply Inter font globally and base background */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc; /* bg-slate-50 */
+            color: #1f2937; /* default text-gray-800 */
         }
-        /* Basic Section Heading */
+
+        /* Section Heading: Using @apply for Tailwind utilities */
+        /* Removed manual font-size and font-weight as @apply already includes similar styles */
         .section-heading {
             @apply text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-4;
-            font-size: 1.3em; /* Slightly larger font */
-            font-weight: bold; /* Make it bold */
         }
-        /* Basic Animation */
+
+        /* Basic Fade-in Animation */
         .fade-in-section {
             opacity: 0;
             transform: translateY(15px);
@@ -32,14 +40,14 @@
                 transform: translateY(0);
             }
         }
-        /* Stagger animation - Extended for more sections */
+        /* Stagger animation delays */
+        /* Consider moving this to JS for dynamic control */
         .fade-in-section:nth-child(1) { animation-delay: 0.05s; }
         .fade-in-section:nth-child(2) { animation-delay: 0.1s; }
         .fade-in-section:nth-child(3) { animation-delay: 0.15s; }
         .fade-in-section:nth-child(4) { animation-delay: 0.2s; }
-        .fade-in-section:nth-child(5) { animation-delay: 0.25s; } /* Teaching section */
-        .fade-in-section:nth-child(6) { animation-delay: 0.3s; } /* Programs organized section */
-        /* Adjust subsequent delays if needed */
+        .fade-in-section:nth-child(5) { animation-delay: 0.25s; }
+        .fade-in-section:nth-child(6) { animation-delay: 0.3s; }
         .fade-in-section:nth-child(7) { animation-delay: 0.35s; }
         .fade-in-section:nth-child(8) { animation-delay: 0.4s; }
         .fade-in-section:nth-child(9) { animation-delay: 0.45s; }
@@ -49,18 +57,19 @@
         a {
             @apply text-blue-600 hover:text-blue-800 hover:underline;
         }
+
         /* Basic List Styling */
         ul, ol {
             @apply list-inside;
         }
         ul li {
-            /* Removed default list-disc styling here to apply custom structure */
-             @apply mb-1;
+             @apply mb-1; /* Added margin bottom for spacing */
         }
         ol li {
-            @apply list-decimal ml-4 mb-2;
+            @apply list-decimal ml-4 mb-2; /* Added margin bottom for spacing */
         }
-        /* Custom styling for teaching list items */
+
+        /* Custom styling for teaching list items (using ::before for bullet) */
         #teaching-experience ul li::before {
              content: "\2022"; /* Bullet point */
              color: #4b5563; /* gray-600 */
@@ -69,6 +78,25 @@
              width: 1em;
              margin-left: -1em; /* Align with text */
         }
+
+        /* Dark Mode Styles (Optional) */
+        /* Requires adding 'dark' class to the html or body element */
+        /* @media (prefers-color-scheme: dark) {
+          body {
+            background-color: #1f2937;
+            color: #f3f4f6;
+          }
+          .section-heading {
+            color: #d1d5db;
+            border-color: #4b5563;
+          }
+           a {
+            color: #93c5fd;
+            }
+          #teaching-experience ul li::before {
+            color: #9ca3af;
+          }
+        } */
 
     </style>
 </head>
@@ -80,10 +108,10 @@
             <nav class="mt-0">
                 <ul class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-lg">
                     <li>
-                        <a href="https://vpanoop.github.io/teaching/" class="text-white hover:text-gray-300 hover:underline transition duration-300" target="_blank" rel="noopener noreferrer">Teaching</a>
+                        <a href="https://vpanoop.github.io/teaching/" class="text-white hover:text-gray-300 hover:underline transition duration-300" target="_blank" rel="noopener noreferrer" aria-label="Link to Teaching page">Teaching</a>
                     </li>
                     <li>
-                        <a href="https://vpanoop.github.io/research/" class="text-white hover:text-gray-300 hover:underline transition duration-300" target="_blank" rel="noopener noreferrer">Research</a>
+                        <a href="https://vpanoop.github.io/research/" class="text-white hover:text-gray-300 hover:underline transition duration-300" target="_blank" rel="noopener noreferrer" aria-label="Link to Research page">Research</a>
                     </li>
                 </ul>
             </nav>
@@ -93,21 +121,15 @@
     <main class="container mx-auto max-w-4xl p-4 md:p-6">
 
         <section class="p-5 mb-6 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
-            <div class="mb-4">
+            <div class="mb-4 space-y-4">
               <p class="text-lg text-gray-800">
-                I am currently an Assistant Professor of Mathematics in the Department of Mathematical Sciences at Kannur University, a position I have held since June 2023.
+                I am currently an Assistant Professor of Mathematics in the Department of Mathematical Sciences at Kannur University, a position I have held since June <time datetime="2023">2023</time>.
               </p>
-            </div>
-
-            <div class="mb-4">
               <p class="text-lg text-gray-800">
-                Prior to this role, I pursued postdoctoral fellowships at prestigious institutions. At the Indian Statistical Institute, Bangalore, I served as a Research Associate and Visiting Scientist (December 2022–June 2023) and earlier as a Visiting Scientist (September–November 2022). My postdoctoral experience also includes positions at the Indian Institute of Science (IISc), Bangalore, where I worked as a National Postdoctoral Fellow and Research Associate (March 2020–August 2022) and as a Research Associate (August–October 2019). Additionally, I contributed as a Visiting Scientist at the Kerala School of Mathematics, Kozhikode, in June–July 2019.
+                Prior to this role, I pursued postdoctoral fellowships at prestigious institutions. At the Indian Statistical Institute, Bangalore, I served as a Research Associate and Visiting Scientist (<time datetime="2022-12">December 2022</time>–<time datetime="2023-06">June 2023</time>) and earlier as a Visiting Scientist (<time datetime="2022-09">September</time>–<time datetime="2022-11">November 2022</time>). My postdoctoral experience also includes positions at the Indian Institute of Science (IISc), Bangalore, where I worked as a National Postdoctoral Fellow and Research Associate (<time datetime="2020-03">March 2020</time>–<time datetime="2022-08">August 2022</time>) and as a Research Associate (<time datetime="2019-08">August</time>–<time datetime="2019-10">October 2019</time>). Additionally, I contributed as a Visiting Scientist at the Kerala School of Mathematics, Kozhikode, in <time datetime="2019-06">June</time>–<time datetime="2019-07">July 2019</time>.
               </p>
-            </div>
-
-            <div>
               <p class="text-lg text-gray-800">
-                I completed my Ph.D. in Mathematics at the National Institute of Science Education and Research (NISER), Bhubaneswar, in 2020. Earlier, I earned an M.Sc. in Mathematics from the University of Hyderabad (2012) and a B.Sc. in Mathematics from the University of Calicut, Kerala (2010).
+                I completed my Ph.D. in Mathematics at the National Institute of Science Education and Research (NISER), Bhubaneswar, in <time datetime="2020">2020</time>. Earlier, I earned an M.Sc. in Mathematics from the University of Hyderabad (<time datetime="2012">2012</time>) and a B.Sc. in Mathematics from the University of Calicut, Kerala (<time datetime="2010">2010</time>).
               </p>
             </div>
         </section>
@@ -115,14 +137,14 @@
         <div class="space-y-6">
             <section id="contact-info" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
                 <h2 class="section-heading">Contact Information</h2>
-                <div class="text-gray-700 space-y-2">
+                <address class="not-italic text-gray-700 space-y-2">
                     <p>
                         Department of Mathematical Sciences<br>
                         Kannur University, Mangattuparamba campus<br>
                         Kannur, Kerala, 670567 India
                     </p>
-                    <p><strong>E-mail:</strong> <a href="mailto:anoopvp@kannuruniv.ac.in">anoopvp@kannuruniv.ac.in</a></p>
-                </div>
+                    <p><strong>E-mail:</strong> <a href="mailto:anoopvp@kannuruniv.ac.in" aria-label="Send email to Anoop V. P.">anoopvp@kannuruniv.ac.in</a></p>
+                </address>
             </section>
 
             <section id="research" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
@@ -138,72 +160,76 @@
                     <div class="mb-5">
                      <h3 class="text-lg font-medium text-gray-800 mb-2">Published Articles</h3>
                      <ol class="space-y-3 text-gray-700">
-                          <li>
+                          <li role="article">
                               Anoop V.P. and Sanjay Parui,
                               <em>Hardy inequality and trace Hardy inequality for Dunkl gradient</em>,
-                              Collectanea Mathematica (2019).
-                              <a href="https://doi.org/10.1007/s13348-018-0235-9" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm">[Link]</a>
+                              Collectanea Mathematica (<time datetime="2019">2019</time>).
+                              <a href="https://doi.org/10.1007/s13348-018-0235-9" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm" aria-label="Link to published article on Collectanea Mathematica">[Link]</a>
                           </li>
-                          <li>
+                          <li role="article">
                               Anoop V.P. and Sanjay Parui,
                               <em>Hardy inequality and fractional Hardy inequality for Dunkl Laplacian</em>,
-                              Israel Journal of Mathematics (2020).
-                              <a href="https://doi.org/10.1007/s11856-020-1973-4" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm">[Link]</a>
+                              Israel Journal of Mathematics (<time datetime="2020">2020</time>).
+                              <a href="https://doi.org/10.1007/s11856-020-1973-4" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm" aria-label="Link to published article on Israel Journal of Mathematics">[Link]</a>
                           </li>
-                          <li>
+                          <li role="article">
                               Anoop V. P., Saswata Adhikari and Sanjay Parui,
                               <em>Existence of extremals of Dunkl-type Sobolev inequality and of Stein-Weiss inequality for Dunkl Riesz potential</em>,
-                              Complex Analysis and Operator Theory (2021).
-                              <a href="https://doi.org/10.1007/s11785-020-01068-1" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm">[Link]</a>
+                              Complex Analysis and Operator Theory (<time datetime="2021">2021</time>).
+                              <a href="https://doi.org/10.1007/s11785-020-01068-1" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm" aria-label="Link to published article on Complex Analysis and Operator Theory">[Link]</a>
                           </li>
-                          <li>
+                          <li role="article">
                               Anoop V. P. and Sanjay Parui,
                               <em>Improved fractional Hardy inequalities for Dunkl gradient</em>,
-                              Mathematical Inequalities and Applications (2021).
-                              <a href="http://dx.doi.org/10.7153/mia-2021-24-10" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm">[Link]</a>
+                              Mathematical Inequalities and Applications (<time datetime="2021">2021</time>).
+                              <a href="http://dx.doi.org/10.7153/mia-2021-24-10" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm" aria-label="Link to published article on Mathematical Inequalities and Applications">[Link]</a>
                           </li>
-                          <li>
+                          <li role="article">
                               Anoop V. P. and Sanjay Parui,
                               <em>Hardy-Littlewood-Sobolev inequality for upper half space</em>,
-                              Annales Mathématiques Blaise Pascal (2021).
-                              <a href="http://10.5802/ambp.401" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm">[Link]</a>
+                              Annales Mathématiques Blaise Pascal (<time datetime="2021">2021</time>).
+                              <a href="http://10.5802/ambp.401" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm" aria-label="Link to published article on Annales Mathématiques Blaise Pascal">[Link]</a>
                           </li>
                      </ol>
                     </div>
 
                     <div class="mb-5">
                      <h3 class="text-lg font-medium text-gray-800 mb-2">Communicated Articles</h3>
-                     <ul class="space-y-1 text-gray-700 list-disc ml-4"> <li>Anoop V.P., Sanjay Parui, <em>Stein-Weiss type inequalities for Dunkl operators</em>.</li>
+                     <ul class="space-y-1 text-gray-700 list-disc ml-4">
+                         <li role="article">Anoop V.P., Sanjay Parui, <em>Stein-Weiss type inequalities for Dunkl operators</em>.</li>
                      </ul>
                     </div>
 
                     <div>
                      <h3 class="text-lg font-medium text-gray-800 mb-2">Under Preparation</h3>
-                     <ul class="space-y-1 text-gray-700 list-disc ml-4"> <li>Anoop V.P., Sanjay Parui, <em>Hardy-type inequalities for Weinstein operator</em>.</li>
-                          <li>Anoop V.P., <em>Stein-Weiss type inequalities with fractional Poisson kernel</em>.</li>
-                          <li>Anoop V.P., Saswata Adhikari, <em>Fractional Hardy inequalities in convex domains</em>.</li>
+                     <ul class="space-y-1 text-gray-700 list-disc ml-4">
+                         <li role="article">Anoop V.P., Sanjay Parui, <em>Hardy-type inequalities for Weinstein operator</em>.</li>
+                          <li role="article">Anoop V.P., <em>Stein-Weiss type inequalities with fractional Poisson kernel</em>.</li>
+                          <li role="article">Anoop V.P., Saswata Adhikari, <em>Fractional Hardy inequalities in convex domains</em>.</li>
                      </ul>
                     </div>
                  </section>
 
             <section id="talks-given" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
                 <h2 class="section-heading">Talks Given</h2>
-                <ul class="space-y-2 text-gray-700 list-disc ml-4"> <li><em>Hardy inequality and fractional Hardy inequality for Dunkl Laplacian</em>, Inter IISER-NISER Math Meet, IISER Bhopal, India (July 2018).</li>
-                     <li><em>Hardy and fractional Hardy inequality for Dunkl Laplacian</em>, Discussion Meeting on Harmonic Analysis, IISc Bangalore, India (December 2017).</li>
+                <ul class="space-y-2 text-gray-700 list-disc ml-4">
+                    <li role="article"><em>Hardy inequality and fractional Hardy inequality for Dunkl Laplacian</em>, Inter IISER-NISER Math Meet, IISER Bhopal, India (<time datetime="2018-07">July 2018</time>).</li>
+                     <li role="article"><em>Hardy and fractional Hardy inequality for Dunkl Laplacian</em>, Discussion Meeting on Harmonic Analysis, IISc Bangalore, India (<time datetime="2017-12">December 2017</time>).</li>
                  </ul>
             </section>
 
             <section id="teaching-experience" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
                 <h2 class="section-heading">Teaching</h2>
-                <ul class="space-y-3 text-gray-700 pl-1"> <li>
-                         <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2025" target="_blank" rel="noopener noreferrer">Abstract Algebra - II</a></strong><br>
+                <ul class="space-y-3 text-gray-700 pl-1">
+                    <li role="article">
+                         <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2025" target="_blank" rel="noopener noreferrer" aria-label="Link to Abstract Algebra 2025 teaching page">Abstract Algebra - II</a></strong><br>
                          Department of Mathematical Sciences, Kannur University<br>
-                         <span class="text-sm text-gray-600">Jan 2025 – April 2025</span>
+                         <span class="text-sm text-gray-600"><time datetime="2025-01">Jan 2025</time> – <time datetime="2025-04">April 2025</time></span>
                      </li>
-                      <li>
-                         <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2024" target="_blank" rel="noopener noreferrer">Abstract Algebra - I</a></strong><br>
+                      <li role="article">
+                         <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2024" target="_blank" rel="noopener noreferrer" aria-label="Link to Abstract Algebra 2024 teaching page">Abstract Algebra - I</a></strong><br>
                          Department of Mathematical Sciences, Kannur University<br>
-                         <span class="text-sm text-gray-600">August 2024 – December 2024</span>
+                         <span class="text-sm text-gray-600"><time datetime="2024-08">August 2024</time> – <time datetime="2024-12">December 2024</time></span>
                      </li>
                  </ul>
             </section>
@@ -211,13 +237,14 @@
                 <h2 class="section-heading">Programs organized</h2>
                 <div class="text-gray-700 space-y-2">
                     <h3 class="text-md font-semibold text-gray-800">Summer Workshop in Mathematics (SWIM@KSoM)</h3>
-                    <p>
-                        I am one of the organizers of the Summer Workshop in Mathematics (SWIM@KSoM), a rigorous instructional program held at Kannur University (Thavakkara campus). The workshop provides an in-depth exploration of fundamental areas like Mathematical Analysis, Abstract Algebra, and Linear Algebra, complemented by problem-solving sessions. The next edition is scheduled from May 5, 2025 to May 30, 2025.
-                    </p>
-                    <p>
-                        For more information, visit the official website:
-                        <a href="https://swim-ksom.github.io/" target="_blank" rel="noopener noreferrer">swim-ksom.github.io</a>
-                    </p>
+                    <div class="space-y-4"> <p>
+                            I am one of the organizers of the Summer Workshop in Mathematics (SWIM@KSoM), a rigorous instructional program held at Kannur University (Thavakkara campus). The workshop provides an in-depth exploration of fundamental areas like Mathematical Analysis, Abstract Algebra, and Linear Algebra, complemented by problem-solving sessions. The next edition is scheduled from <time datetime="2025-05-05">May 5, 2025</time> to <time datetime="2025-05-30">May 30, 2025</time>.
+                        </p>
+                        <p>
+                            For more information, visit the official website:
+                            <a href="https://swim-ksom.github.io/" target="_blank" rel="noopener noreferrer" aria-label="Link to SWIM at KSoM website">swim-ksom.github.io</a>
+                        </p>
+                    </div>
                 </div>
             </section>
             </div> </main>
@@ -229,6 +256,12 @@
     <script>
         // Set current year in footer
         document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Optional: Implement JS for staggered animation delay for better maintainability
+        // const sections = document.querySelectorAll('.fade-in-section');
+        // sections.forEach((section, index) => {
+        //     section.style.animationDelay = `${index * 0.05}s`;
+        // });
     </script>
 
 </body>
