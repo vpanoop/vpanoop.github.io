@@ -2,75 +2,169 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Anoop's Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anoop V. P.</title>
+  <meta name="description" content="Official website of Anoop V. P., Assistant Professor of Mathematics.">
+  <meta property="og:title" content="Anoop V. P.">
+  <meta property="og:description" content="Official website of Anoop V. P., Assistant Professor of Mathematics.">
+  <meta property="og:type" content="website">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-      color: #333;
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #1f2937;
     }
-    header {
-      background-color: #333;
-      color: white;
-      padding: 1rem;
-      text-align: center;
+    .section-heading {
+      @apply text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-4;
     }
-    .profile-img {
-      display: block;
-      margin: 20px auto;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #333;
+    .fade-in-section {
+      opacity: 0;
+      transform: translateY(15px);
+      animation: fadeIn 0.5s ease-out forwards;
     }
-    main {
-      max-width: 800px;
-      margin: auto;
-      padding: 2rem;
-      background-color: white;
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    h1, h2 {
-      color: #333;
+    .fade-in-section:nth-child(n) {
+      animation-delay: calc(0.05s * var(--order));
     }
-    section {
-      margin-bottom: 2rem;
+    a {
+      @apply text-blue-600 hover:text-blue-800 hover:underline;
+    }
+    ul, ol {
+      @apply list-inside;
+    }
+    ul li {
+      @apply mb-1;
+    }
+    ol li {
+      @apply list-decimal ml-4 mb-2;
+    }
+    #teaching-experience ul li::before {
+      content: "\2022";
+      color: #4b5563;
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
     }
   </style>
 </head>
-<body>
-  <header>
-    <h1>Anoop's Portfolio</h1>
+<body class="text-gray-800 leading-relaxed">
+
+  <header class="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-4 sm:p-6 shadow-md">
+    <div class="container mx-auto max-w-4xl flex flex-col sm:flex-row justify-between items-center">
+      <a href="https://vpanoop.github.io/" class="text-white hover:text-gray-300 hover:underline transition duration-300" aria-label="Link to Anoop V. P.'s homepage">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 sm:mb-0">Anoop V. P.</h1>
+      </a>
+      <nav>
+        <ul class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-lg">
+          <li><a href="https://vpanoop.github.io/teaching/">Teaching</a></li>
+          <li><a href="https://vpanoop.github.io/research/">Research</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <!-- Profile image -->
-  <img src="profile.jpg" alt="Profile Picture" class="profile-img" />
-
-  <main>
-    <section>
-      <h2>About Me</h2>
-      <p>
-        Hi! I'm Anoop, a passionate developer and technology enthusiast. I love solving problems and building meaningful applications.
-      </p>
+  <main class="container mx-auto max-w-4xl p-4 md:p-6 space-y-6">
+    <!-- About Section -->
+    <section class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:1;">
+      <div class="space-y-4">
+        <p>I am currently an Assistant Professor of Mathematics in the Department of Mathematical Sciences at Kannur University, since June <time datetime="2023">2023</time>.</p>
+        <p>My postdoctoral journey includes roles at Indian Statistical Institute and IISc Bangalore. I received my Ph.D. from NISER Bhubaneswar in <time datetime="2020">2020</time>.</p>
+        <p>I hold an M.Sc. in Mathematics from the University of Hyderabad (<time datetime="2012">2012</time>) and a B.Sc. from the University of Calicut (<time datetime="2010">2010</time>).</p>
+      </div>
     </section>
 
-    <section>
-      <h2>Projects</h2>
-      <ul>
-        <li>Project 1 – Description of project 1</li>
-        <li>Project 2 – Description of project 2</li>
-        <li>Project 3 – Description of project 3</li>
+    <!-- Contact Info -->
+    <section id="contact-info" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:2;">
+      <h2 class="section-heading">Contact Information</h2>
+      <address class="not-italic space-y-2">
+        <p>
+          Department of Mathematical Sciences<br>
+          Kannur University, Mangattuparamba campus<br>
+          Kannur, Kerala, 670567 India
+        </p>
+        <p><strong>E-mail:</strong> <a href="mailto:anoopvp@kannuruniv.ac.in">anoopvp@kannuruniv.ac.in</a></p>
+      </address>
+    </section>
+
+    <!-- Research -->
+    <section id="research" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:3;">
+      <h2 class="section-heading">Research</h2>
+      <h3 class="text-lg font-medium mb-2">Interests</h3>
+      <p class="bg-gray-100 p-3 rounded border border-gray-200">
+        Hardy inequalities, Dunkl operators, h-harmonics, Harmonic analysis on Heisenberg group
+      </p>
+
+      <h3 class="text-lg font-medium mt-5 mb-2">Published Articles</h3>
+      <ol class="space-y-3">
+        <li><strong>Anoop V.P. and Sanjay Parui</strong>, <em>Hardy inequality...</em>, Collectanea Mathematica (2019). <a href="https://doi.org/10.1007/s13348-018-0235-9" target="_blank">[Link]</a></li>
+        <li><strong>Anoop V.P. and Sanjay Parui</strong>, <em>Hardy and fractional Hardy inequality...</em>, Israel J. Math. (2020). <a href="https://doi.org/10.1007/s11856-020-1973-4" target="_blank">[Link]</a></li>
+        <!-- Add other publications similarly -->
+      </ol>
+
+      <h3 class="text-lg font-medium mt-5 mb-2">Communicated</h3>
+      <ul class="list-disc ml-5">
+        <li><strong>Anoop V.P., Sanjay Parui</strong>, <em>Stein-Weiss type inequalities for Dunkl operators</em>.</li>
+      </ul>
+
+      <h3 class="text-lg font-medium mt-5 mb-2">Under Preparation</h3>
+      <ul class="list-disc ml-5">
+        <li><em>Hardy-type inequalities for Weinstein operator</em></li>
+        <li><em>Stein-Weiss type inequalities with fractional Poisson kernel</em></li>
+        <li><em>Fractional Hardy inequalities in convex domains</em></li>
       </ul>
     </section>
 
-    <section>
-      <h2>Contact</h2>
-      <p>Email: anoop@example.com</p>
-      <p>GitHub: <a href="https://github.com/vpanoop" target="_blank">vpanoop</a></p>
+    <!-- Talks -->
+    <section id="talks-given" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:4;">
+      <h2 class="section-heading">Talks Given</h2>
+      <ul class="list-disc ml-5 space-y-2">
+        <li><em>Hardy inequality...</em>, Inter IISER-NISER Math Meet, IISER Bhopal, July 2018</li>
+        <li><em>Hardy and fractional Hardy...</em>, Harmonic Analysis Meet, IISc Bangalore, Dec 2017</li>
+      </ul>
+    </section>
+
+    <!-- Teaching -->
+    <section id="teaching-experience" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:5;">
+      <h2 class="section-heading">Teaching</h2>
+      <ul class="pl-1 space-y-3">
+        <li>
+          <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2025" target="_blank">Abstract Algebra - II</a></strong><br>
+          Kannur University, Jan 2025 – April 2025
+        </li>
+        <li>
+          <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2024" target="_blank">Abstract Algebra - I</a></strong><br>
+          Kannur University, Aug 2024 – Dec 2024
+        </li>
+      </ul>
+    </section>
+
+    <!-- Programs Organized -->
+    <section id="programs-organized" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:6;">
+      <h2 class="section-heading">Programs Organized</h2>
+      <h3 class="text-md font-semibold">Summer Workshop in Mathematics (SWIM@KSoM)</h3>
+      <p>I co-organize the SWIM@KSoM at Kannur University. The 2025 edition will run from <time datetime="2025-05-05">May 5</time> to <time datetime="2025-05-30">May 30</time>.</p>
+      <p>More details at: <a href="https://swim-ksom.github.io/" target="_blank">swim-ksom.github.io</a></p>
     </section>
   </main>
+
+  <footer class="text-center p-4 mt-8 bg-gray-200 text-gray-600 text-sm border-t">
+    &copy; <span id="current-year"></span> Anoop V. P. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
