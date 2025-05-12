@@ -1,170 +1,266 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anoop V. P.</title>
-  <meta name="description" content="Official website of Anoop V. P., Assistant Professor of Mathematics.">
-  <meta property="og:title" content="Anoop V. P.">
-  <meta property="og:description" content="Official website of Anoop V. P., Assistant Professor of Mathematics.">
-  <meta property="og:type" content="website">
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anoop V. P.</title>
+    <meta name="description" content="Official website of Anoop V. P., Assistant Professor of Mathematics.">
+    <meta property="og:title" content="Anoop V. P.">
+    <meta property="og:description" content="Official website of Anoop V. P., Assistant Professor of Mathematics.">
+    <meta property="og:type" content="website">
+    <script src="https://cdn.tailwindcss.com"></script><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
+<style>
+    /* Apply Inter font globally and base background */
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f8fafc;
-      color: #1f2937;
+        font-family: 'Inter', sans-serif;
+        background-color: #f8fafc; /* bg-slate-50 */
+        color: #1f2937; /* default text-gray-800 */
     }
+
+    /* Section Heading: Using @apply for Tailwind utilities */
     .section-heading {
-      @apply text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-4;
+        @apply text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-4;
     }
+
+    /* Basic Fade-in Animation */
     .fade-in-section {
-      opacity: 0;
-      transform: translateY(15px);
-      animation: fadeIn 0.5s ease-out forwards;
+        opacity: 0;
+        transform: translateY(15px);
+        animation: fadeIn 0.5s ease-out forwards;
     }
     @keyframes fadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
-    .fade-in-section:nth-child(n) {
-      animation-delay: calc(0.05s * var(--order));
-    }
+    /* Stagger animation delays */
+    /* Consider moving this to JS for dynamic control */
+    .fade-in-section:nth-child(1) { animation-delay: 0.05s; }
+    .fade-in-section:nth-child(2) { animation-delay: 0.1s; }
+    .fade-in-section:nth-child(3) { animation-delay: 0.15s; }
+    .fade-in-section:nth-child(4) { animation-delay: 0.2s; }
+    .fade-in-section:nth-child(5) { animation-delay: 0.25s; } /* Teaching section */
+    .fade-in-section:nth-child(6) { animation-delay: 0.3s; } /* Programs organized section */
+    /* Adjust subsequent delays if needed */
+    .fade-in-section:nth-child(7) { animation-delay: 0.35s; }
+    .fade-in-section:nth-child(8) { animation-delay: 0.4s; }
+    .fade-in-section:nth-child(9) { animation-delay: 0.45s; }
+    .fade-in-section:nth-child(10) { animation-delay: 0.5s; }
+
+    /* Simple Link Style */
     a {
-      @apply text-blue-600 hover:text-blue-800 hover:underline;
+        @apply text-blue-600 hover:text-blue-800 hover:underline;
     }
+
+    /* Basic List Styling */
     ul, ol {
-      @apply list-inside;
+        @apply list-inside;
     }
     ul li {
-      @apply mb-1;
+         @apply mb-1; /* Added margin bottom for spacing */
     }
     ol li {
-      @apply list-decimal ml-4 mb-2;
+        @apply list-decimal ml-4 mb-2; /* Added margin bottom for spacing */
     }
+
+    /* Custom styling for teaching list items (using ::before for bullet) */
     #teaching-experience ul li::before {
-      content: "\2022";
-      color: #4b5563;
-      font-weight: bold;
-      display: inline-block;
-      width: 1em;
-      margin-left: -1em;
+         content: "\2022"; /* Bullet point */
+         color: #4b5563; /* gray-600 */
+         font-weight: bold;
+         display: inline-block;
+         width: 1em;
+         margin-left: -1em; /* Align with text */
     }
-  </style>
+
+    /* Dark Mode Styles (Optional) */
+    /* Requires adding 'dark' class to the html or body element */
+    /* @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1f2937;
+        color: #f3f4f6;
+      }
+      .section-heading {
+        color: #d1d5db;
+        border-color: #4b5563;
+      }
+       a {
+        color: #93c5fd;
+        }
+      #teaching-experience ul li::before {
+        color: #9ca3af;
+      }
+    } */
+
+</style>
+
 </head>
-<body class="text-gray-800 leading-relaxed">
+<body class="text-gray-800 leading-relaxed"><header class="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-4 sm:p-6 shadow-md">
+    <div class="container mx-auto max-w-4xl text-center sm:text-left flex flex-col sm:flex-row justify-between items-center">
+        <a href="https://vpanoop.github.io/" class="text-white hover:text-gray-300 hover:underline transition duration-300" aria-label="Link to Anoop V. P.'s homepage">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4 sm:mb-0">Anoop V. P.</h1>
+        </a>
+        <nav class="mt-0">
+            <ul class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-lg">
+                <li>
+                    <a href="https://vpanoop.github.io/teaching/" class="text-white hover:text-gray-300 hover:underline transition duration-300" aria-label="Link to Teaching page">Teaching</a>
+                </li>
+                <li>
+                    <a href="https://vpanoop.github.io/research/" class="text-white hover:text-gray-300 hover:underline transition duration-300" aria-label="Link to Research page">Research</a>
+                </li>
+            </ul>
+        </nav>
+        </div>
+</header>
 
-  <header class="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-4 sm:p-6 shadow-md">
-    <div class="container mx-auto max-w-4xl flex flex-col sm:flex-row justify-between items-center">
-      <a href="https://vpanoop.github.io/" class="text-white hover:text-gray-300 hover:underline transition duration-300" aria-label="Link to Anoop V. P.'s homepage">
-        <h1 class="text-3xl md:text-4xl font-bold mb-4 sm:mb-0">Anoop V. P.</h1>
-      </a>
-      <nav>
-        <ul class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-lg">
-          <li><a href="https://vpanoop.github.io/teaching/">Teaching</a></li>
-          <li><a href="https://vpanoop.github.io/research/">Research</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+<main class="container mx-auto max-w-4xl p-4 md:p-6">
 
-  <main class="container mx-auto max-w-4xl p-4 md:p-6 space-y-6">
-    <!-- About Section -->
-    <section class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:1;">
-      <div class="space-y-4">
-        <p>I am currently an Assistant Professor of Mathematics in the Department of Mathematical Sciences at Kannur University, since June <time datetime="2023">2023</time>.</p>
-        <p>My postdoctoral journey includes roles at Indian Statistical Institute and IISc Bangalore. I received my Ph.D. from NISER Bhubaneswar in <time datetime="2020">2020</time>.</p>
-        <p>I hold an M.Sc. in Mathematics from the University of Hyderabad (<time datetime="2012">2012</time>) and a B.Sc. from the University of Calicut (<time datetime="2010">2010</time>).</p>
-      </div>
+    <section class="p-5 mb-6 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
+        <div class="mb-4 space-y-4">
+          <p class="text-lg text-gray-800">
+            I am currently an Assistant Professor of Mathematics in the Department of Mathematical Sciences at Kannur University, a position I have held since June <time datetime="2023">2023</time>.
+          </p>
+          <p class="text-lg text-gray-800">
+            Prior to this role, I pursued postdoctoral fellowships at prestigious institutions. At the Indian Statistical Institute, Bangalore, I served as a Research Associate and Visiting Scientist (<time datetime="2022-12">December 2022</time>–<time datetime="2023-06">June 2023</time>) and earlier as a Visiting Scientist (<time datetime="2022-09">September</time>–<time datetime="2022-11">November 2022</time>). My postdoctoral experience also includes positions at the Indian Institute of Science (IISc), Bangalore, where I worked as a National Postdoctoral Fellow and Research Associate (<time datetime="2020-03">March 2020</time>–<time datetime="2022-08">August 2022</time>) and as a Research Associate (<time datetime="2019-08">August</time>–<time datetime="2019-10">October 2019</time>). Additionally, I contributed as a Visiting Scientist at the Kerala School of Mathematics, Kozhikode, in <time datetime="2019-06">June</time>–<time datetime="2019-07">July 2019</time>.
+          </p>
+          <p class="text-lg text-gray-800">
+            I completed my Ph.D. in Mathematics at the National Institute of Science Education and Research (NISER), Bhubaneswar, in <time datetime="2020">2020</time>. Earlier, I earned an M.Sc. in Mathematics from the University of Hyderabad (<time datetime="2012">2012</time>) and a B.Sc. in Mathematics from the University of Calicut, Kerala (<time datetime="2010">2010</time>).
+          </p>
+        </div>
     </section>
 
-    <!-- Contact Info -->
-    <section id="contact-info" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:2;">
-      <h2 class="section-heading">Contact Information</h2>
-      <address class="not-italic space-y-2">
-        <p>
-          Department of Mathematical Sciences<br>
-          Kannur University, Mangattuparamba campus<br>
-          Kannur, Kerala, 670567 India
-        </p>
-        <p><strong>E-mail:</strong> <a href="mailto:anoopvp@kannuruniv.ac.in">anoopvp@kannuruniv.ac.in</a></p>
-      </address>
-    </section>
+    <div class="space-y-6">
+        <section id="contact-info" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
+            <h2 class="section-heading">Contact Information</h2>
+            <address class="not-italic text-gray-700 space-y-2">
+                <p>
+                    Department of Mathematical Sciences<br>
+                    Kannur University, Mangattuparamba campus<br>
+                    Kannur, Kerala, 670567 India
+                </p>
+                <p><strong>E-mail:</strong> <a href="mailto:anoopvp@kannuruniv.ac.in" aria-label="Send email to Anoop V. P.">anoopvp@kannuruniv.ac.in</a></p>
+            </address>
+        </section>
 
-    <!-- Research -->
-    <section id="research" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:3;">
-      <h2 class="section-heading">Research</h2>
-      <h3 class="text-lg font-medium mb-2">Interests</h3>
-      <p class="bg-gray-100 p-3 rounded border border-gray-200">
-        Hardy inequalities, Dunkl operators, h-harmonics, Harmonic analysis on Heisenberg group
-      </p>
+        <section id="research" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
+            <h2 class="section-heading">Research</h2>
 
-      <h3 class="text-lg font-medium mt-5 mb-2">Published Articles</h3>
-      <ol class="space-y-3">
-        <li><strong>Anoop V.P. and Sanjay Parui</strong>, <em>Hardy inequality...</em>, Collectanea Mathematica (2019). <a href="https://doi.org/10.1007/s13348-018-0235-9" target="_blank">[Link]</a></li>
-        <li><strong>Anoop V.P. and Sanjay Parui</strong>, <em>Hardy and fractional Hardy inequality...</em>, Israel J. Math. (2020). <a href="https://doi.org/10.1007/s11856-020-1973-4" target="_blank">[Link]</a></li>
-        <!-- Add other publications similarly -->
-      </ol>
+            <div class="mb-5 pt-2">
+                 <h3 class="text-lg font-medium text-gray-800 mb-2">Interests</h3>
+                 <p class="text-gray-700 bg-gray-100 p-3 rounded-md border border-gray-200">
+                     Hardy inequalities, Analysis on Dunkl operators, Analysis on h-harmonics, Harmonic analysis on Heisenberg group
+                 </p>
+               </div>
 
-      <h3 class="text-lg font-medium mt-5 mb-2">Communicated</h3>
-      <ul class="list-disc ml-5">
-        <li><strong>Anoop V.P., Sanjay Parui</strong>, <em>Stein-Weiss type inequalities for Dunkl operators</em>.</li>
-      </ul>
+                <div class="mb-5">
+                 <h3 class="text-lg font-medium text-gray-800 mb-2">Published Articles</h3>
+                 <ol class="space-y-3 text-gray-700">
+                      <li role="article">
+                          Anoop V.P. and Sanjay Parui,
+                          <em>Hardy inequality and trace Hardy inequality for Dunkl gradient</em>,
+                          Collectanea Mathematica (<time datetime="2019">2019</time>).
+                          <a href="https://doi.org/10.1007/s13348-018-0235-9" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm" aria-label="Link to published article on Collectanea Mathematica">[Link]</a>
+                      </li>
+                      <li role="article">
+                          Anoop V.P. and Sanjay Parui,
+                          <em>Hardy inequality and fractional Hardy inequality for Dunkl Laplacian</em>,
+                          Israel Journal of Mathematics (<time datetime="2020">2020</time>).
+                          <a href="https://doi.org/10.1007/s11856-020-1973-4" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm" aria-label="Link to published article on Israel Journal of Mathematics">[Link]</a>
+                      </li>
+                      <li role="article">
+                          Anoop V. P., Saswata Adhikari and Sanjay Parui,
+                          <em>Existence of extremals of Dunkl-type Sobolev inequality and of Stein-Weiss inequality for Dunkl Riesz potential</em>,
+                          Complex Analysis and Operator Theory (<time datetime="2021">2021</time>).
+                          <a href="https://doi.org/10.1007/s11785-020-01068-1" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm" aria-label="Link to published article on Complex Analysis and Operator Theory">[Link]</a>
+                      </li>
+                      <li role="article">
+                          Anoop V. P. and Sanjay Parui,
+                          <em>Improved fractional Hardy inequalities for Dunkl gradient</em>,
+                          Mathematical Inequalities and Applications (<time datetime="2021">2021</time>).
+                          <a href="http://dx.doi.org/10.7153/mia-2021-24-10" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm" aria-label="Link to published article on Mathematical Inequalities and Applications">[Link]</a>
+                      </li>
+                      <li role="article">
+                          Anoop V. P. and Sanjay Parui,
+                          <em>Hardy-Littlewood-Sobolev inequality for upper half space</em>,
+                          Annales Mathématiques Blaise Pascal (<time datetime="2021">2021</time>).
+                          <a href="http://10.5802/ambp.401" target="_blank" rel="noopener noreferrer" class="ml-1 text-sm" aria-label="Link to published article on Annales Mathématiques Blaise Pascal">[Link]</a>
+                      </li>
+                 </ol>
+                </div>
 
-      <h3 class="text-lg font-medium mt-5 mb-2">Under Preparation</h3>
-      <ul class="list-disc ml-5">
-        <li><em>Hardy-type inequalities for Weinstein operator</em></li>
-        <li><em>Stein-Weiss type inequalities with fractional Poisson kernel</em></li>
-        <li><em>Fractional Hardy inequalities in convex domains</em></li>
-      </ul>
-    </section>
+                <div class="mb-5">
+                 <h3 class="text-lg font-medium text-gray-800 mb-2">Communicated Articles</h3>
+                 <ul class="space-y-1 text-gray-700 list-disc ml-4">
+                     <li role="article">Anoop V.P., Sanjay Parui, <em>Stein-Weiss type inequalities for Dunkl operators</em>.</li>
+                 </ul>
+                </div>
 
-    <!-- Talks -->
-    <section id="talks-given" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:4;">
-      <h2 class="section-heading">Talks Given</h2>
-      <ul class="list-disc ml-5 space-y-2">
-        <li><em>Hardy inequality...</em>, Inter IISER-NISER Math Meet, IISER Bhopal, July 2018</li>
-        <li><em>Hardy and fractional Hardy...</em>, Harmonic Analysis Meet, IISc Bangalore, Dec 2017</li>
-      </ul>
-    </section>
+                <div>
+                 <h3 class="text-lg font-medium text-gray-800 mb-2">Under Preparation</h3>
+                 <ul class="space-y-1 text-gray-700 list-disc ml-4">
+                     <li role="article">Anoop V.P., Sanjay Parui, <em>Hardy-type inequalities for Weinstein operator</em>.</li>
+                      <li role="article">Anoop V.P., <em>Stein-Weiss type inequalities with fractional Poisson kernel</em>.</li>
+                      <li role="article">Anoop V.P., Saswata Adhikari, <em>Fractional Hardy inequalities in convex domains</em>.</li>
+                 </ul>
+                </div>
+             </section>
 
-    <!-- Teaching -->
-    <section id="teaching-experience" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:5;">
-      <h2 class="section-heading">Teaching</h2>
-      <ul class="pl-1 space-y-3">
-        <li>
-          <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2025" target="_blank">Abstract Algebra - II</a></strong><br>
-          Kannur University, Jan 2025 – April 2025
-        </li>
-        <li>
-          <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2024" target="_blank">Abstract Algebra - I</a></strong><br>
-          Kannur University, Aug 2024 – Dec 2024
-        </li>
-      </ul>
-    </section>
+        <section id="talks-given" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
+            <h2 class="section-heading">Talks Given</h2>
+            <ul class="space-y-2 text-gray-700 list-disc ml-4">
+                <li role="article"><em>Hardy inequality and fractional Hardy inequality for Dunkl Laplacian</em>, Inter IISER-NISER Math Meet, IISER Bhopal, India (<time datetime="2018-07">July 2018</time>).</li>
+                 <li role="article"><em>Hardy and fractional Hardy inequality for Dunkl Laplacian</em>, Discussion Meeting on Harmonic Analysis, IISc Bangalore, India (<time datetime="2017-12">December 2017</time>).</li>
+             </ul>
+        </section>
 
-    <!-- Programs Organized -->
-    <section id="programs-organized" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section" style="--order:6;">
-      <h2 class="section-heading">Programs Organized</h2>
-      <h3 class="text-md font-semibold">Summer Workshop in Mathematics (SWIM@KSoM)</h3>
-      <p>I co-organize the SWIM@KSoM at Kannur University. The 2025 edition will run from <time datetime="2025-05-05">May 5</time> to <time datetime="2025-05-30">May 30</time>.</p>
-      <p>More details at: <a href="https://swim-ksom.github.io/" target="_blank">swim-ksom.github.io</a></p>
-    </section>
-  </main>
+        <section id="teaching-experience" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
+            <h2 class="section-heading">Teaching</h2>
+            <ul class="space-y-3 text-gray-700 pl-1">
+                <li role="article">
+                     <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2025" target="_blank" rel="noopener noreferrer" aria-label="Link to Abstract Algebra 2025 teaching page">Abstract Algebra - II</a></strong><br>
+                     Department of Mathematical Sciences, Kannur University<br>
+                     <span class="text-sm text-gray-600"><time datetime="2025-01">Jan 2025</time> – <time datetime="2025-04">April 2025</time></span>
+                 </li>
+                  <li role="article">
+                     <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2024" target="_blank" rel="noopener noreferrer" aria-label="Link to Abstract Algebra 2024 teaching page">Abstract Algebra - I</a></strong><br>
+                     Department of Mathematical Sciences, Kannur University<br>
+                     <span class="text-sm text-gray-600"><time datetime="2024-08">August 2024</time> – <time datetime="2024-12">December 2024</time></span>
+                 </li>
+             </ul>
+        </section>
+        <section id="programs-organized" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
+            <h2 class="section-heading">Programs organized</h2>
+            <div class="text-gray-700 space-y-2">
+                <h3 class="text-md font-semibold text-gray-800">Summer Workshop in Mathematics (SWIM@KSoM)</h3>
+                <div class="space-y-4"> <p>
+                        I am one of the organizers of the Summer Workshop in Mathematics (SWIM@KSoM), a rigorous instructional program held at Kannur University (Thavakkara campus). The workshop provides an in-depth exploration of fundamental areas like Mathematical Analysis, Abstract Algebra, and Linear Algebra, complemented by problem-solving sessions. The next edition is scheduled from <time datetime="2025-05-05">May 5, 2025</time> to <time datetime="2025-05-30">May 30, 2025</time>.
+                    </p>
+                    <p>
+                        For more information, visit the official website:
+                        <a href="https://swim-ksom.github.io/" target="_blank" rel="noopener noreferrer" aria-label="Link to SWIM at KSoM website">swim-ksom.github.io</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+        </div> </main>
 
-  <footer class="text-center p-4 mt-8 bg-gray-200 text-gray-600 text-sm border-t">
+<footer class="text-center p-4 mt-8 bg-gray-200 text-gray-600 text-sm border-t">
     &copy; <span id="current-year"></span> Anoop V. P. All rights reserved.
-  </footer>
+</footer>
 
-  <script>
+<script>
+    // Set current year in footer
     document.getElementById('current-year').textContent = new Date().getFullYear();
-  </script>
+
+    // Optional: Implement JS for staggered animation delay for better maintainability
+    // const sections = document.querySelectorAll('.fade-in-section');
+    // sections.forEach((section, index) => {
+    //     section.style.animationDelay = `${index * 0.05}s`;
+    // });
+</script>
+
 </body>
 </html>
