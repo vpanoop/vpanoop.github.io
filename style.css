@@ -1,0 +1,82 @@
+ /* Apply Inter font globally and base background */  
+        body {  
+            font-family: 'Inter', sans-serif;  
+            background-color: #f8fafc; /* bg-slate-50 */  
+            color: #1f2937; /* default text-gray-800 */  
+        }  
+  
+        /* Section Heading: Using @apply for Tailwind utilities */  
+        .section-heading {  
+            @apply text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-4;  
+        }  
+  
+        /* Basic Fade-in Animation */  
+        .fade-in-section {  
+            opacity: 0;  
+            transform: translateY(15px);  
+            animation: fadeIn 0.5s ease-out forwards;  
+        }  
+        @keyframes fadeIn {  
+            to {  
+                opacity: 1;  
+                transform: translateY(0);  
+            }  
+        }  
+        /* Stagger animation delays */  
+        /* Consider moving this to JS for dynamic control */  
+        .fade-in-section:nth-child(1) { animation-delay: 0.05s; }  
+        .fade-in-section:nth-child(2) { animation-delay: 0.1s; }  
+        .fade-in-section:nth-child(3) { animation-delay: 0.15s; }  
+        .fade-in-section:nth-child(4) { animation-delay: 0.2s; }  
+        .fade-in-section:nth-child(5) { animation-delay: 0.25s; } /* Teaching section */  
+        .fade-in-section:nth-child(6) { animation-delay: 0.3s; } /* Programs organized section */  
+        /* Adjust subsequent delays if needed */  
+        .fade-in-section:nth-child(7) { animation-delay: 0.35s; }  
+        .fade-in-section:nth-child(8) { animation-delay: 0.4s; }  
+        .fade-in-section:nth-child(9) { animation-delay: 0.45s; }  
+        .fade-in-section:nth-child(10) { animation-delay: 0.5s; }  
+  
+        /* Simple Link Style */  
+        a {  
+            @apply text-blue-600 hover:text-blue-800 hover:underline;  
+        }  
+  
+        /* Basic List Styling */  
+        ul, ol {  
+            @apply list-inside;  
+        }  
+        ul li {  
+             @apply mb-1; /* Added margin bottom for spacing */  
+        }  
+        ol li {  
+            @apply list-decimal ml-4 mb-2; /* Added margin bottom for spacing */  
+        }  
+  
+        /* Custom styling for teaching list items (using ::before for bullet) */  
+        #teaching-experience ul li::before {  
+             content: "\2022"; /* Bullet point */  
+             color: #4b5563; /* gray-600 */  
+             font-weight: bold;  
+             display: inline-block;  
+             width: 1em;  
+             margin-left: -1em; /* Align with text */  
+        }  
+  
+        /* Dark Mode Styles (Optional) */  
+        /* Requires adding 'dark' class to the html or body element */  
+        /* @media (prefers-color-scheme: dark) {  
+          body {  
+            background-color: #1f2937;  
+            color: #f3f4f6;  
+          }  
+          .section-heading {  
+            color: #d1d5db;  
+            border-color: #4b5563;  
+          }  
+           a {  
+            color: #93c5fd;  
+            }  
+          #teaching-experience ul li::before {  
+            color: #9ca3af;  
+          }  
+        } */  

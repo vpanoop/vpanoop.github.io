@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="/style.css">
 
     <style>
         /* Apply Inter font globally and base background */
@@ -94,23 +95,7 @@
 </head>
 <body class="text-gray-800 leading-relaxed">
 
-    <header class="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-4 sm:p-6 shadow-md">
-        <div class="container mx-auto max-w-4xl text-center sm:text-left flex flex-col sm:flex-row justify-between items-center">
-            <a href="https://vpanoop.github.io/" class="text-white hover:text-gray-300 hover:underline transition duration-300" aria-label="Link to Anoop V. P.'s homepage">
-                <h1 class="text-3xl md:text-4xl font-bold mb-4 sm:mb-0">Anoop V. P.</h1>
-            </a>
-            <nav class="mt-0">
-                <ul class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-lg">
-                    <li>
-                        <a href="https://vpanoop.github.io/teaching/" class="text-white hover:text-gray-300 hover:underline transition duration-300" aria-label="Link to Teaching page">Teaching</a>
-                    </li>
-                    <li>
-                        <a href="https://vpanoop.github.io/research/" class="text-white hover:text-gray-300 hover:underline transition duration-300" aria-label="Link to Research page">Research</a>
-                    </li>
-                </ul>
-            </nav>
-            </div>
-    </header>
+   <header id="header"></header> 
 
     <main class="container mx-auto max-w-4xl p-4 md:p-6">
 
@@ -178,20 +163,9 @@
              </section>
         </main>
 
-    <footer class="text-center p-4 mt-8 bg-gray-200 text-gray-600 text-sm border-t">
-        &copy; <span id="current-year"></span> Anoop V. P. All rights reserved.
-    </footer>
+   <footer id="footer"></footer>
 
-    <script>
-        // Set current year in footer
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
-        // Optional: Implement JS for staggered animation delay for better maintainability
-        // const sections = document.querySelectorAll('.fade-in-section');
-        // sections.forEach((section, index) => {
-        //     section.style.animationDelay = `${index * 0.05}s`;
-        // });
-    </script>
+    <script src="/script.js"></script>
 
 </body>
 </html>
