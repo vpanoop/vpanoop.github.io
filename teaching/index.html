@@ -10,42 +10,8 @@
   <meta property="og:type" content="website" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-   <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/style.css">
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f8fafc;
-      color: #1f2937;
-    }
-    .section-heading {
-      @apply text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 mb-4;
-    }
-    .fade-in-section {
-      opacity: 0;
-      transform: translateY(15px);
-      animation: fadeIn 0.5s ease-out forwards;
-    }
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .fade-in-section:nth-child(1) { animation-delay: 0.05s; }
-    a { @apply text-blue-600 hover:text-blue-800 hover:underline; }
-    ul, ol { @apply list-inside; }
-    ul li { @apply mb-1; }
-    ol li { @apply list-decimal ml-4 mb-2; }
-    #teaching-experience ul li::before {
-      content: "\2022";
-      color: #4b5563;
-      font-weight: bold;
-      display: inline-block;
-      width: 1em;
-      margin-left: -1em;
-    }
-  </style>
 </head>
 <body class="text-gray-800 leading-relaxed">
 
@@ -53,50 +19,33 @@
 
   <main class="container mx-auto max-w-4xl p-4 md:p-6">
     <section id="teaching-experience" class="p-5 bg-white rounded-lg shadow-sm border border-gray-200 fade-in-section">
-      <h2 class="section-heading">Teaching</h2>
       <ul class="space-y-3 text-gray-700 pl-1">
         <li role="article">
-          <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2025" target="_blank">Abstract Algebra - II</a></strong><br>
-          Department of Mathematical Sciences, Kannur University<br>
-          <span class="text-sm text-gray-600"><time datetime="2025-01">Jan 2025</time> – <time datetime="2025-04">April 2025</time></span>
+          <strong><a href="real/">Real Analysis</a></strong>
         </li>
         <li role="article">
-          <strong><a href="https://vpanoop.github.io/teaching/abstractalgebra2024" target="_blank">Abstract Algebra - I</a></strong><br>
-          Department of Mathematical Sciences, Kannur University<br>
-          <span class="text-sm text-gray-600"><time datetime="2024-08">August 2024</time> – <time datetime="2024-12">December 2024</time></span>
+          <strong><a href="linear/">Linear Algebra</a></strong>
         </li>
         <li role="article">
-          <strong>Differential Geometry</strong><br>
-          Department of Mathematical Sciences, Kannur University<br>
-          <span class="text-sm text-gray-600"><time datetime="2023-08">August 2023</time> – <time datetime="2023-12">December 2023</time></span>
+          <strong><a href="algebra1/">Algebra - I</a></strong>
         </li>
         <li role="article">
-          <strong>Ordinary Differential Equations</strong><br>
-          Department of Mathematical Sciences, Kannur University<br>
-          <span class="text-sm text-gray-600"><time datetime="2023-08">August 2023</time> – <time datetime="2023-12">December 2023</time></span>
+          <strong><a href="algebra2/">Algebra - II</a></strong>
         </li>
         <li role="article">
-          <strong>Harmonic Analysis</strong><br>
-          Department of Mathematical Sciences, Kannur University<br>
-          <span class="text-sm text-gray-600"><time datetime="2024-01">January 2024</time> – <time datetime="2024-04">April 2024</time></span>
+          <strong><a href="ode/">Ordinary Differential Equations</a></strong>
         </li>
         <li role="article">
-          <strong>Functions of Several Variables and Differential Geometry</strong><br>
-          Department of Mathematical Sciences, Kannur University<br>
-          <span class="text-sm text-gray-600">
-            <time datetime="2024-01">January 2024</time> – <time datetime="2024-04">April 2024</time>,
-            <time datetime="2025-01">January 2025</time> – <time datetime="2025-04">April 2025</time>
-          </span>
+          <strong><a href="fsvdg/">Functions of Several Variables and Differential Geoemtry</a></strong>
         </li>
         <li role="article">
-          <strong>Partial Differential Equations</strong><br>
-          Department of Mathematical Sciences, Kannur University<br>
-          <span class="text-sm text-gray-600"><time datetime="2024-08">August 2024</time> – <time datetime="2024-12">December 2024</time></span>
+          <strong><a href="dg/">Differential Geometry</a></strong>
+        </li>
+         <li role="article">
+          <strong><a href="pde/">Partial Differential Equations</a></strong>
         </li>
         <li role="article">
-          <strong>Linear Algebra</strong><br>
-          Department of Mathematical Sciences, Kannur University<br>
-          <span class="text-sm text-gray-600"><time datetime="2024-08">August 2024</time> – <time datetime="2024-12">December 2024</time></span>
+          <strong><a href="harmonic/">Harmonic Analysis</a></strong>
         </li>
       </ul>
     </section>
