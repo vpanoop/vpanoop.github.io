@@ -246,9 +246,11 @@ button:focus-visible {
    Link cards (home quick nav)
    -------------------------------------------------------------------------- */
 
+/* Four tiles: a balanced 2x2 on desktop, single column on phones.
+   min() keeps the track from overflowing narrow viewports. */
 .tile-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr));
   gap: 1rem;
 }
 
