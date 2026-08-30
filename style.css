@@ -109,13 +109,6 @@ button:focus-visible {
 }
 .brand:hover .brand__name { color: var(--accent); }
 
-.brand__role {
-  font-size: 0.8125rem;
-  color: var(--muted);
-  letter-spacing: 0.02em;
-  margin-top: 0.15rem;
-}
-
 .nav ul {
   list-style: none;
   margin: 0;
@@ -246,11 +239,11 @@ button:focus-visible {
    Link cards (home quick nav)
    -------------------------------------------------------------------------- */
 
-/* Four tiles: a balanced 2x2 on desktop, single column on phones.
+/* Five tiles: three across on desktop, single column on phones.
    min() keeps the track from overflowing narrow viewports. */
 .tile-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
   gap: 1rem;
 }
 
@@ -519,6 +512,11 @@ button:focus-visible {
   max-width: 46rem;
 }
 
+.note {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
 /* --------------------------------------------------------------------------
    Education
    -------------------------------------------------------------------------- */
@@ -644,8 +642,8 @@ button:focus-visible {
     gap: 0.7rem;
   }
   .brand__name { font-size: 1.3rem; }
-  .brand__role { font-size: 0.75rem; }
-  .nav ul { gap: 1.4rem; flex-wrap: wrap; }
+  /* row gap kept tight: five items wrap to two lines on a phone */
+  .nav ul { gap: 0.55rem 1.4rem; flex-wrap: wrap; }
   .nav a { font-size: 0.9rem; }
 
   .page-head { margin-bottom: 1.75rem; }
