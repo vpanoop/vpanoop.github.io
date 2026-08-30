@@ -518,6 +518,39 @@ button:focus-visible {
 }
 
 /* --------------------------------------------------------------------------
+   Education
+   -------------------------------------------------------------------------- */
+
+.edu-list { list-style: none; margin: 0; padding: 0; }
+
+.edu-item {
+  padding-bottom: 1.15rem;
+  margin-bottom: 1.15rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+.edu-item:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+
+.edu-item__degree {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.edu-item__place {
+  font-size: 0.975rem;
+  color: var(--body);
+  margin-top: 0.15rem;
+}
+
+.edu-item__meta {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+
+/* --------------------------------------------------------------------------
    Empty / placeholder state
    -------------------------------------------------------------------------- */
 
@@ -659,6 +692,10 @@ button:focus-visible {
   .pub__authors, .pub__venue { font-size: 0.9rem; }
 
   .talk__title { font-size: 1.1rem; }
+
+  .edu-item__degree { font-size: 1.02rem; }
+  .edu-item__place { font-size: 0.925rem; }
+  .edu-item__meta { font-size: 0.85rem; }
 
   .stub { padding: 2.5rem 1.25rem; }
 
