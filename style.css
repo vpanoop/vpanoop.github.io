@@ -518,6 +518,47 @@ button:focus-visible {
 }
 
 /* --------------------------------------------------------------------------
+   Programs
+   -------------------------------------------------------------------------- */
+
+.program-list { list-style: none; margin: 0; padding: 0; }
+
+.program {
+  padding-bottom: 1.75rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+.program:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+
+.program__title {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.program .tag-row { margin-top: 0.6rem; }
+
+.program__meta {
+  font-size: 0.9375rem;
+  color: var(--muted);
+  margin: 0.6rem 0 0;
+  max-width: 46rem;
+}
+
+.program__desc {
+  margin: 0.55rem 0 0;
+  max-width: 46rem;
+}
+
+.program__link {
+  margin: 0.75rem 0 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
    Education
    -------------------------------------------------------------------------- */
 
@@ -692,6 +733,9 @@ button:focus-visible {
   .pub__authors, .pub__venue { font-size: 0.9rem; }
 
   .talk__title { font-size: 1.1rem; }
+
+  .program__title { font-size: 1.1rem; }
+  .program__meta, .program__link { font-size: 0.9rem; }
 
   .edu-item__degree { font-size: 1.02rem; }
   .edu-item__place { font-size: 0.925rem; }
