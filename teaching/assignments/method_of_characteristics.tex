@@ -1,0 +1,92 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhead{} % Clear all header fields
+\fancyhead[R]{DMS KU - AVP} % Right header content
+\fancyhead[L]{Partial Differential Equations} % Left header content
+\fancyfoot[C]{\thepage} % Centered footer with page number
+
+\begin{document}
+
+\begin{center}
+\textbf{\Large PDE - Problem Sheet} \\[0.5em]
+\textbf{Course Code: MSMAT03DSC12} \\[0.5em]
+\textbf{Anoop V. P.}
+\end{center}
+
+\section{Method of Characteristics}
+
+\begin{enumerate}
+
+\item Find and sketch some sample characteristic curves of the PDE:
+\[(x + 2)u_x + 2y u_y = 2u\]
+in the $x-y$ plane. Write the ODE for $u$ along a characteristic curve with $x$ as the parameter and then solve the PDE with the initial condition $u(-1, y) = \sqrt{|y|}, y>0$.
+
+\item Consider the PDE $x u_x + y u_y = 2u, x > 0, y > 0$. Plot the characteristic curves and solve the equation with the following initial conditions in the domain given above:
+\begin{enumerate}
+    \item $u = 1$ on the hyperbola $xy = 1$.
+    \item $u = 1$ on the circle $x^2 + y^2 = 1$.
+    \item Can you solve the equation, in general, if certain initial data is prescribed on the initial curve $y = e^x$? Justify with reasons.
+\end{enumerate}
+
+\item Sketch the characteristic curve, the initial curve, and solve the following problems:
+\begin{enumerate}
+    \item $x u_x + y u_y = k u, \; x \in \mathbb{R}, \; y \geq \alpha > 0; \; u(x, \alpha) = F(x)$, where $k$, $\alpha$ are fixed and $F$ is a given smooth function.
+    \item $y u_x - x u_y = 0; \; u(x, 0) = x^2$.
+    \item $x^2 u_x - y^2 u_y = 0; \; u(1, y) = F(y)$.
+    \item $y u_x + x u_y = 0; \; u(0, y) = e^{-y^2}$.
+\end{enumerate}
+
+\item Solve the quasi-linear problem and verify transversality conditions:
+\begin{enumerate}
+    \item $u u_x + u_y = 0, \; u(x, 0) = x$.
+    \item $u u_x + u_y = 1, \; u(x, x) = x/2, \; x \in (0, 1]$.
+\end{enumerate}
+
+\item Consider the PDE $u_x+u_y = 0$ on $\mathbb{R}^2$. Discuss the existence and uniqueness of the solution under the following initial conditions:
+\begin{enumerate}
+    \item $u(x, -x) = x$
+    \item $u(x, x) = x$
+    \item $u(x, x) = 1$
+\end{enumerate}
+
+\item Solve the PDE: $u u_x + u_y = 1$ with initial conditions $x = s$, $y = s$ and $u = s/2$ with $0 \leq s \leq 1$.
+
+\item Consider the equation $p^2 + q^2 = 1$ with initial condition $u(x, y) = 0$ on the line $x+y = 1$. Find the two solutions using the method of characteristics.
+
+\item Find a smooth function $a : \mathbb{R}^2 \to \mathbb{R}$ such that, for the equation of the form
+\[a(x, y) u_x + u_y = 0,\]
+there does not exist any solution in the entire $\mathbb{R}^2$ for any nonconstant initial value prescribed on $\{y = 0\}$.
+
+\item Consider the PDE $x u_x + y u_y + z u_z = 3u$ in $\mathbb{R}^3$.
+\begin{enumerate}
+    \item Solve the PDE with initial condition $u(x, y, 1) = x^2 + y^2$.
+    \item Is it possible to find unique solution if the initial condition is prescribed on the surface $z = 1 + x^2 + y^2$?
+\end{enumerate}
+
+\item Consider the following IVPs:
+\begin{itemize}
+    \item[A.] $u = u_x^2 - 3u_y^2, \; u(x, 0) = x^2, \; x > 0$.
+    \item[B.] $u = u_x u_y, \; u(x, 0) = x^2, \; x > 0$.
+\end{itemize}
+\begin{enumerate}
+    \item Discuss the existence and uniqueness of both IVPs.
+    \item Solve any one the above.
+\end{enumerate}
+
+\item Consider the PDE $x u_x+y u_y = 2u$ on $\mathbb{R}^2$. Discuss the existence and uniqueness of the solution (both global and local) to the following initial conditions. If unique solution does not exist, find an alternative solution on $\mathbb{R}^2$.
+\begin{enumerate}
+    \item $u = 1$ on the hyperbola $xy = 1, x > 0$.
+    \item $u = 1$ on the line $y = 1$.
+    \item $u = 1$ on the circle $x^2 + y^2 = 1$.
+    \item $u(x, e^x) = x e^x$, for all $x \in \mathbb{R}$.
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}
