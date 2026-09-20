@@ -1,0 +1,292 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\pagestyle{fancy}
+\fancyhead{} % Clear all header fields
+\fancyhead[R]{DMS KU - AVP} % Right header content
+\fancyhead[L]{PDE Notes} % Left header content
+\fancyfoot[C]{\thepage} % Centered footer with page number
+\renewcommand{\headrulewidth}{0.4pt} % Line under the header
+% --------------------------
+
+\begin{document}
+\begin{center}
+\textbf{\Large Partial Differential Equations } \\[0.5em]
+\textbf{Course Code: MSMAT03DSC12} \\[0.5em]
+\textbf{Anoop V. P.}
+\end{center}
+
+\section{Method of Characteristics}
+
+\subsection{Introduction and Linear Equations}
+\subsubsection{Introduction}
+The method of characteristics is a powerful technique for solving first-order partial differential equations (PDEs). The fundamental idea is to reduce the PDE to a system of ordinary differential equations (ODEs) along specific curves known as \textit{characteristic curves}. By solving these ODEs, we can reconstruct the solution surface $u(x,y)$.
+
+\subsubsection{Linear Equations}
+Consider the general linear first-order PDE in two variables:
+\begin{equation}
+a(x,y) u_x + b(x,y) u_y = c(x,y) u + d(x,y)
+\end{equation}
+We wish to find a solution $u(x,y)$ that satisfies a given initial condition on a curve $\Gamma$.
+
+\textbf{Step-by-step Method:}
+\begin{enumerate}
+    \item \textbf{Parameterize the initial curve:} Let the initial data be given on a curve $\Gamma$, parameterized by $s$:
+    $$ x = x_0(s), \quad y = y_0(s), \quad u = u_0(s) $$
+    \item \textbf{Form the Characteristic Equations:} We look for characteristic curves $(x(\tau, s), y(\tau, s))$ parameterized by $\tau$, emanating from the initial curve at $\tau = 0$. The characteristic ODEs are:
+    $$ \frac{dx}{d\tau} = a(x,y), \quad \frac{dy}{d\tau} = b(x,y) $$
+    Along these curves, the PDE simplifies to an ODE for $u(\tau, s)$:
+    $$ \frac{du}{d\tau} = c(x,y) u + d(x,y) $$
+    \item \textbf{Solve the ODEs:} Solve the system of ODEs subject to the initial conditions at $\tau=0$:
+    $$ x(0,s) = x_0(s), \quad y(0,s) = y_0(s), \quad u(0,s) = u_0(s) $$
+    \item \textbf{Invert the Coordinates:} Solve for $\tau$ and $s$ in terms of $x$ and $y$. Substitute back to find $u(x,y)$.
+\end{enumerate}
+
+\subsection{Quasilinear Equations}
+A quasilinear equation is linear in the derivatives $u_x$ and $u_y$, but the coefficients can depend on $u$:
+\begin{equation}
+a(x,y,u) u_x + b(x,y,u) u_y = c(x,y,u)
+\end{equation}
+
+\subsubsection{Burgers' Equation}
+A classic example is the inviscid Burgers' equation:
+$$ u_t + u u_x = 0 $$
+with initial data $u(x,0) = h(x)$.
+The characteristic equations are:
+$$ \frac{dx}{dt} = u, \quad \frac{du}{dt} = 0 $$
+This implies that $u$ is constant along characteristics, and the characteristics are straight lines with slope (velocity) equal to the initial value $h(x)$. The solution implicitly is $u = h(x - ut)$.
+
+\textbf{Shock and Rarefaction Waves:}
+\begin{itemize}
+    \item \textbf{Shock Wave:} If $h(x)$ is decreasing, the characteristics will eventually intersect. At the intersection, the solution becomes multi-valued and a singularity develops. We define a \textit{shock wave} as a propagating discontinuity that satisfies a specific physical condition (Rankine-Hugoniot jump condition) to remain a valid weak solution.
+    \item \textbf{Rarefaction Wave:} If $h(x)$ has a discontinuous jump where it increases, a gap opens between characteristics. This region is filled by a continuous fan of characteristics known as a \textit{rarefaction wave}, smoothing out the initial discontinuity over time.
+\end{itemize}
+
+\subsubsection{Definition of Integral Surface}
+An \textit{integral surface} for the PDE is the geometric surface $z = u(x,y)$ in $\mathbb{R}^3$ that represents the solution. The PDE $a(x,y,u)u_x + b(x,y,u)u_y = c(x,y,u)$ states that the vector field $(a, b, c)$ is always tangent to the integral surface. Therefore, the integral surface is constructed by taking the union of all characteristic curves passing through the initial data curve.
+
+\subsubsection{Theorem and Proof (Application of Implicit Function Theorem)}
+\textbf{Theorem (Cauchy Problem):} Suppose $a, b, c$ and the initial curve $\Gamma$ are $C^1$. If the transversality condition holds:
+$$ a(x_0(s), y_0(s), u_0(s)) y_0'(s) - b(x_0(s), y_0(s), u_0(s)) x_0'(s) \neq 0 $$
+then there exists a unique $C^1$ solution $u(x,y)$ in a neighborhood of the initial curve.
+
+\textbf{Proof in Steps:}
+\begin{enumerate}
+    \item \textbf{Characteristics:} Construct the system of ODEs: $\frac{dx}{d\tau} = a$, $\frac{dy}{d\tau} = b$, $\frac{du}{d\tau} = c$ with initial data at $\tau=0$ parameterized by $s$. By the Picard-Lindel\"of theorem, there exist unique solutions $x(\tau,s), y(\tau,s), u(\tau,s)$.
+    \item \textbf{Applying the Implicit Function Theorem (IFT):} To define $u$ as a function of $x$ and $y$, we need to invert the mapping $(\tau, s) \mapsto (x, y)$. The IFT states that this mapping is locally invertible near $\tau=0$ if and only if the Jacobian determinant is non-zero:
+    $$ J = \det \begin{pmatrix} \frac{\partial x}{\partial \tau} & \frac{\partial x}{\partial s} \\ \frac{\partial y}{\partial \tau} & \frac{\partial y}{\partial s} \end{pmatrix} = \frac{\partial x}{\partial \tau} \frac{\partial y}{\partial s} - \frac{\partial y}{\partial \tau} \frac{\partial x}{\partial s} \neq 0 $$
+    \item \textbf{Checking the Requirement:} At $\tau = 0$, we have $\frac{\partial x}{\partial \tau} = a$, $\frac{\partial y}{\partial \tau} = b$, $\frac{\partial x}{\partial s} = x_0'(s)$, and $\frac{\partial y}{\partial s} = y_0'(s)$. 
+    Therefore, the Jacobian is exactly the transversality condition: $a y_0' - b x_0'$. Since this is non-zero by assumption, the IFT guarantees we can locally find $\tau(x,y)$ and $s(x,y)$.
+    \item \textbf{Conclusion:} Substituting these back, we get $u(x,y) = u(\tau(x,y), s(x,y))$, which is the unique $C^1$ solution.
+\end{enumerate}
+
+\subsection{General First-Order Equation in Two Variables}
+Consider the fully nonlinear equation:
+$$ F(x, y, u, p, q) = 0 $$
+where $p = u_x$ and $q = u_y$.
+
+\subsubsection{Idea of the Proof in Steps}
+To solve this, we cannot simply use the vector field $(a,b,c)$ as in the quasilinear case because the coefficients now depend nonlinearly on $p$ and $q$. The idea is to track not just the spatial coordinates $(x,y)$ and value $u$, but also the derivatives $p$ and $q$ along the characteristic curve.
+\begin{enumerate}
+    \item Differentiate the PDE with respect to $x$ and $y$ to obtain relations for $p_x, p_y, q_x, q_y$.
+    \item Construct a system of five ODEs for the five variables $(x, y, u, p, q)$. These are called the \textit{Characteristic Strip} equations.
+    \item Solve this system subject to initial conditions. Ensure the initial data for $p_0(s)$ and $q_0(s)$ are compatible with $F=0$ and the strip condition $u_0'(s) = p_0(s) x_0'(s) + q_0(s) y_0'(s)$.
+\end{enumerate}
+
+\subsubsection{Step-by-Step Calculation}
+Differentiating $F(x,y,u,p,q)=0$ with respect to $x$:
+$$ F_x + F_u u_x + F_p p_x + F_q q_x = 0 \implies F_x + p F_u + p_x F_p + p_y F_q = 0 $$
+(using $q_x = p_y$). We choose our parameter $\tau$ such that:
+$$ \frac{dx}{d\tau} = F_p, \quad \frac{dy}{d\tau} = F_q $$
+Then along this curve, $\frac{dp}{d\tau} = p_x \frac{dx}{d\tau} + p_y \frac{dy}{d\tau} = p_x F_p + p_y F_q = -(F_x + p F_u)$.
+Similarly, $\frac{dq}{d\tau} = -(F_y + q F_u)$.
+The change in $u$ is $\frac{du}{d\tau} = p \frac{dx}{d\tau} + q \frac{dy}{d\tau} = p F_p + q F_q$.
+These form the characteristic equations.
+
+\subsubsection{Geometric Explanation of the Monge Cone}
+At any point $(x_0, y_0, u_0)$, the PDE restricts the possible tangent planes $(p,q,-1)$ to the solution surface via $F(x_0, y_0, u_0, p, q) = 0$. Since $F=0$ generally defines a 1-parameter family of planes in $\mathbb{R}^3$, the envelope of all these possible tangent planes forms a cone, called the \textbf{Monge Cone}. 
+The integral surface representing the solution must be tangent to a Monge cone at every point. The method of characteristics traces the paths that lie exactly along the contact lines between the integral surface and these Monge cones.
+
+\subsection{First-Order Equation in Several Variables}
+Here, we generalize the ideas to $n$ independent variables $x = (x_1, \dots, x_n)$.
+
+\subsubsection{Linear First-Order Equation}
+The equation is $\sum_{i=1}^n a_i(x) u_{x_i} = c(x) u + d(x)$. The characteristic equations simply extend to $n$ spatial ODEs: $\frac{dx_i}{d\tau} = a_i(x)$, along which $\frac{du}{d\tau} = c(x)u + d(x)$. The initial data is given on an $(n-1)$-dimensional hypersurface, and the solution is reconstructed by tracing characteristics from this hypersurface.
+
+\subsubsection{Quasilinear Equation}
+For $\sum_{i=1}^n a_i(x, u) u_{x_i} = c(x, u)$, the characteristic equations are $\frac{dx_i}{d\tau} = a_i(x,u)$ and $\frac{du}{d\tau} = c(x,u)$. The geometry is identical to the 2D case, where the vector field $(a_1, \dots, a_n, c)$ in $\mathbb{R}^{n+1}$ must be tangent to the $n$-dimensional integral surface. The Implicit Function Theorem is again used to verify that the characteristics do not run parallel to the initial hypersurface.
+
+\subsubsection{General Nonlinear Equation}
+For $F(x, u, Du) = 0$ where $Du = (p_1, \dots, p_n)$, we form the characteristic strip in $2n+1$ dimensions $(x, u, p)$. 
+The equations generalize gracefully:
+$$ \frac{dx_i}{d\tau} = F_{p_i}, \quad \frac{du}{d\tau} = \sum_{i=1}^n p_i F_{p_i}, \quad \frac{dp_i}{d\tau} = -(F_{x_i} + p_i F_u) $$
+The initial hypersurface must be augmented with compatible values for all partial derivatives $p_i$, satisfying both the PDE itself and the geometric strip condition on the hypersurface. Once again, by solving this extended system of ODEs, we can construct the unique local solution.
+
+\section{Laplace's Equation}
+
+\subsection{Definitions}
+The \textbf{Laplace equation} is given by:
+$$ \Delta u = 0 $$
+where $\Delta u = \sum_{i=1}^n u_{x_i x_i}$ is the Laplacian of $u$. A $C^2$ function $u$ satisfying Laplace's equation is called a \textbf{harmonic function}. 
+If a source term $f$ is present, the equation becomes \textbf{Poisson's equation}:
+$$ -\Delta u = f $$
+
+\subsection{Rotational Invariance of the Laplacian}
+The Laplacian operator is invariant under rotations of the coordinate system.
+
+\subsubsection{2D Case with $2 \times 2$ Matrix}
+Let $u(x,y)$ be a function in $\mathbb{R}^2$. Consider a rotation matrix:
+$$ O = \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix} $$
+Let new coordinates be $(x', y')^T = O (x,y)^T$. Since $O^T O = I$, we have $(x,y)^T = O^T (x', y')^T$, meaning:
+$$ x = x' \cos\theta + y' \sin\theta $$
+$$ y = -x' \sin\theta + y' \cos\theta $$
+Let $v(x', y') = u(x(x',y'), y(x',y'))$. Using the chain rule:
+$$ v_{x'} = u_x \frac{\partial x}{\partial x'} + u_y \frac{\partial y}{\partial x'} = u_x \cos\theta - u_y \sin\theta $$
+$$ v_{y'} = u_x \frac{\partial x}{\partial y'} + u_y \frac{\partial y}{\partial y'} = u_x \sin\theta + u_y \cos\theta $$
+Taking second derivatives:
+$$ v_{x'x'} = (u_{xx} \cos\theta - u_{yx} \sin\theta)\cos\theta - (u_{xy} \cos\theta - u_{yy} \sin\theta)\sin\theta $$
+$$ v_{x'x'} = u_{xx} \cos^2\theta - 2u_{xy} \sin\theta \cos\theta + u_{yy} \sin^2\theta $$
+$$ v_{y'y'} = (u_{xx} \sin\theta + u_{yx} \cos\theta)\sin\theta + (u_{xy} \sin\theta + u_{yy} \cos\theta)\cos\theta $$
+$$ v_{y'y'} = u_{xx} \sin^2\theta + 2u_{xy} \sin\theta \cos\theta + u_{yy} \cos^2\theta $$
+Adding them together:
+$$ v_{x'x'} + v_{y'y'} = u_{xx}(\cos^2\theta + \sin^2\theta) + u_{yy}(\sin^2\theta + \cos^2\theta) = u_{xx} + u_{yy} $$
+Thus, $\Delta_{x'} v = \Delta_{x} u$.
+
+\subsubsection{$\mathbb{R}^n$ Case}
+Let $y = Ox$ where $O$ is an $n \times n$ orthogonal matrix ($O^T O = I$, or $\sum_k O_{ki} O_{kj} = \delta_{ij}$). Define $v(x) = u(Ox)$.
+Using index notation, $y_i = \sum_j O_{ij} x_j$, so $\frac{\partial y_i}{\partial x_k} = O_{ik}$.
+By the chain rule:
+$$ v_{x_k} = \sum_i u_{y_i} \frac{\partial y_i}{\partial x_k} = \sum_i u_{y_i} O_{ik} $$
+$$ v_{x_k x_k} = \sum_i \sum_j u_{y_i y_j} \frac{\partial y_j}{\partial x_k} O_{ik} = \sum_{i,j} u_{y_i y_j} O_{jk} O_{ik} $$
+Summing over $k$ to form the Laplacian:
+$$ \Delta v = \sum_k v_{x_k x_k} = \sum_{i,j} u_{y_i y_j} \left( \sum_k O_{ik} O_{jk} \right) = \sum_{i,j} u_{y_i y_j} \delta_{ij} = \sum_i u_{y_i y_i} = \Delta u $$
+This rotational invariance suggests that we should look for radial solutions to Laplace's equation.
+
+\subsection{Derivation of the Fundamental Solution}
+We seek a solution $u(x) = v(r)$ where $r = |x| = (x_1^2 + \dots + x_n^2)^{1/2}$.
+
+\subsubsection{Radial Formula for Laplacian}
+First, observe $\frac{\partial r}{\partial x_i} = \frac{1}{2} (x_1^2 + \dots + x_n^2)^{-1/2} 2x_i = \frac{x_i}{r}$.
+By the chain rule:
+$$ u_{x_i} = v'(r) \frac{\partial r}{\partial x_i} = v'(r) \frac{x_i}{r} $$
+Now we compute the second derivative:
+$$ u_{x_i x_i} = \frac{\partial}{\partial x_i} \left( v'(r) \frac{x_i}{r} \right) = v''(r) \left( \frac{x_i}{r} \right)^2 + v'(r) \left( \frac{1 \cdot r - x_i (x_i/r)}{r^2} \right) $$
+$$ u_{x_i x_i} = v''(r) \frac{x_i^2}{r^2} + v'(r) \left( \frac{1}{r} - \frac{x_i^2}{r^3} \right) $$
+Summing over $i=1 \dots n$:
+$$ \Delta u = \sum_{i=1}^n u_{x_i x_i} = v''(r) \frac{\sum x_i^2}{r^2} + v'(r) \left( \frac{n}{r} - \frac{\sum x_i^2}{r^3} \right) $$
+Since $\sum x_i^2 = r^2$, we obtain the radial Laplacian:
+$$ \Delta u = v''(r) + \frac{n-1}{r} v'(r) = 0 $$
+
+\subsubsection{Solving the ODE}
+Let $w = v'$. The ODE becomes $w' + \frac{n-1}{r} w = 0$.
+$$ \frac{w'}{w} = \frac{1-n}{r} \implies \ln|w| = (1-n)\ln r + C \implies w(r) = \frac{c_1}{r^{n-1}} $$
+So $v'(r) = \frac{c_1}{r^{n-1}}$.
+Integrating this, we have two cases based on dimension $n$:
+\begin{itemize}
+    \item \textbf{For $n=2$}: $v(r) = c_1 \ln r + c_2$.
+    \item \textbf{For $n \geq 3$}: $v(r) = \frac{c_1}{(2-n)} \frac{1}{r^{n-2}} + c_2$.
+\end{itemize}
+
+\subsubsection{Defining the Fundamental Solution}
+We choose the constants to normalize the total flux through a sphere to 1. The \textbf{fundamental solution} $\Phi(x)$ is defined as:
+$$
+\Phi(x) = \begin{cases}
+-\frac{1}{2\pi} \ln |x| & (n=2) \\
+\frac{1}{n(n-2)\alpha(n)} \frac{1}{|x|^{n-2}} & (n \geq 3)
+\end{cases}
+$$
+where $\alpha(n)$ is the volume of the unit ball in $\mathbb{R}^n$.
+
+\subsubsection{Estimates of Derivatives}
+Let us calculate $D\Phi$ and $D^2\Phi$.
+For $n \geq 3$:
+$$ \Phi_{x_i} = \frac{1}{n(n-2)\alpha(n)} (2-n) |x|^{1-n} \frac{x_i}{|x|} = -\frac{1}{n\alpha(n)} \frac{x_i}{|x|^n} $$
+Thus, $|D\Phi(x)| \leq \frac{C}{|x|^{n-1}}$.
+For the second derivative:
+$$ \Phi_{x_i x_j} = -\frac{1}{n\alpha(n)} \left( \frac{\delta_{ij}}{|x|^n} - n \frac{x_i x_j}{|x|^{n+2}} \right) $$
+Thus, $|D^2\Phi(x)| \leq \frac{C}{|x|^n}$.
+
+\subsection{Polar Coordinates, Volume, and Integrability}
+\subsubsection{Polar Coordinates in Integration}
+For radial functions, it is highly useful to integrate in spherical coordinates. The volume of a ball $B(0, R)$ is $V_n(R) = \alpha(n) R^n$. 
+The surface area of the sphere $\partial B(0, R)$ is denoted $S_n(R)$. Since the ball is the union of spheres of radius $r$ from $0$ to $R$:
+$$ V_n(R) = \int_0^R S_n(r) dr $$
+Assuming $S_n(r) = c r^{n-1}$, we get $\alpha(n) R^n = \frac{c}{n} R^n$, so $c = n \alpha(n)$.
+Thus, the surface area is $n \alpha(n) R^{n-1}$.
+For any integrable function $f$, we can write:
+$$ \int_{B(0,R)} f(x) dx = \int_0^R \left( \int_{\partial B(0,r)} f dS \right) dr $$
+
+\subsubsection{Local Integrability Lemma}
+We need to understand when $1/|x|^\gamma$ is locally integrable around the singularity at $x=0$.
+$$ \int_{B(0,1)} \frac{1}{|x|^\gamma} dx = \int_0^1 \left( \int_{\partial B(0,r)} \frac{1}{r^\gamma} dS \right) dr $$
+$$ = \int_0^1 \frac{1}{r^\gamma} \left( n \alpha(n) r^{n-1} \right) dr = n \alpha(n) \int_0^1 r^{n-1-\gamma} dr $$
+This integral converges if and only if the exponent $n - 1 - \gamma > -1$, which means $\gamma < n$.
+\textbf{Conclusion:} 
+- The fundamental solution $\Phi(x) \sim \frac{1}{|x|^{n-2}}$ is locally integrable because $n-2 < n$.
+- $D\Phi \sim \frac{1}{|x|^{n-1}}$ is locally integrable because $n-1 < n$.
+- $D^2\Phi \sim \frac{1}{|x|^n}$ is \textbf{NOT} locally integrable because $n \not< n$.
+
+\subsection{Poisson's Equation and Convolution}
+To solve $-\Delta u = f$, we use the fundamental solution.
+\subsubsection{Definition of Convolution}
+The convolution of two functions $f$ and $g$ is defined as:
+$$ (f * g)(x) = \int_{\mathbb{R}^n} f(x-y) g(y) dy $$
+
+\subsubsection{Commutativity of Convolution}
+We prove $(f * g)(x) = (g * f)(x)$.
+\textbf{In 1D:}
+$$ \int_{-\infty}^\infty f(x-y) g(y) dy $$
+Let $z = x - y$. Then $y = x - z$ and $dy = -dz$. As $y \to \infty, z \to -\infty$ and $y \to -\infty, z \to \infty$.
+$$ = \int_{\infty}^{-\infty} f(z) g(x-z) (-dz) = \int_{-\infty}^\infty g(x-z) f(z) dz = (g * f)(x) $$
+\textbf{In $\mathbb{R}^n$:}
+$$ \int_{\mathbb{R}^n} f(x-y) g(y) dy $$
+Let $z = x - y$. The Jacobian determinant of this transformation is $\det(-I) = (-1)^n$. The change of variables formula for multiple integrals requires the absolute value of the Jacobian, which is $|(-1)^n| = 1$. Thus $dy = dz$.
+$$ = \int_{\mathbb{R}^n} f(z) g(x-z) dz = (g * f)(x) $$
+
+\subsubsection{The Difficulty}
+We propose $u = \Phi * f$. If we apply the Laplacian directly:
+$$ \Delta u(x) = \Delta \int_{\mathbb{R}^n} \Phi(x-y) f(y) dy = \int_{\mathbb{R}^n} \Delta_x \Phi(x-y) f(y) dy $$
+However, $\Delta \Phi = 0$ everywhere except at $x=y$ where it is undefined. We cannot simply pass the Laplacian inside because $|D^2\Phi(x)| \sim 1/|x|^n$, which is not integrable near $0$. A more delicate proof is required.
+
+\subsection{Compact Support and Properties of Convolution}
+\subsubsection{Compact Support}
+A function $f$ has \textbf{compact support} if there exists a bounded set outside of which $f$ is identically zero. The space of continuous functions with compact support is denoted $C_c(\mathbb{R}^n)$.
+
+\subsubsection{Support of Convolution}
+\textbf{Theorem:} If $f$ is continuous and compactly supported, and $g$ is locally integrable, then $(f*g)(x)$ is well-defined everywhere. If both have compact support, then $f*g$ has compact support.
+\textit{Step-by-step Proof:}
+Fix $x$. The integrand $f(x-y)g(y)$ is non-zero only when $x-y \in \text{supp}(f)$ and $y \in \text{supp}(g)$.
+If $f$ has compact support, say $f(z)=0$ for $|z| > R$, then $f(x-y)$ is non-zero only for $|x-y| \leq R$. Thus, the integration over $y$ is restricted to a bounded ball $B(x, R)$. Since $g$ is locally integrable, the integral over this bounded set is finite, so $(f*g)(x)$ exists.
+If both have compact support, say $\text{supp}(f) \subseteq B(0, R_1)$ and $\text{supp}(g) \subseteq B(0, R_2)$, then for the integrand to be non-zero, we need $|x-y| \leq R_1$ and $|y| \leq R_2$. By triangle inequality:
+$$ |x| = |x - y + y| \leq |x-y| + |y| \leq R_1 + R_2 $$
+So if $|x| > R_1 + R_2$, the integral is strictly zero. Thus, the convolution has compact support contained in $B(0, R_1+R_2)$.
+
+\subsubsection{Smoothness of Convolution}
+\textbf{Theorem:} If $f \in C^2(\mathbb{R}^n)$ and has compact support, and $g$ is continuous, then $u = f * g \in C^2(\mathbb{R}^n)$.
+\textit{Step-by-step Proof:}
+We write $u(x) = \int_{\mathbb{R}^n} f(x-y) g(y) dy$.
+We want to show $\frac{\partial u}{\partial x_i} = \int_{\mathbb{R}^n} f_{x_i}(x-y) g(y) dy$.
+Consider the difference quotient:
+$$ \frac{u(x + h e_i) - u(x)}{h} = \int_{\mathbb{R}^n} \frac{f(x + h e_i - y) - f(x-y)}{h} g(y) dy $$
+By the Mean Value Theorem, $\frac{f(x + h e_i - y) - f(x-y)}{h} = f_{x_i}(x + \theta h e_i - y)$ for some $\theta \in (0,1)$.
+Because $f_{x_i}$ is continuous and has compact support, it is \textit{uniformly continuous}. This means as $h \to 0$, $f_{x_i}(x + \theta h e_i - y)$ converges to $f_{x_i}(x-y)$ \textbf{uniformly} in $y$.
+Because the convergence is uniform and the domain of integration is effectively bounded (since $f$ has compact support), we can legitimately pass the limit inside the integral to obtain:
+$$ \frac{\partial u}{\partial x_i} = \int_{\mathbb{R}^n} f_{x_i}(x-y) g(y) dy $$
+Applying the exact same argument to the first derivative, we get:
+$$ \frac{\partial^2 u}{\partial x_i \partial x_j} = \int_{\mathbb{R}^n} f_{x_i x_j}(x-y) g(y) dy $$
+\textbf{Alternative proof using Dominated Convergence Theorem (DCT):}
+Let $F_n(y) = \frac{f(x + h_n e_i - y) - f(x-y)}{h_n} g(y)$. 
+$F_n(y) \to f_{x_i}(x-y)g(y)$ point-wise as $h_n \to 0$.
+Since $f \in C^2$ and compactly supported, its derivative is globally bounded: $|f_{x_i}| \leq M$. Thus by MVT, $|F_n(y)| \leq M |g(y)| \chi_K(y)$ where $K$ is a compact set slightly larger than the support of $f(x-\cdot)$.
+Since $g$ is continuous on the compact set $K$, it is bounded, so $M |g(y)| \chi_K(y)$ is Lebesgue integrable.
+By the \textbf{Dominated Convergence Theorem}, we can interchange the limit and the integral:
+$$ \lim_{h_n \to 0} \int_{\mathbb{R}^n} F_n(y) dy = \int_{\mathbb{R}^n} \lim_{h_n \to 0} F_n(y) dy = \int_{\mathbb{R}^n} f_{x_i}(x-y) g(y) dy $$
+Thus $u \in C^2$.
+
+\end{document}
