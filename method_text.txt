@@ -1,0 +1,63 @@
+--- Page 1 ---
+Partial Differential Equations DMS KU - AVP
+PDE - Problem Sheet
+Course Code: MSMA T03DSC12
+Anoop V. P .
+1 Method of Characteristics
+1. Find and sketch some sample characteristic curves of the PDE:
+(x+ 2)u x + 2yuy = 2u
+in thex−yplane. Write the ODE forualong a characteristic curve withxas the
+parameter and then solve the PDE with the initial conditionu(−1,y) =
+p
+|y|,y >0.
+2. Consider the PDExu x +yu y = 2u,x>0,y >0. Plot the characteristic curves and solve
+the equation with the following initial conditions in the domain given above:
+(a)u= 1 on the hyperbolaxy= 1.
+(b)u= 1 on the circlex 2 +y 2 = 1.
+(c) Can you solve the equation, in general, if certain initial data is prescribed on the
+initial curvey=e x? Justify with reasons.
+3. Sketch the characteristic curve, the initial curve, and solve the following problems:
+(a)xu x +yu y =ku, x∈R, y≥α>0;u(x,α) =F(x), wherek,αare fixed andFis a
+given smooth function.
+(b)yu x−xu y = 0;u(x,0) =x 2.
+(c)x 2ux−y 2uy = 0;u(1,y) =F(y).
+(d)yu x +xu y = 0;u(0,y) =e −y2
+.
+4. Solve the quasi-linear problem and verify transversality conditions:
+(a)uu x +u y = 0, u(x,0) =x.
+(b)uu x +u y = 1, u(x,x) =x/2, x∈(0,1].
+5. Consider the PDEu x+u y = 0 onR 2. Discuss the existence and uniqueness of the solution
+under the following initial conditions:
+(a)u(x,−x) =x
+(b)u(x,x) =x
+(c)u(x,x) = 1
+6. Solve the PDE:uu x +u y = 1 with initial conditionsx=s,y=sandu=s/2 with
+0≤s≤1.
+7. Consider the equationp 2 +q 2 = 1 with initial conditionu(x,y) = 0 on the linex+y= 1.
+Find the two solutions using the method of characteristics.
+8. Find a smooth functiona:R 2→Rsuch that, for the equation of the form
+a(x,y)u x +u y = 0,
+there does not exist any solution in the entireR 2 for any nonconstant initial value pre-
+scribed on{y= 0}.
+1
+--- Page 2 ---
+Partial Differential Equations DMS KU - AVP
+9. Consider the PDExu x +yu y +zu z = 3uinR 3.
+(a) Solve the PDE with initial conditionu(x,y,1) =x 2 +y 2.
+(b) Is it possible to find unique solution if the initial condition is prescribed on the surface
+z= 1 +x 2 +y 2?
+10. Consider the following IVPs:
+A.u=u 2
+x−3u 2
+y, u(x,0) =x 2, x>0.
+B.u=u xuy, u(x,0) =x 2, x>0.
+(a) Discuss the existence and uniqueness of both IVPs.
+(b) Solve any one the above.
+11. Consider the PDExu x +yu y = 2uonR 2. Discuss the existence and uniqueness of the
+solution (both global and local) to the following initial conditions. If unique solution does
+not exist, find an alternative solution onR 2.
+(a)u= 1 on the hyperbolaxy= 1,x>0.
+(b)u= 1 on the liney= 1.
+(c)u= 1 on the circlex 2 +y 2 = 1.
+(d)u(x,e x) =xe x, for allx∈R.
+2
