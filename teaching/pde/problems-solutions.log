@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  20 OCT 2026 03:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.8)  20 OCT 2026 03:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -571,36 +571,36 @@ Package hyperref Info: Link coloring ON on input line 25.
 
 Package hyperref Info: Option `pageanchor' set `false' on input line 26.
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 4
-7.
+6.
 
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 4
-7.
+6.
 
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-47.
+46.
 
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-47.
+46.
 
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 47.
+(Font)              <10.95> on input line 46.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 47.
+(Font)              <8> on input line 46.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 47.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 47.
+(Font)              <6> on input line 46.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 46.
 
 
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -609,7 +609,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 47.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 46.
 
 
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -619,13 +619,12 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 
-[1
+[1{/usr/local/texlive/2025basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/
+usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}
 
-{/usr/local/texlive/2025basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/us
-r/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/t
-exlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texliv
-e/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
-Package hyperref Info: Option `pageanchor' set `true' on input line 51.
+{/usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr
+/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
+Package hyperref Info: Option `pageanchor' set `true' on input line 50.
 
 (./problems-solutions.toc)
 \tf@toc=\write4
@@ -644,7 +643,7 @@ Package hyperref Info: Option `pageanchor' set `true' on input line 51.
 <solution_figures/problem-1.pdf, id=94, 441.65pt x 301.125pt>
 File: solution_figures/problem-1.pdf Graphic file (type pdf)
 <use solution_figures/problem-1.pdf>
-Package pdftex.def Info: solution_figures/problem-1.pdf  used on input line 156
+Package pdftex.def Info: solution_figures/problem-1.pdf  used on input line 155
 .
 (pdftex.def)             Requested size: 386.96027pt x 263.8467pt.
 
@@ -657,7 +656,7 @@ Package pdftex.def Info: solution_figures/problem-1.pdf  used on input line 156
 <solution_figures/problem-2.pdf, id=104, 441.65pt x 301.125pt>
 File: solution_figures/problem-2.pdf Graphic file (type pdf)
 <use solution_figures/problem-2.pdf>
-Package pdftex.def Info: solution_figures/problem-2.pdf  used on input line 225
+Package pdftex.def Info: solution_figures/problem-2.pdf  used on input line 224
 .
 (pdftex.def)             Requested size: 391.51021pt x 266.95277pt.
 
@@ -673,7 +672,7 @@ Package pdftex.def Info: solution_figures/problem-2.pdf  used on input line 225
 File: solution_figures/problem-3a.pdf Graphic file (type pdf)
 <use solution_figures/problem-3a.pdf>
 Package pdftex.def Info: solution_figures/problem-3a.pdf  used on input line 32
-1.
+0.
 (pdftex.def)             Requested size: 364.19667pt x 248.3255pt.
 
 
@@ -684,7 +683,7 @@ Package pdftex.def Info: solution_figures/problem-3a.pdf  used on input line 32
 File: solution_figures/problem-3b.pdf Graphic file (type pdf)
 <use solution_figures/problem-3b.pdf>
 Package pdftex.def Info: solution_figures/problem-3b.pdf  used on input line 34
-1.
+0.
 (pdftex.def)             Requested size: 364.19667pt x 248.3255pt.
 
 
@@ -695,7 +694,7 @@ Package pdftex.def Info: solution_figures/problem-3b.pdf  used on input line 34
 File: solution_figures/problem-3c.pdf Graphic file (type pdf)
 <use solution_figures/problem-3c.pdf>
 Package pdftex.def Info: solution_figures/problem-3c.pdf  used on input line 39
-3.
+2.
 (pdftex.def)             Requested size: 364.19667pt x 248.3255pt.
 
 
@@ -703,8 +702,8 @@ Package pdftex.def Info: solution_figures/problem-3c.pdf  used on input line 39
 <solution_figures/problem-3d.pdf, id=155, 441.65pt x 301.125pt>
 File: solution_figures/problem-3d.pdf Graphic file (type pdf)
 <use solution_figures/problem-3d.pdf>
-Package pdftex.def Info: solution_figures/problem-3d.pdf  used on input line 43
-0.
+Package pdftex.def Info: solution_figures/problem-3d.pdf  used on input line 42
+9.
 (pdftex.def)             Requested size: 364.19667pt x 248.3255pt.
 
 
@@ -720,7 +719,7 @@ Package pdftex.def Info: solution_figures/problem-3d.pdf  used on input line 43
 
 [17]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 560.
+(Font)              <12> on input line 559.
 
 
 [18
@@ -767,11 +766,11 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 [32]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 1126.
+(Font)              <10> on input line 1125.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 1126.
+(Font)              <7> on input line 1125.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 1126.
+(Font)              <5> on input line 1125.
 
 
 [33] (./problems-solutions.aux)
@@ -783,13 +782,13 @@ Package rerunfilecheck Info: File `problems-solutions.out' has not changed.
 (rerunfilecheck)             Checksum: F42CC47ED968549DA37F82FF98262785;3271.
  ) 
 Here is how much of TeX's memory you used:
- 14266 strings out of 474662
- 224031 string characters out of 5751110
+ 14264 strings out of 474662
+ 224007 string characters out of 5751110
  668978 words of memory out of 5000000
  36790 multiletter control sequences out of 15000+600000
- 638544 words of font info for 202 fonts, out of 8000000 for 9000
+ 638450 words of font info for 201 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 75i,12n,79p,1015b,490s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,12n,79p,1015b,492s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></u
 sr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/lo
 cal/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/t
@@ -806,7 +805,7 @@ m/lmr8.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmri1
 ></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr
 /local/texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.
 pfb>
-Output written on problems-solutions.pdf (34 pages, 721651 bytes).
+Output written on problems-solutions.pdf (34 pages, 721440 bytes).
 PDF statistics:
  373 PDF objects out of 1000 (max. 8388607)
  294 compressed objects within 3 object streams
