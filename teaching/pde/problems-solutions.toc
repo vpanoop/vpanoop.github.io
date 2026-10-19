@@ -10,4 +10,3 @@
 \contentsline {section}{\numberline {9}Radial characteristics in three dimensions}{24}{section.9}%
 \contentsline {section}{\numberline {10}Initial gradients for two fully nonlinear equations}{27}{section.10}%
 \contentsline {section}{\numberline {11}Local and global uniqueness on the whole plane}{30}{section.11}%
-\contentsline {section}{Reference and final checks for the reader}{34}{section*.25}%

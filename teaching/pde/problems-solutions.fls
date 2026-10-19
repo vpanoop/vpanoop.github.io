@@ -2,7 +2,7 @@ PWD /Users/anoop/Documents/Webpages/vpanoop.github.io/teaching/pde
 INPUT /usr/local/texlive/2025basic/texmf.cnf
 INPUT /usr/local/texlive/2025basic/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2025basic/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/anoop/Documents/Webpages/vpanoop.github.io/teaching/pde/problems-solutions.tex
+INPUT problems-solutions.tex
 OUTPUT problems-solutions.log
 INPUT /usr/local/texlive/2025basic/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/local/texlive/2025basic/texmf-dist/tex/latex/base/article.cls
@@ -266,10 +266,6 @@ INPUT /usr/local/texlive/2025basic/texmf-dist/fonts/tfm/public/amsfonts/symbols/
 INPUT /usr/local/texlive/2025basic/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/local/texlive/2025basic/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /usr/local/texlive/2025basic/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
-INPUT /usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/t1lmtt.fd
-INPUT /usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/t1lmtt.fd
-INPUT /usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/t1lmtt.fd
-INPUT /usr/local/texlive/2025basic/texmf-dist/fonts/tfm/public/lm/ec-lmtt10.tfm
 INPUT problems-solutions.aux
 INPUT ./problems-solutions.out
 INPUT ./problems-solutions.out
@@ -288,5 +284,4 @@ INPUT /usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmr8.pfb
 INPUT /usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmri10.pfb
 INPUT /usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy10.pfb
 INPUT /usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy8.pfb
-INPUT /usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmtt10.pfb
 INPUT /usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb

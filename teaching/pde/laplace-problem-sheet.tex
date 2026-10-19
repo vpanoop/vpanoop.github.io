@@ -1,0 +1,342 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[R]{DMS KU - AVP}
+\fancyhead[L]{PDE Problem Sheet}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Averaged integral (integral sign with a slash through it)
+\def\Xint#1{\mathchoice
+  {\XXint\displaystyle\textstyle{#1}}%
+  {\XXint\textstyle\scriptstyle{#1}}%
+  {\XXint\scriptstyle\scriptscriptstyle{#1}}%
+  {\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+  \!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$}
+  \vcenter{\hbox{$#2#3$}}\kern-.5\wd0}}
+\def\fint{\Xint-}
+
+\newcounter{prob}
+\newcommand{\prob}[1]{\refstepcounter{prob}\par\medskip\noindent\textbf{Problem \theprob.} \textit{(#1)}\quad}
+\newcommand{\notes}[1]{\hfill{\small[Notes: #1]}}
+\setlist{itemsep=2pt, topsep=3pt}
+
+\begin{document}
+\begin{center}
+\textbf{\Large Partial Differential Equations} \\[0.5em]
+\textbf{Course Code: MSMAT03DSC12} \\[0.5em]
+\textbf{Problem Sheet: Preliminaries and Laplace's Equation} \\[0.5em]
+\textbf{Anoop V. P.}
+\end{center}
+
+\noindent\textbf{Instructions.} These problems check your understanding of Section 0 (Preliminaries) and Section 2 (Laplace's Equation) of the lecture notes. No proofs of theorems are asked; each problem is a short computation or a question that needs a brief reason. The bracket at the end of each problem tells you which part of the notes to use.
+
+\smallskip
+\noindent\textbf{Notation.} $B(x,r)$ is the closed ball, $B^\circ(x,r)$ the open ball, $\alpha(n)$ the volume of the unit ball in $\mathbb{R}^n$, and $\Phi$ the fundamental solution of Laplace's equation. A function is \emph{harmonic} in $U$ if it is $C^2$ and $\Delta u = 0$ in $U$.
+
+%=====================================================================
+\section*{Part A: Preliminaries}
+
+\prob{Volume of the unit ball}
+Use $\alpha(n) = \dfrac{\pi^{n/2}}{\Gamma(\frac n2 + 1)}$, together with $\Gamma(1) = 1$, $\Gamma(\frac12) = \sqrt\pi$ and $\Gamma(s+1) = s\,\Gamma(s)$.
+\begin{enumerate}[label=(\alph*)]
+    \item Compute $\alpha(1)$, $\alpha(2)$, $\alpha(3)$ and $\alpha(4)$.
+    \item Compute the surface area $n\alpha(n)$ of the unit sphere for $n = 1, 2, 3, 4$. Do the values for $n = 2, 3$ agree with the circumference of the unit circle and the area of the unit sphere you know?
+    \item What is the ``sphere'' $\partial B(0,1)$ when $n = 1$? Explain why its ``surface area'' is $2$.
+\end{enumerate}
+\notes{Fact 0.5}
+
+\prob{Scaling of volume and area}
+\begin{enumerate}[label=(\alph*)]
+    \item In $\mathbb{R}^3$, find the volume of $B(x,3)$ and the area of $\partial B(x,3)$ (for any center $x$).
+    \item In $\mathbb{R}^n$, by what factor do the volume of a ball and the area of its boundary sphere change when the radius is doubled?
+    \item Verify the relation $|\partial B(x,r)| = \frac nr |B(x,r)|$ for the ball in (a). For which radius $r$ is $|\partial B(0,r)| = |B(0,r)|$ in $\mathbb{R}^n$?
+\end{enumerate}
+\notes{Fact 0.5}
+
+\prob{Polar coordinates for a radial function}
+Let $f(y) = |y|^2$ on $\mathbb{R}^n$ and $R > 0$.
+\begin{enumerate}[label=(\alph*)]
+    \item Compute $\displaystyle\int_{\partial B(0,r)} f\, dS$ and $\displaystyle\int_{B(0,R)} f\, dy$.
+    \item Compute the averages $\displaystyle\fint_{\partial B(0,R)} |y|^2\, dS$ and $\displaystyle\fint_{B(0,R)} |y|^2\, dy$. Which one is larger, and why is that reasonable?
+    \item Check your answer to (a) for $n = 2$ by computing $\iint_{x^2+y^2 \le R^2} (x^2+y^2)\, dx\, dy$ in ordinary polar coordinates.
+\end{enumerate}
+\notes{Corollary 0.7(c), Definition 0.4}
+
+\prob{Integrability of $|x|^{-m}$}
+Complete the table. In each column answer \emph{yes} or \emph{no}.
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|c|c|p{2.6cm}|p{2.6cm}|p{2.6cm}|p{2.2cm}|}
+\hline
+$n$ & $m$ & integrable on $B(0,1)$? & integrable on $\mathbb{R}^n\setminus B(0,1)$? & locally integrable on $\mathbb{R}^n$? & integrable on $\mathbb{R}^n$? \\ \hline
+$1$ & $\frac12$ & & & & \\ \hline
+$2$ & $1$ & & & & \\ \hline
+$2$ & $2$ & & & & \\ \hline
+$3$ & $1$ & & & & \\ \hline
+$3$ & $4$ & & & & \\ \hline
+$3$ & $-1$ & & & & \\ \hline
+\end{tabular}
+\end{center}
+Then use the table to explain which of $\Phi$, $D\Phi$, $D^2\Phi$ are locally integrable in $\mathbb{R}^3$. (Recall $|\Phi| \sim |x|^{-1}$, $|D\Phi| \sim |x|^{-2}$, $|D^2\Phi| \sim |x|^{-3}$.)
+\notes{Lemma 0.10}
+
+\prob{Locally integrable or not?}
+For each function, say whether it is (i) locally integrable on the given set, and (ii) integrable on that set. Give a one-line reason.
+\begin{enumerate}[label=(\alph*)]
+    \item $f(x) = 1$ on $\mathbb{R}^n$.
+    \item $f(x) = e^x$ on $\mathbb{R}$.
+    \item $f(x) = \dfrac{1}{1+x^2}$ on $\mathbb{R}$.
+    \item $f(x) = \dfrac1x$ on $(0,\infty)$, and $f(x) = \dfrac{1}{|x|}$ on $\mathbb{R}$ (with any value at $0$).
+    \item $f(x) = \log|x|$ on $\mathbb{R}^2$. (Use polar coordinates near $0$.)
+    \item $f = \chi_{[0,1]}$ (the indicator function of $[0,1]$) on $\mathbb{R}$.
+\end{enumerate}
+\notes{Definition 0.8, Example 0.9}
+
+\prob{Support of a function}
+Recall $\operatorname{spt} f = \overline{\{x : f(x) \ne 0\}}$. Find $\operatorname{spt} f$ in each case, and decide whether $f \in C_c(\mathbb{R})$.
+\begin{enumerate}[label=(\alph*)]
+    \item $f(x) = \max(0, 1 - |x|)$.
+    \item $f(x) = \sin x$.
+    \item $f(x) = x$.
+    \item $f = \chi_{(0,1)}$.
+\end{enumerate}
+Finally, let $g(x) = x(1-x)$ for $0 \le x \le 1$ and $g = 0$ otherwise. Find $\operatorname{spt} g$. Is $g$ (restricted to $U = (0,1)$) in $C_c(U)$? Why or why not?
+\notes{Definition 0.3(4)}
+
+\prob{The sets $U_\varepsilon$ and compact containment}
+\begin{enumerate}[label=(\alph*)]
+    \item Describe $U_\varepsilon = \{x \in U : \operatorname{dist}(x,\partial U) > \varepsilon\}$ for: $U = (0,1)$; $U = B^\circ(0,1) \subset \mathbb{R}^n$; the annulus $U = \{1 < |x| < 3\} \subset \mathbb{R}^n$; $U = \mathbb{R}^n$. For which $\varepsilon$ is $U_\varepsilon$ empty?
+    \item Which of the following are true? Give a reason.
+    (i) $(\frac14, \frac34) \subset\subset (0,1)$; (ii) $(0, \frac12) \subset\subset (0,1)$; (iii) $B^\circ(0,\frac12) \subset\subset B^\circ(0,1)$; (iv) $\{x \in \mathbb{R}^n : x_n > 1\} \subset\subset \{x \in \mathbb{R}^n : x_n > 0\}$.
+    \item For $U = B^\circ(0,1) \subset \mathbb{R}^2$ and $x = (\frac12, 0)$, find all $r > 0$ such that the closed ball $B(x,r) \subset U$.
+\end{enumerate}
+\notes{Definition 0.1, Lemma 0.2}
+
+\prob{Outward normals and Green's formula on an annulus}
+Let $u(y) = |y|^2$ on $\mathbb{R}^n$ and $U = \{y : \varepsilon < |y| < R\}$.
+\begin{enumerate}[label=(\alph*)]
+    \item Write down the outward unit normal $\nu$ of $U$ on each of the two boundary spheres.
+    \item Compute $\frac{\partial u}{\partial\nu} = \nu \cdot Du$ on $\partial B(0,R)$ and on $\partial B(0,\varepsilon)$. Explain the sign on the inner sphere.
+    \item Verify Green's formula $\int_U \Delta u\, dy = \int_{\partial U}\frac{\partial u}{\partial\nu}\, dS$ by computing both sides.
+\end{enumerate}
+\notes{Example 0.21, Theorem 0.24(i)}
+
+\prob{Checking the Gauss--Green theorem}
+Let $U = B^\circ(0,1) \subset \mathbb{R}^2$, with outward normal $\nu = (\nu^1,\nu^2) = (\cos\theta, \sin\theta)$ at the boundary point $(\cos\theta,\sin\theta)$. Verify $\int_U u_{x_i}\, dx = \int_{\partial U} u\nu^i\, dS$ in the following cases, by computing both sides:
+\begin{enumerate}[label=(\alph*)]
+    \item $u = x_1$, $i = 1$;
+    \item $u = x_1 x_2$, $i = 2$;
+    \item $u = x_1^2 + x_2^2$, $i = 1$.
+\end{enumerate}
+\notes{Theorem 0.22}
+
+\prob{The standard mollifier}
+Let $\eta$ be the standard mollifier and $\eta_\varepsilon(x) = \varepsilon^{-n}\eta(x/\varepsilon)$.
+\begin{enumerate}[label=(\alph*)]
+    \item Find $\operatorname{spt}\eta_\varepsilon$, and express $\eta_\varepsilon(0)$ in terms of $\eta(0)$. What happens to $\eta_\varepsilon(0)$ as $\varepsilon \to 0$?
+    \item Show that $\int_{\mathbb{R}^n}\eta_\varepsilon\, dx = 1$ using the substitution $x = \varepsilon z$.
+    \item Let $U = (0,1)$ and $\varepsilon = \frac14$. On which set is $f^\varepsilon = \eta_\varepsilon * f$ defined? Why can it not be defined at $x = \frac1{10}$?
+    \item If $f \equiv 1$ on $U$, compute $f^\varepsilon(x)$ for $x \in U_\varepsilon$.
+\end{enumerate}
+\notes{Definition 0.26 and the definition of mollification}
+
+%=====================================================================
+\section*{Part B: Laplace's Equation}
+
+\prob{Harmonic or not?}
+Decide which functions are harmonic in the indicated region, by computing $\Delta u$.
+\begin{enumerate}[label=(\alph*)]
+    \item $u = x^2 - y^2$ in $\mathbb{R}^2$.
+    \item $u = e^x\cos y$ in $\mathbb{R}^2$.
+    \item $u = \log(x^2+y^2)$ in $\mathbb{R}^2\setminus\{0\}$.
+    \item $u = xyz$ in $\mathbb{R}^3$.
+    \item $u = x^2 + y^2$ in $\mathbb{R}^2$.
+    \item Find all constants $a, b, c$ for which $u = ax^2 + by^2 + cz^2$ is harmonic in $\mathbb{R}^3$.
+\end{enumerate}
+\notes{Definitions of Section 2}
+
+\prob{Radial harmonic functions}
+Let $u(x) = |x|^p$ on $\mathbb{R}^n\setminus\{0\}$, $p \in \mathbb{R}$.
+\begin{enumerate}[label=(\alph*)]
+    \item Use the radial formula $\Delta u = v''(r) + \frac{n-1}{r}v'(r)$, where $u(x) = v(|x|)$, to show $\Delta |x|^p = p(p+n-2)|x|^{p-2}$.
+    \item For which $p$ is $|x|^p$ harmonic in $\mathbb{R}^n\setminus\{0\}$? Compare with the formula for $\Phi$ when $n \ge 3$.
+    \item What happens when $n = 2$? Which radial function replaces $|x|^{2-n}$?
+\end{enumerate}
+\notes{Derivation of the Fundamental Solution}
+
+\prob{Fundamental solution and the flux}
+\begin{enumerate}[label=(\alph*)]
+    \item Using $\alpha(3) = \frac{4\pi}{3}$, show that in $\mathbb{R}^3$, $\Phi(x) = \dfrac{1}{4\pi|x|}$.
+    \item Compute $D\Phi(x)$ for $n = 3$ and check it against $D\Phi(y) = -\dfrac{1}{n\alpha(n)}\dfrac{y}{|y|^n}$.
+    \item On $\partial B(0,\varepsilon)$ with the \emph{outward} normal $\nu = x/\varepsilon$, compute $\frac{\partial\Phi}{\partial\nu}$ and $\int_{\partial B(0,\varepsilon)}\frac{\partial\Phi}{\partial\nu}\, dS$. Does the answer depend on $\varepsilon$?
+    \item Repeat (c) for $n = 2$, $\Phi(x) = -\frac{1}{2\pi}\log|x|$. Why do we say that $\Phi$ is ``normalised so that the flux is one''?
+\end{enumerate}
+\notes{Defining the Fundamental Solution, formula (7)}
+
+\prob{A solution of Poisson's equation}
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $u(x) = -\dfrac{|x|^2}{2n}$ solves $-\Delta u = 1$ in $\mathbb{R}^n$.
+    \item Find two more solutions of $-\Delta u = 1$ in $\mathbb{R}^n$ (add a harmonic function).
+    \item Why does (b) not contradict the Uniqueness theorem (Theorem 5)?
+    \item Why can we not obtain a solution of $-\Delta u = 1$ from the formula $u = \int_{\mathbb{R}^n}\Phi(x-y)f(y)\, dy$ with $f \equiv 1$, $n = 3$? (Is the integral finite?)
+\end{enumerate}
+\notes{Theorem 1, Theorem 5, Lemma 0.10}
+
+\prob{The Dirac delta as a limit}
+\begin{enumerate}[label=(\alph*)]
+    \item In $\mathbb{R}$, let $\psi_k = \frac{k}{2}\chi_{[-1/k,\,1/k]}$. Check that $\int_{\mathbb{R}}\psi_k = 1$, and compute $\int_{\mathbb{R}}\psi_k(y)e^y\, dy$ explicitly. Find its limit as $k \to \infty$.
+    \item What is $\lim_{k\to\infty}\psi_k(y)$ for $y \ne 0$, and for $y = 0$? Explain why this pointwise limit is \emph{not} a function with integral $1$.
+    \item In $\mathbb{R}^n$, what is $\lim_{\varepsilon \to 0}\int_{\mathbb{R}^n}\eta_\varepsilon(y)\cos|y|\, dy$? And $\lim_{\varepsilon\to 0}\int_{\mathbb{R}^n}\eta_\varepsilon(y - a)g(y)\, dy$ for continuous $g$ and a fixed point $a$?
+\end{enumerate}
+\notes{The Dirac Delta Notation}
+
+\prob{Verifying the mean-value formula}
+Let $u(x,y) = x^2 - y^2$ and fix a point $(a,b) \in \mathbb{R}^2$ and $r > 0$.
+\begin{enumerate}[label=(\alph*)]
+    \item Parametrise $\partial B((a,b),r)$ by $(a + r\cos t,\, b + r\sin t)$, $0 \le t \le 2\pi$, and compute $\fint_{\partial B((a,b),r)} u\, dS$. Compare with $u(a,b)$.
+    \item Do the same for $w(x,y) = x^2 + y^2$. Why does the mean-value formula fail for $w$?
+\end{enumerate}
+\notes{Theorem 2}
+
+\prob{Using the mean-value formula}
+Let $u$ be harmonic in $B^\circ(0,2) \subset \mathbb{R}^2$, and suppose that on the unit circle
+$$ u(\cos\theta, \sin\theta) = 3 + 2\cos\theta - \sin 3\theta \qquad (0 \le \theta \le 2\pi). $$
+\begin{enumerate}[label=(\alph*)]
+    \item Why may we apply the mean-value formula on the closed ball $B(0,1)$?
+    \item Find $u(0,0)$.
+    \item Find $\fint_{B(0,1)} u\, dy$.
+\end{enumerate}
+\notes{Theorem 2 and the remark after it}
+
+\prob{The ball must lie inside the domain}
+Let $n = 3$, $U = \mathbb{R}^3\setminus\{0\}$ and $u = \Phi = \dfrac{1}{4\pi|x|}$, which is harmonic in $U$. Let $x = (2,0,0)$.
+\begin{enumerate}[label=(\alph*)]
+    \item For which radii $r$ does the closed ball $B(x,r)$ lie in $U$?
+    \item It is known that $\fint_{\partial B(x,r)}\dfrac{1}{|y|}\, dS(y) = \dfrac1r$ whenever $r > |x|$. Use this to compute $\fint_{\partial B(x,3)}u\, dS$ and compare it with $u(x)$.
+    \item Explain why this does not contradict Theorem 2.
+\end{enumerate}
+\notes{Theorem 2 and the remark after it, Lemma 0.2}
+
+\prob{The maximum principle in examples}
+Let $U = B^\circ(0,1) \subset \mathbb{R}^2$.
+\begin{enumerate}[label=(\alph*)]
+    \item For $u = x^2 - y^2$, find $\max_{\bar U}u$ and $\min_{\bar U}u$ and the points where they are attained. (Use the maximum principle: look only at the boundary, $x = \cos t$, $y = \sin t$.)
+    \item Is $(0,0)$ a maximum or a minimum point of $u$? Explain using the strong maximum principle.
+    \item The function $v = 1 - x^2 - y^2$ attains its maximum at the interior point $(0,0)$. Why does this not contradict Theorem 4?
+\end{enumerate}
+\notes{Theorem 4 and the minimum principle}
+
+\prob{Strong maximum principle: true or false}
+Say \emph{true} or \emph{false} and give a reason or a counterexample. In each case $U$ is bounded and open, and $u \in C^2(U)\cap C(\bar U)$ is harmonic in $U$.
+\begin{enumerate}[label=(\alph*)]
+    \item If $U = B^\circ(0,1)$, $u = g$ on $\partial U$, $g \ge 0$ and $g(1,0,\dots,0) > 0$, then $u > 0$ everywhere in $U$.
+    \item If $U$ is the union of two disjoint open discs, $u = g$ on $\partial U$, $g \ge 0$, and $g$ is positive somewhere, then $u > 0$ everywhere in $U$.
+    \item If $U$ is connected and $u$ attains its maximum over $\bar U$ at a point of $U$, then $u$ is constant on $\bar U$.
+    \item If $U$ is \emph{not} connected and $u$ attains its maximum over $\bar U$ at a point of $U$, then $u$ is constant on $U$.
+    \item If $u = 0$ on $\partial U$, then $u \equiv 0$ in $U$.
+\end{enumerate}
+\notes{Theorem 4, the remark on positivity, the topological remark}
+
+\prob{Uniqueness}
+\begin{enumerate}[label=(\alph*)]
+    \item Let $U = B^\circ(0,1) \subset \mathbb{R}^n$. Show that $u(x) = \dfrac{1 - |x|^2}{2n}$ solves $-\Delta u = 1$ in $U$, $u = 0$ on $\partial U$. Why is it the \emph{only} solution in $C^2(U)\cap C(\bar U)$?
+    \item Let $U = \{x \in \mathbb{R}^n : x_n > 0\}$ (a half-space). Find two different harmonic functions in $U$, continuous on $\bar U$, which both vanish on $\partial U$. Which hypothesis of Theorem 5 fails?
+\end{enumerate}
+\notes{Theorem 5 and the remark after it}
+
+\prob{Regularity: true or false}
+Say \emph{true} or \emph{false} with a short reason.
+\begin{enumerate}[label=(\alph*)]
+    \item If $u \in C^2(U)$ is harmonic, then $u \in C^\infty(U)$.
+    \item If $u$ is harmonic in $U$, then $u_{x_1x_2}$ is harmonic in $U$.
+    \item If $u \in C(U)$ satisfies the mean-value property $u(x) = \fint_{\partial B(x,r)}u\, dS$ for every ball $B(x,r) \subset U$, then $u$ is harmonic in $U$.
+    \item If $u$ is harmonic in $U = B^\circ(0,1) \subset \mathbb{R}^2$, then $u$ is bounded on $U$. (Consider $u(x) = \log|x - (1,0)|$.)
+    \item If $u$ is harmonic, then so is $|u|$. (Consider $u = x_1$.)
+\end{enumerate}
+\notes{Theorem 6, its corollary, Theorem 3}
+
+\prob{Derivative estimates and Liouville's theorem}
+\begin{enumerate}[label=(\alph*)]
+    \item Let $u$ be harmonic in $B^\circ(0,3) \subset \mathbb{R}^2$ with $|u| \le 10$. Use Theorem 7 with $k = 1$ on the ball $B(0,2)$ (and $\alpha(2) = \pi$) to find a number $K$ with $|u_{x_1}(0)| \le K$.
+    \item Is $e^x\cos y$ bounded on $\mathbb{R}^2$? Does this contradict Liouville's theorem?
+    \item Let $u$ be harmonic in $\mathbb{R}^2$ with $|u| \le 5$. What can you say about $u$?
+    \item Let $u$ be harmonic in $\mathbb{R}^n$ with $u(x) \to 0$ as $|x| \to \infty$. Show that $u \equiv 0$. (First explain why $u$ is bounded.)
+\end{enumerate}
+\notes{Theorem 7, Theorem 8}
+
+\prob{The representation formula}
+Let $f \in C^2_c(\mathbb{R}^3)$ and $\tilde u(x) = \int_{\mathbb{R}^3}\Phi(x-y)f(y)\, dy$.
+\begin{enumerate}[label=(\alph*)]
+    \item Compute $\Phi(1)$, the value of $\Phi$ on the unit sphere in $\mathbb{R}^3$, and explain why $0 < \Phi(y) \le \Phi(1)$ for $|y| \ge 1$.
+    \item $u = \tilde u + x_1$ also solves $-\Delta u = f$. Does this contradict Theorem 9?
+    \item For $n = 2$, what is $\lim_{|x|\to\infty}\Phi(x)$? Which step of the proof of Theorem 9 breaks down?
+\end{enumerate}
+\notes{Theorem 9 and the remarks}
+
+\prob{Harnack's inequality in an example}
+Let $U = B^\circ(0,4) \subset \mathbb{R}^2$ and $V = B^\circ(0,1)$.
+\begin{enumerate}[label=(\alph*)]
+    \item Check that $u = x_1 + 4$ is a nonnegative harmonic function in $U$. Find $\sup_V u$, $\inf_V u$ and their ratio.
+    \item For $u_t = x_1 + t$ with $t \ge 4$, find $\sup_V u_t / \inf_V u_t$. Show that one constant $C$ works for all these functions.
+    \item Replace $V$ by $V' = B^\circ(0, 3.9)$ and compute the ratio for $u = x_1 + 4$. What does this suggest about the constant when $V$ comes close to $\partial U$?
+    \item Why does Harnack's inequality say nothing about $u = x_1$?
+\end{enumerate}
+\notes{Theorem 11 and the remark after it}
+
+\prob{Harmonic polynomials}
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $x^3 - 3xy^2$ and $3x^2y - y^3$ are harmonic in $\mathbb{R}^2$.
+    \item Find all harmonic polynomials in $\mathbb{R}^2$ of the form $ax^2 + bxy + cy^2$.
+    \item Is the product of two harmonic functions harmonic? Test with $u = v = x$, and with $u = x$, $v = y$.
+\end{enumerate}
+\notes{Definitions of Section 2}
+
+\prob{Averages without integrating}
+Use the mean-value formulas to compute the following \emph{without} evaluating any integral. First check that the function is harmonic.
+\begin{enumerate}[label=(\alph*)]
+    \item $\displaystyle\fint_{B((1,2),1)} (x^2 - y^2 + 3x)\, dx\, dy$ in $\mathbb{R}^2$.
+    \item $\displaystyle\fint_{\partial B(0,5)} e^x\cos y\, dS$ in $\mathbb{R}^2$.
+    \item $\displaystyle\fint_{B((1,1,1),2)} xyz\, dx\, dy\, dz$ in $\mathbb{R}^3$.
+\end{enumerate}
+\notes{Theorem 2}
+
+\prob{The function $\phi(r)$ for a non-harmonic function}
+Let $u(y) = |y|^2$ in $\mathbb{R}^2$ and $\phi(r) = \fint_{\partial B(0,r)}u\, dS$.
+\begin{enumerate}[label=(\alph*)]
+    \item Compute $\phi(r)$ directly. (On $\partial B(0,r)$, $|y| = r$.) Compare $\lim_{r\to 0}\phi(r)$ with $u(0)$, and $\phi(r)$ with $u(0)$.
+    \item In the proof of Theorem 2 we showed $\phi'(r) = \frac rn\fint_{B(0,r)}\Delta u\, dy$ for every $C^2$ function. Check this identity here.
+    \item Using (a) and Theorem 2, explain why $u$ cannot be harmonic, without computing $\Delta u$.
+\end{enumerate}
+\notes{Proof of Theorem 2, formula (15)}
+
+\prob{A boundary-value problem}
+Let $U = B^\circ(0,1) \subset \mathbb{R}^2$ and $u(x,y) = \dfrac{1 + x^2 - y^2}{2}$.
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $u$ is harmonic and that $u = x^2$ on $\partial U$. (On $\partial U$, $y^2 = 1 - x^2$.)
+    \item Why is $u$ the only function in $C^2(U)\cap C(\bar U)$ with these properties?
+    \item Without further computation, find $\max_{\bar U}u$ and $\min_{\bar U}u$ and say where they are attained.
+    \item Find $u(0,0)$ in two ways: from the formula, and as the average of the boundary values $x^2$ over the unit circle.
+\end{enumerate}
+\notes{Theorems 2, 4, 5}
+
+\prob{New harmonic functions from old}
+Let $u$ be harmonic in $\mathbb{R}^n$. Fix $a \in \mathbb{R}^n$, $\lambda > 0$, and an orthogonal matrix $O$.
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $v_1(x) = u(x - a)$ is harmonic.
+    \item Show that $\Delta v_2(x) = \lambda^2(\Delta u)(\lambda x)$ for $v_2(x) = u(\lambda x)$, so that $v_2$ is harmonic.
+    \item Why is $v_3(x) = u(Ox)$ harmonic?
+    \item Use (a) to explain why $\log|x - (1,0)|$ is harmonic in $\mathbb{R}^2\setminus\{(1,0)\}$.
+\end{enumerate}
+\notes{Rotational Invariance of the Laplacian}
+
+\end{document}
