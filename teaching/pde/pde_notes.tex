@@ -15,12 +15,517 @@
 \renewcommand{\headrulewidth}{0.4pt} % Line under the header
 % --------------------------
 
+% Averaged integral (integral sign with a slash through it)
+\def\Xint#1{\mathchoice
+  {\XXint\displaystyle\textstyle{#1}}%
+  {\XXint\textstyle\scriptstyle{#1}}%
+  {\XXint\scriptstyle\scriptscriptstyle{#1}}%
+  {\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+  \!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$}
+  \vcenter{\hbox{$#2#3$}}\kern-.5\wd0}}
+\def\fint{\Xint-}
+
+% Numbered results (used in Section 0 and for auxiliary lemmas)
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{fact}[theorem]{Fact}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
 \begin{document}
 \begin{center}
 \textbf{\Large Partial Differential Equations } \\[0.5em]
 \textbf{Course Code: MSMAT03DSC12} \\[0.5em]
 \textbf{Anoop V. P.}
 \end{center}
+
+\setcounter{section}{-1}
+\section{Preliminaries}\label{sec:zero}
+This section collects the notation and the facts from analysis that are used throughout the notes. Later sections refer back to the numbered results here. Results stated ``without proof'' are standard facts from calculus and measure theory.
+
+%=====================================================================
+\subsection{Notation}\label{ssec:notation}
+
+\begin{definition}[Balls, boundaries, distances]\label{def:balls}
+Let $x \in \mathbb{R}^n$, $r > 0$ and $U \subset \mathbb{R}^n$.
+\begin{enumerate}
+    \item $|x| = (x_1^2 + \dots + x_n^2)^{1/2}$ and $x \cdot y = \sum_{i=1}^n x_i y_i$.
+    \item $B(x,r) = \{ y \in \mathbb{R}^n : |y - x| \leq r \}$ is the \emph{closed} ball with center $x$ and radius $r$, and $\partial B(x,r) = \{ y : |y-x| = r\}$ is the sphere. The open ball $\{ y : |y-x| < r \}$ is denoted $B^\circ(x,r)$. (For integrals it makes no difference whether we integrate over $B(x,r)$ or $B^\circ(x,r)$, since the sphere has volume zero.)
+    \item $\bar U$ is the closure of $U$, and $\partial U = \bar U \setminus U^\circ$ is its boundary. If $U$ is open, $\partial U = \bar U \setminus U$.
+    \item $\operatorname{dist}(x, E) = \inf\{ |x - y| : y \in E \}$ for $E \neq \emptyset$, and $\operatorname{dist}(x, \emptyset) = +\infty$. Also $\operatorname{dist}(V, E) = \inf\{|x-y| : x \in V, y \in E\}$.
+    \item We write $V \subset\subset U$ (``$V$ is compactly contained in $U$'') if $V \subset \bar V \subset U$ and $\bar V$ is compact.
+    \item If $U$ is open and $\varepsilon > 0$, we write $U_\varepsilon := \{ x \in U : \operatorname{dist}(x, \partial U) > \varepsilon \}$. If $U = \mathbb{R}^n$ then $\partial U = \emptyset$ and $U_\varepsilon = \mathbb{R}^n$.
+\end{enumerate}
+\end{definition}
+
+The following lemma is used every time we need ``a ball which lies completely inside the domain''.
+
+\begin{lemma}[Balls inside an open set]\label{lem:balls}
+Let $U \subset \mathbb{R}^n$ be open and $x \in U$.
+\begin{enumerate}
+    \item[(a)] If $0 < r < \operatorname{dist}(x, \partial U)$, then the closed ball $B(x,r) \subset U$.
+    \item[(b)] Conversely, if the closed ball $B(x,r) \subset U$ and $\partial U \neq \emptyset$, then $r < \operatorname{dist}(x, \partial U)$.
+    \item[(c)] The set $U_\varepsilon$ is open, and the function $x \mapsto \operatorname{dist}(x,\partial U)$ satisfies $|\operatorname{dist}(x,\partial U) - \operatorname{dist}(x',\partial U)| \leq |x - x'|$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Suppose some $y$ with $|y - x| \leq r$ is not in $U$. Move along the segment $p(t) = x + t(y-x)$, $0 \le t \le 1$, and let $t^* = \sup\{ t \in [0,1] : p(s) \in U \text{ for all } s \in [0,t] \}$. The point $p(t^*)$ is a limit of points $p(s) \in U$, so $p(t^*) \in \bar U$. If $p(t^*)$ were in $U$, then (as $U$ is open) a small piece of the segment beyond $t^*$ would also lie in $U$, which contradicts the definition of $t^*$ unless $t^* = 1$; but $t^*=1$ would give $p(1) = y \in U$, which is false. Hence $p(t^*) \in \bar U \setminus U = \partial U$. But $|p(t^*) - x| = t^*|y - x| \leq r < \operatorname{dist}(x,\partial U)$, a contradiction.
+
+(b) Every point of $\partial U$ lies outside $U$ (as $U$ is open), hence outside $B(x,r)$, so $|x - z| > r$ for all $z \in \partial U$. The function $z \mapsto |x-z|$ attains its infimum on the closed set $\partial U$ (intersect $\partial U$ with a large closed ball to get a compact set), so $\operatorname{dist}(x,\partial U) > r$.
+
+(c) For $z \in \partial U$, $|x - z| \leq |x - x'| + |x' - z|$. Taking the infimum over $z$ gives $\operatorname{dist}(x,\partial U) \leq |x - x'| + \operatorname{dist}(x',\partial U)$, and by symmetry the stated inequality. So $x \mapsto \operatorname{dist}(x,\partial U)$ is continuous and $U_\varepsilon = U \cap \{ x : \operatorname{dist}(x,\partial U) > \varepsilon\}$ is the intersection of two open sets.
+\end{proof}
+
+\begin{definition}[Derivatives and function spaces]\label{def:derivatives}
+Let $U \subset \mathbb{R}^n$ be open and $u : U \to \mathbb{R}$.
+\begin{enumerate}
+    \item $u_{x_i} = \frac{\partial u}{\partial x_i}$, $u_{x_i x_j} = \frac{\partial^2 u}{\partial x_i \partial x_j}$, etc. $e_i = (0,\dots,1,\dots,0)$ is the $i^{\text{th}}$ coordinate vector.
+    \item A \emph{multiindex} is $\alpha = (\alpha_1, \dots, \alpha_n)$ with each $\alpha_i$ a nonnegative integer; its order is $|\alpha| = \alpha_1 + \dots + \alpha_n$, and
+    $$ D^\alpha u = \frac{\partial^{|\alpha|} u}{\partial x_1^{\alpha_1} \cdots \partial x_n^{\alpha_n}}. $$
+    $D^k u = \{ D^\alpha u : |\alpha| = k \}$ and $|D^k u| = \big( \sum_{|\alpha| = k} |D^\alpha u|^2 \big)^{1/2}$. In particular $Du = (u_{x_1}, \dots, u_{x_n})$ is the gradient, $D^2 u$ is the Hessian matrix, and $\Delta u = \sum_{i=1}^n u_{x_i x_i}$ is the Laplacian.
+    \item $C^k(U)$ is the set of functions whose partial derivatives of order $\leq k$ exist and are continuous in $U$; $C^\infty(U) = \bigcap_k C^k(U)$. $C^k(\bar U)$ consists of those $u \in C^k(U)$ for which every $D^\alpha u$, $|\alpha| \le k$, extends continuously to $\bar U$. For $u \in C^2(U)$ mixed partials are equal: $u_{x_i x_j} = u_{x_j x_i}$.
+    \item The \emph{support} of $u$ is $\operatorname{spt} u = \overline{\{ x : u(x) \neq 0 \}}$, the closure of the set where $u$ is nonzero. $u$ has \emph{compact support} if $\operatorname{spt} u$ is compact, i.e.\ (in $\mathbb{R}^n$) if $u$ vanishes outside some ball. $C_c^k(U)$ is the set of $u \in C^k(U)$ with compact support contained in $U$.
+    \item For a set $E$: $\|u\|_{L^\infty(E)} = \sup_E |u|$ and $\|u\|_{L^1(E)} = \int_E |u|\, dx$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Averages]\label{def:averages}
+$$ \fint_{B(x,r)} f\, dy = \frac{1}{\alpha(n) r^n} \int_{B(x,r)} f\, dy = \text{average of } f \text{ over the ball } B(x,r), $$
+$$ \fint_{\partial B(x,r)} f\, dS = \frac{1}{n\alpha(n) r^{n-1}} \int_{\partial B(x,r)} f\, dS = \text{average of } f \text{ over the sphere } \partial B(x,r). $$
+Here $\int_\Sigma f\, dS$ denotes the integral of $f$ over the surface $\Sigma$ with respect to $(n-1)$-dimensional surface measure. Since $\alpha(n) r^n$ and $n\alpha(n) r^{n-1}$ are the volume of the ball and the area of the sphere (Fact~\ref{fact:balls}), the average of the constant function $1$ is $1$. Consequently, for any constant $c$, $\fint c = c$ and $\fint (f - c) = \fint f - c$.
+\end{definition}
+
+%=====================================================================
+\subsection{Volumes and Surface Areas of Balls}\label{ssec:volumes}
+
+\begin{fact}[without proof]\label{fact:balls}
+Let $\Gamma$ denote the Gamma function, $\Gamma(s) = \int_0^\infty t^{s-1} e^{-t}\, dt$.
+\begin{enumerate}
+    \item The volume of the unit ball $B(0,1)$ in $\mathbb{R}^n$ is
+    $$ \alpha(n) = \frac{\pi^{n/2}}{\Gamma(\frac{n}{2} + 1)}. $$
+    \item The surface area of the unit sphere $\partial B(0,1)$ in $\mathbb{R}^n$ is $n\alpha(n)$.
+    \item The volume of a ball of radius $r$ (with any center) is $|B(x,r)| = \alpha(n) r^n = r^n\, |B(0,1)|$.
+    \item The surface area of a sphere of radius $r$ is $|\partial B(x,r)| = n\alpha(n) r^{n-1} = r^{n-1} |\partial B(0,1)|$.
+    \item Volume and area are related by
+    $$ |\partial B(x,r)| = \frac{n}{r} |B(x,r)|, \qquad \frac{d}{dr}|B(x,r)| = \frac{d}{dr}\big(\alpha(n) r^n\big) = n\alpha(n) r^{n-1} = |\partial B(x,r)|. $$
+    For $r = 1$: (area of unit sphere) $= n \times$ (volume of unit ball).
+\end{enumerate}
+Small dimensions: $\alpha(1) = 2$, $\alpha(2) = \pi$, $\alpha(3) = \frac{4\pi}{3}$; the corresponding ``surface areas'' $n\alpha(n)$ are $2$ (two points), $2\pi$ (circumference of the unit circle) and $4\pi$. The scaling rules (3), (4) say: stretching by the factor $r$ multiplies $n$-dimensional volume by $r^n$ and $(n-1)$-dimensional area by $r^{n-1}$.
+\end{fact}
+
+%=====================================================================
+\subsection{Polar Coordinates}\label{ssec:polar}
+
+\begin{theorem}[Polar coordinates]\label{thm:polar}
+(i) Let $f : \mathbb{R}^n \to \mathbb{R}$ be continuous and summable. Then
+$$ \int_{\mathbb{R}^n} f\, dx = \int_0^\infty \left( \int_{\partial B(x_0,r)} f\, dS \right) dr $$
+for each point $x_0 \in \mathbb{R}^n$.
+
+(ii) In particular
+$$ \frac{d}{dr}\left( \int_{B(x_0,r)} f\, dx \right) = \int_{\partial B(x_0,r)} f\, dS $$
+for each $r > 0$.
+\end{theorem}
+
+The ball is the union of the spheres $\partial B(x_0, r)$, so we integrate first over each sphere and then over the radius. We use the following consequences (without proof).
+
+\begin{corollary}[Polar coordinates on balls; scaling]\label{cor:polar}
+Let $x_0 \in \mathbb{R}^n$ and $R > 0$.
+\begin{enumerate}
+    \item[(a)] \emph{Balls with any center.} If $f$ is continuous on $B(x_0,R)$, then
+    $$ \int_{B(x_0,R)} f\, dx = \int_0^R \left( \int_{\partial B(x_0,r)} f\, dS \right) dr. $$
+    \item[(b)] \emph{Reduction to the unit ball and the unit sphere.} Substituting $y = x_0 + r z$ (so $z$ runs over $B(0,1)$ or $\partial B(0,1)$):
+\begin{align*}
+\int_{B(x_0,r)} f(y)\, dy &= r^n \int_{B(0,1)} f(x_0 + rz)\, dz, \\
+\int_{\partial B(x_0,r)} f(y)\, dS(y) &= r^{n-1} \int_{\partial B(0,1)} f(x_0 + rz)\, dS(z).
+\end{align*}
+    Dividing by $\alpha(n) r^n$, resp.\ $n\alpha(n) r^{n-1}$, the factors $r^n$, $r^{n-1}$ cancel and
+    $$ \fint_{B(x_0,r)} f(y)\, dy = \fint_{B(0,1)} f(x_0 + rz)\, dz, \qquad \fint_{\partial B(x_0,r)} f(y)\, dS(y) = \fint_{\partial B(0,1)} f(x_0 + rz)\, dS(z). $$
+    \item[(c)] \emph{Radial functions.} If $f(y) = g(|y - x_0|)$ depends only on the distance to $x_0$, then $f$ is constant ($= g(r)$) on each sphere $\partial B(x_0,r)$, so
+    $$ \int_{\partial B(x_0, r)} f\, dS = n\alpha(n) r^{n-1} g(r), \qquad \int_{B(x_0,R)} f\, dy = n\alpha(n) \int_0^R g(r)\, r^{n-1}\, dr. $$
+    The second formula remains true (both sides possibly $+\infty$) if $g \geq 0$ is only continuous on $(0, R]$: apply (a) on the annulus $\delta \le |y - x_0| \le R$ and let $\delta \to 0$, using the Monotone Convergence Theorem (Fact~\ref{fact:measure}).
+\end{enumerate}
+\end{corollary}
+
+%=====================================================================
+\subsection{Integrable and Locally Integrable Functions}\label{ssec:integrability}
+
+\begin{definition}\label{def:Lp}
+Let $E \subset \mathbb{R}^n$ be measurable and $U \subset \mathbb{R}^n$ open.
+\begin{enumerate}
+    \item $f$ is \emph{integrable} (or \emph{summable}) on $E$, written $f \in L^1(E)$, if $\int_E |f|\, dx < \infty$. For $1 \le p < \infty$, $f \in L^p(E)$ if $\|f\|_{L^p(E)} = \big(\int_E |f|^p dx\big)^{1/p} < \infty$.
+    \item $f$ is \emph{locally integrable} on $U$, written $f \in L^1_{\mathrm{loc}}(U)$, if $f \in L^1(K)$ for every compact set $K \subset U$ (equivalently, $f \in L^1(V)$ for each $V \subset\subset U$). Similarly $f \in L^p_{\mathrm{loc}}(U)$ if $f \in L^p(K)$ for every compact $K \subset U$.
+\end{enumerate}
+Integrability is a condition on the whole set; local integrability only asks that $f$ is not ``too singular'' anywhere inside $U$ (it may still grow at infinity or near $\partial U$).
+\end{definition}
+
+\begin{example}\label{ex:locint}
+Recall that a compact set $K$ is bounded, so it has finite volume $|K|$.
+\begin{enumerate}
+    \item \emph{Bounded functions are locally integrable.} If $|f| \leq M$ (and $f$ is measurable), then $\int_K |f| \leq M |K| < \infty$.
+    \item \emph{Constant functions are locally integrable}, by (1). The constant $1$ on $\mathbb{R}^n$ is \emph{not} integrable: $\int_{\mathbb{R}^n} 1\, dx = \infty$.
+    \item \emph{Continuous functions are locally integrable.} A continuous $f$ on $U$ is bounded on each compact $K \subset U$ (it attains its maximum $\max_K |f|$), so $\int_K |f| \leq (\max_K|f|)\,|K|$. Examples which are locally integrable but not integrable on $\mathbb{R}$: $f(x) = x$, polynomials, $e^x$, $\sin x$ (note $\int_{\mathbb{R}} |\sin x|\, dx = \infty$).
+    \item \emph{Locally integrable depends on the domain.} $f(x) = 1/x$ is locally integrable on $U = (0,\infty)$ (on each compact $K \subset (0,\infty)$ it is continuous), but $f(x) = 1/|x|$ is \emph{not} locally integrable on $\mathbb{R}$, since $\int_{-1}^1 \frac{dx}{|x|} = 2\int_0^1 \frac{dx}{x} = \infty$.
+    \item \emph{Powers of $|x|$.} By Lemma~\ref{lem:powers} below, $|x|^{-m}$ is locally integrable on $\mathbb{R}^n$ exactly when $m < n$, and it is never integrable on $\mathbb{R}^n$. For instance $1/|x|$ in $\mathbb{R}^3$ is locally integrable but not integrable, and $1/|x|^n$ in $\mathbb{R}^n$ is not locally integrable.
+    \item Continuous functions with compact support are integrable: $\int_{\mathbb{R}^n} |f| = \int_{\operatorname{spt} f} |f| < \infty$ by (3).
+\end{enumerate}
+\end{example}
+
+\begin{lemma}[Integrability of $|x|^{-m}$]\label{lem:powers}
+Let $m \in \mathbb{R}$ and consider $f(x) = |x|^{-m}$ for $x \in \mathbb{R}^n$, $x \neq 0$. Then
+\begin{enumerate}
+    \item[(i)] $\displaystyle\int_{B(0,1)} \frac{dx}{|x|^m} < \infty$ if and only if $m < n$; in that case it equals $\dfrac{n\alpha(n)}{n-m}$;
+    \item[(ii)] $\displaystyle\int_{\mathbb{R}^n \setminus B(0,1)} \frac{dx}{|x|^m} < \infty$ if and only if $m > n$; in that case it equals $\dfrac{n\alpha(n)}{m-n}$;
+    \item[(iii)] $|x|^{-m}$ is never integrable on all of $\mathbb{R}^n$;
+    \item[(iv)] $|x|^{-m}$ is locally integrable on $\mathbb{R}^n$ if and only if $m < n$. The same holds for $|x - x_0|^{-m}$, for any fixed $x_0$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The function is radial with $g(r) = r^{-m}$, and positive, so Corollary~\ref{cor:polar}(c) applies. Put $p = n - 1 - m$, so that $g(r) r^{n-1} = r^{p}$.
+
+(i) $\int_{B(0,1)} |x|^{-m}dx = n\alpha(n) \int_0^1 r^{p}\, dr = n\alpha(n)\lim_{\delta \to 0^+} \int_\delta^1 r^p\, dr$. We compute:
+\begin{itemize}
+    \item If $p \neq -1$: $\int_\delta^1 r^p\, dr = \frac{1 - \delta^{p+1}}{p+1}$. If $p > -1$ then $\delta^{p+1} \to 0$ and the limit is $\frac{1}{p+1}$. If $p < -1$ then $\delta^{p+1} = 1/\delta^{|p+1|} \to \infty$, and the limit is $+\infty$.
+    \item If $p = -1$: $\int_\delta^1 r^{-1}dr = -\log \delta \to +\infty$.
+\end{itemize}
+So the integral is finite iff $p > -1$, i.e.\ $n - 1 - m > -1$, i.e.\ $m < n$, and then it equals $\frac{n\alpha(n)}{p+1} = \frac{n\alpha(n)}{n-m}$.
+
+(ii) Similarly, $\int_{|x| \geq 1} |x|^{-m}dx = n\alpha(n)\lim_{R\to\infty}\int_1^R r^p\, dr$. If $p \ne -1$, $\int_1^R r^p dr = \frac{R^{p+1} - 1}{p+1}$, which converges (to $\frac{-1}{p+1}$) iff $p + 1 < 0$; if $p = -1$ it equals $\log R \to \infty$. So the integral is finite iff $p < -1$, i.e.\ $m > n$, and then it equals $\frac{n\alpha(n)}{-(p+1)} = \frac{n\alpha(n)}{m - n}$.
+
+(iii) Integrability on $\mathbb{R}^n$ would require both (i) and (ii), i.e.\ $m < n$ and $m > n$, which is impossible.
+
+(iv) If $m < n$ and $K$ is compact, choose $R \geq 1$ with $K \subset B(0,R)$. Then, as in (i), $\int_K |x|^{-m} \leq n\alpha(n)\int_0^R r^p\, dr = \frac{n\alpha(n) R^{n-m}}{n-m} < \infty$. If $m \geq n$, then $K = B(0,1)$ already gives an infinite integral by (i). The statement for $|x - x_0|^{-m}$ follows by the translation $x \mapsto x - x_0$, which does not change integrals.
+\end{proof}
+
+%=====================================================================
+\subsection{Limits, Derivatives and Integrals}\label{ssec:limits}
+Many proofs need to exchange a limit (or a derivative) with an integral. This is \emph{not} automatic; the following lemmas say when it is allowed. Whenever we exchange limits and integrals later, we refer to one of these.
+
+\begin{lemma}[A nonnegative continuous function with zero integral vanishes]\label{lem:zero}
+Let $g$ be continuous on the closed ball $B(x,r)$, $r > 0$, with $g \geq 0$ and $\int_{B(x,r)} g\, dy = 0$. Then $g \equiv 0$ on $B(x,r)$. Equivalently: if $g \geq 0$ is continuous on $B(x,r)$ and $g(y_0) > 0$ for some $y_0$, then $\int_{B(x,r)} g\, dy > 0$.
+\end{lemma}
+\begin{proof}
+Suppose $g(y_0) > 0$ for some $y_0$ with $|y_0 - x| < r$. By continuity there is $\delta > 0$ with $B(y_0,\delta) \subset B(x,r)$ and $g > g(y_0)/2$ on $B(y_0,\delta)$. Since $g \geq 0$,
+$$ \int_{B(x,r)} g\, dy \geq \int_{B(y_0,\delta)} g\, dy \geq \frac{g(y_0)}{2}\, \alpha(n)\delta^n > 0, $$
+a contradiction. So $g = 0$ on the open ball $B^\circ(x,r)$. Every point of the sphere $\partial B(x,r)$ is a limit of points of the open ball, so by continuity $g = 0$ there too.
+\end{proof}
+
+\begin{lemma}[Uniform convergence and integrals]\label{lem:uniform}
+Let $E$ be a measurable set (or a surface such as a sphere, with surface measure), let $w \in L^1(E)$, and let $g_h$, $g$ be bounded measurable functions on $E$ with $g_h \to g$ \emph{uniformly} on $E$ as $h \to 0$, that is, $\sup_E |g_h - g| \to 0$. Then
+$$ \int_E g_h\, w \;\longrightarrow\; \int_E g\, w \qquad (h \to 0). $$
+In particular, if $E$ has finite measure, we may take $w \equiv 1$: $\int_E g_h \to \int_E g$.
+\end{lemma}
+\begin{proof}
+$\displaystyle \left| \int_E g_h w - \int_E g w \right| \leq \int_E |g_h - g|\,|w| \leq \Big(\sup_E|g_h - g|\Big) \int_E |w| \to 0.$
+\end{proof}
+
+\begin{lemma}[Difference quotients converge uniformly]\label{lem:dq}
+(a) If $g : \mathbb{R}^n \to \mathbb{R}$ is uniformly continuous, then $\sup_{z \in \mathbb{R}^n} |g(z + a) - g(z)| \to 0$ as $a \to 0$.
+
+(b) If $g \in C^1(\mathbb{R}^n)$ and $g_{x_i}$ is uniformly continuous on $\mathbb{R}^n$, then
+$$ \sup_{z \in \mathbb{R}^n} \left| \frac{g(z + he_i) - g(z)}{h} - g_{x_i}(z) \right| \to 0 \qquad (h \to 0). $$
+Both hypotheses hold if $g$ (resp.\ $g_{x_i}$) is continuous with compact support, because a continuous function with compact support is uniformly continuous on $\mathbb{R}^n$.
+\end{lemma}
+\begin{proof}
+(a) is the definition of uniform continuity: given $\eta > 0$ there is $\delta > 0$ such that $|g(z+a) - g(z)| < \eta$ for all $z$ whenever $|a| < \delta$.
+
+(b) Fix $z$ and apply the one-variable mean value theorem to $t \mapsto g(z + te_i)$ on the interval between $0$ and $h$: there is $\theta = \theta(z,h) \in (0,1)$ with
+$$ \frac{g(z+he_i) - g(z)}{h} = g_{x_i}(z + \theta h e_i). $$
+Hence the quantity in (b) equals $|g_{x_i}(z + \theta h e_i) - g_{x_i}(z)|$. The two points differ by $\theta h e_i$, of length $< |h|$, so by uniform continuity of $g_{x_i}$ this is $< \eta$ for \emph{all} $z$ once $|h| < \delta$.
+\end{proof}
+
+\begin{lemma}[Differentiation under the integral sign over a compact set]\label{lem:diffint}
+Let $K$ be a compact subset of $\mathbb{R}^n$ (with volume measure) or a sphere $\partial B(0,1)$ (with surface measure), and let $I \subset \mathbb{R}$ be an open interval. Let $F : I \times K \to \mathbb{R}$ be continuous, and suppose $\frac{\partial F}{\partial t}(t,z)$ exists and is continuous on $I \times K$. Then $\Psi(t) = \int_K F(t,z)\, dz$ is differentiable on $I$, and
+$$ \Psi'(t) = \int_K \frac{\partial F}{\partial t}(t,z)\, dz. $$
+\end{lemma}
+\begin{proof}
+Fix $t_0 \in I$ and choose $[a,b] \subset I$ with $a < t_0 < b$. The set $[a,b] \times K$ is compact, so $\partial_t F$ is uniformly continuous there. For small $h \neq 0$ the mean value theorem in $t$ gives, for each $z$,
+$$ \frac{F(t_0 + h, z) - F(t_0, z)}{h} = \frac{\partial F}{\partial t}(t_0 + \theta h, z), \qquad \theta = \theta(z,h) \in (0,1). $$
+By uniform continuity, $\big|\partial_t F(t_0 + \theta h, z) - \partial_t F(t_0, z)\big| < \eta$ for all $z \in K$ when $|h|$ is small. Thus the difference quotients converge to $\partial_t F(t_0,\cdot)$ uniformly on $K$, and since $K$ has finite measure Lemma~\ref{lem:uniform} (with $w \equiv 1$) gives
+$$ \frac{\Psi(t_0+h) - \Psi(t_0)}{h} = \int_K \frac{F(t_0+h,z) - F(t_0,z)}{h}\, dz \to \int_K \frac{\partial F}{\partial t}(t_0, z)\, dz. \qquad \qedhere $$
+\end{proof}
+
+\begin{lemma}[Differentiating a convolution]\label{lem:diffconv}
+Let $U \subset \mathbb{R}^n$ be open (possibly $U = \mathbb{R}^n$), $\rho > 0$, $f \in L^1_{\mathrm{loc}}(U)$, and let $g \in C^1(\mathbb{R}^n)$ with $g(z) = 0$ for $|z| > \rho$. For $x \in U_\rho$ define
+$$ F(x) = \int_U g(x - y) f(y)\, dy. $$
+Then:
+\begin{enumerate}
+    \item[(a)] $F$ is well defined and continuous on $U_\rho$;
+    \item[(b)] $F \in C^1(U_\rho)$ and $\displaystyle \frac{\partial F}{\partial x_i}(x) = \int_U \frac{\partial g}{\partial x_i}(x-y) f(y)\, dy$;
+    \item[(c)] if $g \in C^k(\mathbb{R}^n)$, then $F \in C^k(U_\rho)$ and $D^\alpha F(x) = \int_U D^\alpha g(x-y) f(y)\, dy$ for $|\alpha| \leq k$. If $g \in C^\infty$, then $F \in C^\infty(U_\rho)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+\emph{Where the integrand lives.} Fix $x \in U_\rho$ and put $d = \operatorname{dist}(x, \partial U) - \rho > 0$ (if $U = \mathbb{R}^n$, put $d = 1$). Let $K = B(x, \rho + d/2)$. Since $\rho + d/2 < \operatorname{dist}(x,\partial U)$, Lemma~\ref{lem:balls}(a) gives $K \subset U$; $K$ is compact, so $\int_K |f| < \infty$. Now let $|a| \leq d/2$. Then $\operatorname{dist}(x + a, \partial U) \ge \operatorname{dist}(x,\partial U) - |a| > \rho$ (Lemma~\ref{lem:balls}(c)), so $x + a \in U_\rho$; and $g(x + a - y) \neq 0$ forces $|x + a - y| \leq \rho$, hence $|y - x| \leq \rho + |a| \le \rho + d/2$, i.e.\ $y \in K$. Therefore
+$$ F(x + a) = \int_K g(x + a - y) f(y)\, dy \qquad (|a| \leq d/2), $$
+and the same holds with $g$ replaced by any derivative of $g$ (which also vanishes for $|z| > \rho$).
+
+(a) $g$ is continuous and vanishes outside $B(0,\rho)$, so it is bounded, $|g| \leq M$, and $\int_K |g(x-y) f(y)|\, dy \leq M\int_K|f| < \infty$. Also $g$ is uniformly continuous (Lemma~\ref{lem:dq}), and with $z = x - y$,
+\begin{align*}
+|F(x + a) - F(x)| &\leq \int_K |g(x - y + a) - g(x - y)|\,|f(y)|\, dy \\
+&\leq \Big(\sup_{z}|g(z + a) - g(z)|\Big) \int_K |f| \to 0 \quad (a \to 0).
+\end{align*}
+
+(b) For $0 < |h| \leq d/2$, put $M_h(z) = \frac{g(z+he_i) - g(z)}{h} - g_{x_i}(z)$. Then
+\begin{align*}
+\left| \frac{F(x + he_i) - F(x)}{h} - \int_K g_{x_i}(x - y) f(y)\, dy \right| &= \left| \int_K M_h(x-y) f(y)\, dy \right| \\
+&\leq \Big(\sup_z |M_h(z)|\Big)\int_K |f| \to 0
+\end{align*}
+by Lemma~\ref{lem:dq}(b) ($g_{x_i}$ is continuous and vanishes for $|z| > \rho$, hence uniformly continuous). So $F_{x_i}(x)$ exists and equals $\int_U g_{x_i}(x-y) f(y)\, dy$. Applying (a) to $g_{x_i}$ in place of $g$ shows that $F_{x_i}$ is continuous.
+
+(c) If $g \in C^k$, each $g_{x_i}$ is in $C^{k-1}$ and vanishes for $|z| > \rho$; apply (b) to $g_{x_i}$, and repeat. By induction on $|\alpha|$ we get the formula for $D^\alpha F$ and its continuity.
+\end{proof}
+
+\begin{fact}[Facts from measure theory, without proof]\label{fact:measure}
+\begin{enumerate}
+    \item \emph{Monotone Convergence Theorem.} If $0 \leq f_1 \leq f_2 \leq \cdots$ and $f_k \to f$ a.e., then $\int f_k \to \int f$.
+    \item \emph{Dominated Convergence Theorem.} If $f_k \to f$ a.e.\ and $|f_k| \leq g$ with $g$ integrable, then $\int f_k \to \int f$.
+    \item \emph{Fubini--Tonelli.} If $F(x,y) \geq 0$ is measurable, then $\int\!\!\int F(x,y)\, dy\, dx = \int\!\!\int F(x,y)\, dx\, dy$ (the order of integration may be exchanged).
+    \item \emph{H\"older's inequality.} If $1 < p < \infty$ and $\frac1p + \frac1q = 1$, then $\int |fg| \leq \left(\int|f|^p\right)^{1/p}\left(\int|g|^q\right)^{1/q}$.
+    \item \emph{Density.} If $W$ is open and $1 \leq p < \infty$, then $C_c(W)$ is dense in $L^p(W)$: for each $f \in L^p(W)$ and $\delta > 0$ there is a continuous $g$ with compact support in $W$ and $\|f - g\|_{L^p(W)} < \delta$.
+\end{enumerate}
+\end{fact}
+
+\begin{theorem}[Lebesgue's Differentiation Theorem]\label{thm:lebesgue}
+Let $f : \mathbb{R}^n \to \mathbb{R}$ be locally summable.
+\begin{enumerate}
+    \item[(i)] Then for a.e.\ point $x_0 \in \mathbb{R}^n$,
+    $$ \fint_{B(x_0,r)} f\, dx \to f(x_0) \quad \text{as } r \to 0. $$
+    \item[(ii)] In fact, for a.e.\ point $x_0 \in \mathbb{R}^n$,
+    \begin{equation}\label{eq:lebpoint}
+    \fint_{B(x_0,r)} |f(x) - f(x_0)|\, dx \to 0 \quad \text{as } r \to 0.
+    \end{equation}
+\end{enumerate}
+\end{theorem}
+A point $x_0$ at which \eqref{eq:lebpoint} holds is called a \emph{Lebesgue point} of $f$.
+
+\begin{remark}
+(1) More generally, if $f \in L^p_{\mathrm{loc}}(\mathbb{R}^n)$ for some $1 \leq p < \infty$, then for a.e.\ point $x_0 \in \mathbb{R}^n$ we have $\fint_{B(x_0,r)} |f(x) - f(x_0)|^p\, dx \to 0$ as $r \to 0$.
+
+(2) \emph{The theorem is local}, so it also holds for $f \in L^1_{\mathrm{loc}}(U)$, $U$ open: for a.e.\ $x_0 \in U$, \eqref{eq:lebpoint} holds. Indeed, let $B_1, B_2, \dots$ be the countably many open balls with rational centers and rational radii whose closures lie in $U$; they cover $U$. Apply the theorem to $f_k = f$ on $B_k$, $f_k = 0$ elsewhere (locally summable on $\mathbb{R}^n$). For a.e.\ $x_0 \in B_k$ the averages of $f_k$ over $B(x_0,r)$, which equal those of $f$ once $B(x_0,r) \subset B_k$, behave as in \eqref{eq:lebpoint}. A countable union of null sets is a null set.
+
+(3) If $f$ is continuous at $x_0$, then $x_0$ is a Lebesgue point: $\fint_{B(x_0,r)}|f - f(x_0)| \leq \sup_{B(x_0,r)}|f - f(x_0)| \to 0$.
+\end{remark}
+
+%=====================================================================
+\subsection{Gauss--Green Theorem and Green's Formulas}\label{ssec:green}
+
+\paragraph{Boundaries and normals.} Let $U \subset \mathbb{R}^n$ be open and bounded, $k \in \{1,2,\dots\}$.
+
+\begin{definition}
+We say $\partial U$ is $C^k$ if for each point $x^0 \in \partial U$ there exist $r > 0$ and a $C^k$ function $\gamma : \mathbb{R}^{n-1} \to \mathbb{R}$ such that---upon relabeling and reorienting the coordinate axes if necessary---we have
+$$ U \cap B(x^0, r) = \{ x \in B(x^0,r) \mid x_n > \gamma(x_1, \dots, x_{n-1}) \}. $$
+\end{definition}
+
+\begin{definition}\label{def:normal}
+(i) If $\partial U$ is $C^1$, then along $\partial U$ is defined the \textit{outward pointing} unit normal vector field
+$$ \nu = (\nu^1, \dots, \nu^n). $$
+The unit normal at any point $x^0 \in \partial U$ is $\nu(x^0) = \nu = (\nu_1, \dots, \nu_n)$.
+
+(ii) Let $u \in C^1(\bar U)$. We call
+$$ \frac{\partial u}{\partial \nu} := \nu \cdot Du $$
+the (outward) normal derivative of $u$.
+\end{definition}
+
+\begin{example}[The two domains we need]\label{ex:annulus}
+(a) \emph{A ball.} For $U = B^\circ(x,r)$ the outward unit normal at $y \in \partial B(x,r)$ is $\nu(y) = \frac{y - x}{r}$, and $\frac{\partial u}{\partial \nu}(y) = Du(y) \cdot \frac{y-x}{r}$.
+
+(b) \emph{An annulus.} Let $0 < \varepsilon < R$ and $U = \{ y \in \mathbb{R}^n : \varepsilon < |y| < R \}$. Its boundary consists of two spheres, $\partial U = \partial B(0,R) \cup \partial B(0,\varepsilon)$, both smooth. The outward unit normal of $U$ is
+$$ \nu(y) = \frac{y}{R} \quad \text{on } \partial B(0,R), \qquad \nu(y) = -\frac{y}{\varepsilon} \quad \text{on } \partial B(0,\varepsilon). $$
+On the outer sphere ``outward from $U$'' means away from the origin. On the inner sphere, leaving $U$ means going \emph{into the hole} $B(0,\varepsilon)$, that is, \emph{towards} the origin. So on $\partial B(0,\varepsilon)$ the normal $\nu = -y/\varepsilon$ points \emph{inward} with respect to the small ball $B(0,\varepsilon)$.
+\end{example}
+
+In the following results we assume $U$ is a bounded, open subset of $\mathbb{R}^n$, and $\partial U$ is $C^1$.
+
+\begin{theorem}[Gauss--Green Theorem]\label{thm:gaussgreen}
+Suppose $u \in C^1(\bar U)$. Then
+$$ \int_U u_{x_i}\, dx = \int_{\partial U} u \nu^i\, dS \quad (i = 1, \dots, n). $$
+\end{theorem}
+
+\begin{theorem}[Integration-by-parts formula]\label{thm:ibp}
+Let $u, v \in C^1(\bar U)$. Then
+\begin{equation}\label{eq:ibp}
+\int_U u_{x_i} v\, dx = -\int_U u v_{x_i}\, dx + \int_{\partial U} u v \nu^i\, dS \quad (i = 1, \dots, n).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply the Gauss--Green theorem to the product $uv \in C^1(\bar U)$: since $(uv)_{x_i} = u_{x_i} v + u v_{x_i}$,
+$$ \int_U u_{x_i} v\, dx + \int_U u v_{x_i}\, dx = \int_{\partial U} uv \nu^i\, dS. $$
+Rearranging gives \eqref{eq:ibp}.
+\end{proof}
+
+\begin{theorem}[Green's formulas]\label{thm:green}
+Let $u, v \in C^2(\bar U)$. Then
+\begin{enumerate}
+    \item[(i)] $\displaystyle\int_U \Delta u\, dx = \int_{\partial U} \frac{\partial u}{\partial \nu}\, dS$,
+    \item[(ii)] $\displaystyle\int_U Dv \cdot Du\, dx = -\int_U u \Delta v\, dx + \int_{\partial U} \frac{\partial v}{\partial \nu} u\, dS$,
+    \item[(iii)] $\displaystyle\int_U u \Delta v - v \Delta u\, dx = \int_{\partial U} u \frac{\partial v}{\partial \nu} - v \frac{\partial u}{\partial \nu}\, dS$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(i) Use \eqref{eq:ibp} with $u_{x_i}$ in place of $u$ and $v \equiv 1$:
+$$ \int_U u_{x_i x_i}\, dx = \int_{\partial U} u_{x_i} \nu^i\, dS. $$
+Summing over $i = 1, \dots, n$, the left side becomes $\int_U \Delta u\, dx$ and the right side becomes
+$$ \int_{\partial U} \sum_i \nu^i u_{x_i}\, dS = \int_{\partial U} \nu \cdot Du\, dS = \int_{\partial U} \frac{\partial u}{\partial \nu}\, dS. $$
+
+(ii) Use \eqref{eq:ibp} with $v_{x_i}$ in place of $u$ and $u$ in place of $v$:
+$$ \int_U v_{x_i} u_{x_i}\, dx = -\int_U v_{x_i x_i} u\, dx + \int_{\partial U} v_{x_i} \nu^i u\, dS. $$
+Summing over $i$ gives $\int_U Dv \cdot Du\, dx = -\int_U u\Delta v\, dx + \int_{\partial U} (\nu \cdot Dv) u\, dS$, which is (ii).
+
+(iii) Write (ii) with $u$ and $v$ interchanged and subtract it from (ii); the terms $\int_U Du \cdot Dv\, dx$ cancel.
+\end{proof}
+
+%=====================================================================
+\subsection{Convolution and Smoothing}\label{ssec:mollifiers}
+We next introduce tools that will allow us to build smooth approximations to given functions. Recall that the convolution of $f$ and $g$ is $(f * g)(x) = \int f(x-y) g(y)\, dy$; the substitution $z = x - y$ shows $f * g = g * f$.
+
+\begin{lemma}[A smooth function with compact support]\label{lem:psi}
+The function
+$$ \psi(t) = \begin{cases} \exp\left(\dfrac{1}{t - 1}\right) & \text{if } t < 1 \\ 0 & \text{if } t \geq 1 \end{cases} $$
+belongs to $C^\infty(\mathbb{R})$, and $\psi > 0$ on $(-\infty, 1)$.
+\end{lemma}
+\begin{proof}
+On $t < 1$ and on $t > 1$ the function is clearly $C^\infty$; the only issue is the point $t = 1$. Write $s = \frac{1}{t-1}$; as $t \to 1^-$ we have $s \to -\infty$, and $\frac{ds}{dt} = -\frac{1}{(t-1)^2} = -s^2$.
+
+\emph{Claim: for $t < 1$, $\psi^{(k)}(t) = P_k(s) e^{s}$ for a polynomial $P_k$.} For $k = 0$, $P_0 = 1$. If it holds for $k$, then by the chain rule
+$$ \psi^{(k+1)}(t) = \frac{d}{ds}\big(P_k(s) e^s\big)\cdot\frac{ds}{dt} = -s^2\big(P_k'(s) + P_k(s)\big) e^s, $$
+so $P_{k+1}(s) = -s^2(P_k'(s) + P_k(s))$ is again a polynomial.
+
+\emph{Key limit:} for every polynomial $P$, $P(s) e^s \to 0$ as $s \to -\infty$ (the exponential decays faster than any power grows; e.g.\ $|s|^j e^{s} = |s|^j / e^{|s|} \to 0$ by repeated L'H\^opital).
+
+\emph{Induction: $\psi^{(k)}$ exists on $\mathbb{R}$, is continuous, and $\psi^{(k)}(t) = 0$ for $t \geq 1$.} For $k = 0$: $\psi(t) = e^s \to 0 = \psi(1)$ as $t \to 1^-$. Assume it for $k$. For $t > 1$ clearly $\psi^{(k+1)}(t) = 0$. At $t = 1$, the right difference quotient of $\psi^{(k)}$ is $0$, and the left one is
+$$ \frac{\psi^{(k)}(t) - \psi^{(k)}(1)}{t - 1} = s\, P_k(s) e^s \to 0 \qquad (t \to 1^-), $$
+because $sP_k(s)$ is a polynomial. Hence $\psi^{(k+1)}(1) = 0$. Finally $\psi^{(k+1)}(t) = P_{k+1}(s)e^s \to 0$ as $t \to 1^-$, so $\psi^{(k+1)}$ is continuous at $1$.
+\end{proof}
+
+\begin{definition}[Standard mollifier]\label{def:mollifier}
+(i) Define $\eta \in C^\infty(\mathbb{R}^n)$ by
+$$ \eta(x) := \begin{cases} C \exp\left( \dfrac{1}{|x|^2 - 1} \right) & \text{if } |x| < 1 \\ 0 & \text{if } |x| \geq 1, \end{cases} $$
+the constant $C > 0$ selected so that $\int_{\mathbb{R}^n} \eta\, dx = 1$.
+
+(ii) For each $\varepsilon > 0$, set
+$$ \eta_\varepsilon(x) := \frac{1}{\varepsilon^n} \eta\left( \frac{x}{\varepsilon} \right). $$
+We call $\eta$ the \emph{standard mollifier}. The functions $\eta_\varepsilon$ are $C^\infty$ and satisfy
+$$ \int_{\mathbb{R}^n} \eta_\varepsilon\, dx = 1, \qquad \operatorname{spt}(\eta_\varepsilon) \subset B(0,\varepsilon). $$
+\end{definition}
+
+\emph{Why these properties hold.}
+\begin{itemize}
+    \item $\eta(x) = C\psi(|x|^2)$ with $\psi$ from Lemma~\ref{lem:psi}. Since $x \mapsto |x|^2 = x_1^2 + \dots + x_n^2$ is a polynomial, $\eta$ is a composition of $C^\infty$ functions, so $\eta \in C^\infty(\mathbb{R}^n)$. Also $\eta > 0$ on $B^\circ(0,1)$ and $\eta = 0$ outside, so $0 < \int \eta\, dx < \infty$ ($\eta$ is continuous with compact support), and $C$ can be chosen.
+    \item $\eta_\varepsilon$ is $\eta$ composed with the linear map $x \mapsto x/\varepsilon$, times a constant, hence $C^\infty$.
+    \item $\eta_\varepsilon(x) \ne 0$ iff $|x/\varepsilon| < 1$ iff $|x| < \varepsilon$; the closure of this set is $B(0,\varepsilon)$, so $\operatorname{spt}\eta_\varepsilon = B(0,\varepsilon)$.
+    \item Substituting $x = \varepsilon z$, $dx = \varepsilon^n dz$: $\int \eta_\varepsilon(x)\, dx = \int \varepsilon^{-n}\eta(z)\, \varepsilon^n dz = \int \eta(z)\, dz = 1$.
+    \item $\eta \geq 0$, $\eta_\varepsilon \ge 0$, and $\eta$ is \emph{radial}: $\eta(x)$ depends only on $|x|$. We write $\eta(x) = \eta(|x|)$, using the same letter for the function of one variable $r \mapsto C\psi(r^2)$ (see the Remark on notation before Theorem 6).
+\end{itemize}
+
+\begin{definition}[Mollification]
+If $f : U \to \mathbb{R}$ is locally integrable, define its \emph{mollification}
+$$ f^\varepsilon := \eta_\varepsilon * f \quad \text{in } U_\varepsilon. $$
+That is,
+$$ f^\varepsilon(x) = \int_U \eta_\varepsilon(x - y) f(y)\, dy = \int_{B(0,\varepsilon)} \eta_\varepsilon(y) f(x-y)\, dy $$
+for $x \in U_\varepsilon$.
+\end{definition}
+\emph{Why only in $U_\varepsilon$:} $\eta_\varepsilon(x - y) \neq 0$ only for $y \in B(x,\varepsilon)$, and for $x \in U_\varepsilon$ the closed ball $B(x,\varepsilon)$ lies in $U$ (Lemma~\ref{lem:balls}(a)) and is compact, so $f$ is integrable there and $f^\varepsilon(x)$ is finite. For $x$ closer than $\varepsilon$ to $\partial U$ the ball would leave $U$, where $f$ is not defined. The second formula comes from $z = x - y$.
+
+\begin{theorem}[Properties of mollifiers]\label{thm:mollifiers}
+\begin{enumerate}
+    \item[(i)] $f^\varepsilon \in C^\infty(U_\varepsilon)$.
+    \item[(ii)] $f^\varepsilon \to f$ a.e.\ as $\varepsilon \to 0$.
+    \item[(iii)] If $f \in C(U)$, then $f^\varepsilon \to f$ uniformly on compact subsets of $U$.
+    \item[(iv)] If $1 \le p < \infty$ and $f \in L^p_{\mathrm{loc}}(U)$, then $f^\varepsilon \to f$ in $L^p_{\mathrm{loc}}(U)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\emph{(i)} This is Lemma~\ref{lem:diffconv} with $g = \eta_\varepsilon$ and $\rho = \varepsilon$: $\eta_\varepsilon \in C^\infty(\mathbb{R}^n)$ vanishes for $|z| > \varepsilon$, and $f \in L^1_{\mathrm{loc}}(U)$. Hence $f^\varepsilon \in C^\infty(U_\varepsilon)$ and
+$$ D^\alpha f^\varepsilon(x) = \int_U D^\alpha \eta_\varepsilon(x - y) f(y)\, dy \quad (x \in U_\varepsilon) $$
+for each multiindex $\alpha$. (The essential point, proved in that lemma, is that the difference quotients $\frac1h[\eta_\varepsilon(x + he_i - y) - \eta_\varepsilon(x-y)]$ converge to $\frac{\partial \eta_\varepsilon}{\partial x_i}(x-y)$ \emph{uniformly} in $y$, so the limit can be taken inside the integral.)
+
+\emph{A basic estimate.} Since $\int \eta_\varepsilon(x-y)\, dy = 1$, we can write the constant $f(x)$ as $f(x) = \int_{B(x,\varepsilon)} \eta_\varepsilon(x-y) f(x)\, dy$. Subtracting, for $x \in U_\varepsilon$,
+\begin{equation}\label{eq:mollest}
+|f^\varepsilon(x) - f(x)| = \left| \int_{B(x,\varepsilon)} \eta_\varepsilon(x-y)\big[f(y) - f(x)\big]\, dy \right| \leq \int_{B(x,\varepsilon)} \eta_\varepsilon(x-y)\,|f(y) - f(x)|\, dy,
+\end{equation}
+using $\eta_\varepsilon \geq 0$.
+
+\emph{(ii)} By Lebesgue's Differentiation Theorem~\ref{thm:lebesgue} (in its local form, Remark (2) after it), for a.e.\ $x \in U$,
+$$ \lim_{r \to 0} \fint_{B(x,r)} |f(y) - f(x)|\, dy = 0. $$
+Fix such a point $x$. For $\varepsilon$ small, $x \in U_\varepsilon$. Since $\eta_\varepsilon(x - y) = \varepsilon^{-n}\eta(\frac{x-y}{\varepsilon}) \leq \varepsilon^{-n}\max\eta$, \eqref{eq:mollest} gives
+$$ |f^\varepsilon(x) - f(x)| \leq \frac{\max \eta}{\varepsilon^n}\int_{B(x,\varepsilon)}|f(y) - f(x)|\, dy = \alpha(n)\max\eta\, \fint_{B(x,\varepsilon)}|f(y) - f(x)|\, dy \to 0 $$
+as $\varepsilon \to 0$ (we multiplied and divided by $|B(x,\varepsilon)| = \alpha(n)\varepsilon^n$). Assertion (ii) follows.
+
+\emph{(iii)} Assume $f \in C(U)$ and let $K \subset U$ be compact. Since $K$ is compact and $\partial U$ is closed and disjoint from $K$, $\delta := \operatorname{dist}(K, \partial U) > 0$ (if $U = \mathbb{R}^n$ take $\delta = 1$). Let $W = \{ y : \operatorname{dist}(y, K) \leq \delta/2 \}$. $W$ is closed and bounded, hence compact, and $W \subset U$: if $\operatorname{dist}(y,K) \le \delta/2$ pick $k \in K$ with $|y - k| \leq \delta/2 < \operatorname{dist}(k,\partial U)$ and use Lemma~\ref{lem:balls}(a). So $f$ is uniformly continuous on $W$: for $\eta' > 0$ there is $\sigma > 0$ with $|f(y) - f(x)| < \eta'$ whenever $x, y \in W$, $|x - y| \leq \sigma$.
+
+Now let $x \in K$ and $\varepsilon < \min(\delta/2, \sigma)$. Then $\operatorname{dist}(x,\partial U) \geq \delta > \varepsilon$, so $x \in U_\varepsilon$, and $B(x,\varepsilon) \subset W$. By \eqref{eq:mollest},
+$$ |f^\varepsilon(x) - f(x)| \leq \eta' \int_{B(x,\varepsilon)} \eta_\varepsilon(x-y)\, dy = \eta'. $$
+This bound does not depend on $x \in K$, so $\sup_K |f^\varepsilon - f| \to 0$.
+
+\emph{(iv)} Assume $1 \leq p < \infty$, $f \in L^p_{\mathrm{loc}}(U)$, and let $V \subset\subset U$ be open. As in (iii) (with $K = \bar V$), choose $\delta = \operatorname{dist}(V,\partial U) > 0$ and the compact set $W = \{ y : \operatorname{dist}(y, V) \le \delta/2\} \subset U$. We must show $\|f^\varepsilon - f\|_{L^p(V)} \to 0$.
+
+\emph{Step 1: the estimate $\|f^\varepsilon\|_{L^p(V)} \leq \|f\|_{L^p(W)}$ for $\varepsilon < \delta/2$.} Let $x \in V$; then $B(x,\varepsilon) \subset W$. If $p > 1$, let $q = \frac{p}{p-1}$ so $\frac1p + \frac1q = 1$, and split $\eta_\varepsilon = \eta_\varepsilon^{1/q}\eta_\varepsilon^{1/p}$. By H\"older's inequality,
+\begin{align*}
+|f^\varepsilon(x)| &\leq \int_{B(x,\varepsilon)} \eta_\varepsilon^{1/q}(x-y)\, \eta_\varepsilon^{1/p}(x-y)|f(y)|\, dy \\
+&\leq \left( \int_{B(x,\varepsilon)} \eta_\varepsilon(x-y)\, dy \right)^{1/q} \left( \int_{B(x,\varepsilon)} \eta_\varepsilon(x-y)|f(y)|^p\, dy \right)^{1/p}.
+\end{align*}
+The first factor is $1$. Raising to the power $p$:
+$$ |f^\varepsilon(x)|^p \leq \int_{W} \eta_\varepsilon(x-y)|f(y)|^p\, dy. $$
+(For $p = 1$ this is immediate from the definition.) Integrate over $x \in V$ and exchange the order of integration (Tonelli, the integrand is $\geq 0$):
+$$ \int_V |f^\varepsilon|^p dx \leq \int_W |f(y)|^p \left( \int_V \eta_\varepsilon(x - y)\, dx \right) dy \leq \int_W |f(y)|^p dy, $$
+since $\int_V \eta_\varepsilon(x-y)\, dx \leq \int_{\mathbb{R}^n}\eta_\varepsilon(x-y)\, dx = 1$.
+
+\emph{Step 2: approximation by a continuous function.} Fix $\delta' > 0$. By density (Fact~\ref{fact:measure}(5)) choose $g$ continuous with compact support in $W^\circ$ such that $\|f - g\|_{L^p(W)} < \delta'$; extend $g$ by zero, so $g \in C(U)$. Mollification is linear, $f^\varepsilon - g^\varepsilon = (f-g)^\varepsilon$, so Step 1 applied to $f - g$ gives $\|f^\varepsilon - g^\varepsilon\|_{L^p(V)} \leq \|f - g\|_{L^p(W)} < \delta'$. By the triangle inequality,
+$$ \|f^\varepsilon - f\|_{L^p(V)} \leq \|f^\varepsilon - g^\varepsilon\|_{L^p(V)} + \|g^\varepsilon - g\|_{L^p(V)} + \|g - f\|_{L^p(V)} \leq 2\delta' + \|g^\varepsilon - g\|_{L^p(V)}. $$
+By (iii), $g^\varepsilon \to g$ uniformly on the compact set $\bar V$, so $\|g^\varepsilon - g\|_{L^p(V)} \leq |V|^{1/p}\sup_V|g^\varepsilon - g| \to 0$. Therefore $\limsup_{\varepsilon\to 0}\|f^\varepsilon - f\|_{L^p(V)} \le 2\delta'$, and since $\delta' > 0$ was arbitrary, the limit is $0$.
+\end{proof}
+
+%=====================================================================
+\subsection{Inverse and Implicit Function Theorems}\label{ssec:ift}
+
+Let $U \subset \mathbb{R}^n$ be an open set and suppose $\mathbf{f} : U \to \mathbb{R}^n$ is $C^1$, $\mathbf{f} = (f^1, \dots, f^n)$. Assume $x_0 \in U$, $z_0 = \mathbf{f}(x_0)$. We write
+$$ D\mathbf{f} = \begin{pmatrix} f^1_{x_1} & \cdots & f^1_{x_n} \\ & \ddots & \\ f^n_{x_1} & \cdots & f^n_{x_n} \end{pmatrix}_{n \times n} = \text{gradient matrix of } \mathbf{f}. $$
+
+\begin{definition}
+$$ J\mathbf{f} = \text{Jacobian of } \mathbf{f} = |\det D\mathbf{f}| = \left| \frac{\partial(f^1, \dots, f^n)}{\partial(x_1, \dots, x_n)} \right|. $$
+\end{definition}
+
+\begin{theorem}[Inverse Function Theorem]\label{thm:inverse}
+Assume $\mathbf{f} \in C^1(U;\mathbb{R}^n)$ and
+$$ J\mathbf{f}(x_0) \neq 0. $$
+Then there exist an open set $V \subset U$, with $x_0 \in V$, and an open set $W \subset \mathbb{R}^n$, with $z_0 \in W$, such that
+\begin{enumerate}
+    \item[(i)] the mapping $\mathbf{f} : V \to W$ is one-to-one and onto, and
+    \item[(ii)] the inverse function $\mathbf{f}^{-1} : W \to V$ is $C^1$.
+    \item[(iii)] If $\mathbf{f} \in C^k$, then $\mathbf{f}^{-1} \in C^k$ $(k = 2, \dots)$.
+\end{enumerate}
+\end{theorem}
+
+Let $n, m$ be positive integers. We write a typical point in $\mathbb{R}^{n+m}$ as
+$$ (x,y) = (x_1, \dots, x_n, y_1, \dots, y_m) $$
+for $x \in \mathbb{R}^n$, $y \in \mathbb{R}^m$. Let $U \subset \mathbb{R}^{n+m}$ be an open set and suppose $\mathbf{f} : U \to \mathbb{R}^m$ is $C^1$, $\mathbf{f} = (f^1, \dots, f^m)$. Assume $(x_0, y_0) \in U$, $z_0 = \mathbf{f}(x_0, y_0)$. We write
+$$ D\mathbf{f} = \begin{pmatrix} f^1_{x_1} & \cdots & f^1_{x_n} & f^1_{y_1} & \cdots & f^1_{y_m} \\ & \ddots & & & \ddots & \\ f^m_{x_1} & \cdots & f^m_{x_n} & f^m_{y_1} & \cdots & f^m_{y_m} \end{pmatrix}_{m \times (n+m)} = (D_x\mathbf{f}, D_y \mathbf{f}) = \text{gradient matrix of } \mathbf{f}. $$
+
+\begin{definition}
+$$ J_y\mathbf{f} = |\det D_y\mathbf{f}| = \left| \frac{\partial(f^1, \dots, f^m)}{\partial(y_1, \dots, y_m)} \right|. $$
+\end{definition}
+
+\begin{theorem}[Implicit Function Theorem]\label{thm:implicit}
+Assume $\mathbf{f} \in C^1(U;\mathbb{R}^m)$ and
+$$ J_y\mathbf{f}(x_0,y_0) \neq 0. $$
+Then there exist an open set $V \subset U$, with $(x_0,y_0) \in V$, an open set $W \subset \mathbb{R}^n$, with $x_0 \in W$, and a $C^1$ mapping $\mathbf{g} : W \to \mathbb{R}^m$ such that
+\begin{enumerate}
+    \item[(i)] $\mathbf{g}(x_0) = y_0$,
+    \item[(ii)] $\mathbf{f}(x, \mathbf{g}(x)) = z_0$ $(x \in W)$,
+\end{enumerate}
+and
+\begin{enumerate}
+    \item[(iii)] if $(x,y) \in V$ and $\mathbf{f}(x,y) = z_0$, then $y = \mathbf{g}(x)$.
+    \item[(iv)] If $\mathbf{f} \in C^k$, then $\mathbf{g} \in C^k$ $(k = 2, \dots)$.
+\end{enumerate}
+The function $\mathbf{g}$ is \emph{implicitly defined} near $x_0$ by the equation $\mathbf{f}(x,y) = z_0$.
+\end{theorem}
 
 \section{Method of Characteristics}
 
@@ -71,7 +576,7 @@ This implies that $u$ is constant along characteristics, and the characteristics
 \subsubsection{Definition of Integral Surface}
 An \textit{integral surface} for the PDE is the geometric surface $z = u(x,y)$ in $\mathbb{R}^3$ that represents the solution. The PDE $a(x,y,u)u_x + b(x,y,u)u_y = c(x,y,u)$ states that the vector field $(a, b, c)$ is always tangent to the integral surface. Therefore, the integral surface is constructed by taking the union of all characteristic curves passing through the initial data curve.
 
-\subsubsection{Theorem and Proof (Application of Implicit Function Theorem)}
+\subsubsection{Theorem and Proof (Application of the Inverse Function Theorem)}
 \textbf{Theorem (Cauchy Problem):} Suppose $a, b, c$ and the initial curve $\Gamma$ are $C^1$. If the transversality condition holds:
 $$ a(x_0(s), y_0(s), u_0(s)) y_0'(s) - b(x_0(s), y_0(s), u_0(s)) x_0'(s) \neq 0 $$
 then there exists a unique $C^1$ solution $u(x,y)$ in a neighborhood of the initial curve.
@@ -79,10 +584,10 @@ then there exists a unique $C^1$ solution $u(x,y)$ in a neighborhood of the init
 \textbf{Proof in Steps:}
 \begin{enumerate}
     \item \textbf{Characteristics:} Construct the system of ODEs: $\frac{dx}{d\tau} = a$, $\frac{dy}{d\tau} = b$, $\frac{du}{d\tau} = c$ with initial data at $\tau=0$ parameterized by $s$. By the Picard-Lindel\"of theorem, there exist unique solutions $x(\tau,s), y(\tau,s), u(\tau,s)$.
-    \item \textbf{Applying the Implicit Function Theorem (IFT):} To define $u$ as a function of $x$ and $y$, we need to invert the mapping $(\tau, s) \mapsto (x, y)$. The IFT states that this mapping is locally invertible near $\tau=0$ if and only if the Jacobian determinant is non-zero:
+    \item \textbf{Applying the Inverse Function Theorem:} To define $u$ as a function of $x$ and $y$, we need to invert the mapping $(\tau, s) \mapsto (x, y)$. By the Inverse Function Theorem (Theorem~\ref{thm:inverse}), this mapping is locally invertible near $\tau=0$ (with a $C^1$ inverse) if the Jacobian determinant is non-zero:
     $$ J = \det \begin{pmatrix} \frac{\partial x}{\partial \tau} & \frac{\partial x}{\partial s} \\ \frac{\partial y}{\partial \tau} & \frac{\partial y}{\partial s} \end{pmatrix} = \frac{\partial x}{\partial \tau} \frac{\partial y}{\partial s} - \frac{\partial y}{\partial \tau} \frac{\partial x}{\partial s} \neq 0 $$
     \item \textbf{Checking the Requirement:} At $\tau = 0$, we have $\frac{\partial x}{\partial \tau} = a$, $\frac{\partial y}{\partial \tau} = b$, $\frac{\partial x}{\partial s} = x_0'(s)$, and $\frac{\partial y}{\partial s} = y_0'(s)$. 
-    Therefore, the Jacobian is exactly the transversality condition: $a y_0' - b x_0'$. Since this is non-zero by assumption, the IFT guarantees we can locally find $\tau(x,y)$ and $s(x,y)$.
+    Therefore, the Jacobian is exactly the transversality condition: $a y_0' - b x_0'$. Since this is non-zero by assumption, the Inverse Function Theorem guarantees we can locally find $C^1$ functions $\tau(x,y)$ and $s(x,y)$.
     \item \textbf{Conclusion:} Substituting these back, we get $u(x,y) = u(\tau(x,y), s(x,y))$, which is the unique $C^1$ solution.
 \end{enumerate}
 
@@ -120,7 +625,7 @@ Here, we generalize the ideas to $n$ independent variables $x = (x_1, \dots, x_n
 The equation is $\sum_{i=1}^n a_i(x) u_{x_i} = c(x) u + d(x)$. The characteristic equations simply extend to $n$ spatial ODEs: $\frac{dx_i}{d\tau} = a_i(x)$, along which $\frac{du}{d\tau} = c(x)u + d(x)$. The initial data is given on an $(n-1)$-dimensional hypersurface, and the solution is reconstructed by tracing characteristics from this hypersurface.
 
 \subsubsection{Quasilinear Equation}
-For $\sum_{i=1}^n a_i(x, u) u_{x_i} = c(x, u)$, the characteristic equations are $\frac{dx_i}{d\tau} = a_i(x,u)$ and $\frac{du}{d\tau} = c(x,u)$. The geometry is identical to the 2D case, where the vector field $(a_1, \dots, a_n, c)$ in $\mathbb{R}^{n+1}$ must be tangent to the $n$-dimensional integral surface. The Implicit Function Theorem is again used to verify that the characteristics do not run parallel to the initial hypersurface.
+For $\sum_{i=1}^n a_i(x, u) u_{x_i} = c(x, u)$, the characteristic equations are $\frac{dx_i}{d\tau} = a_i(x,u)$ and $\frac{du}{d\tau} = c(x,u)$. The geometry is identical to the 2D case, where the vector field $(a_1, \dots, a_n, c)$ in $\mathbb{R}^{n+1}$ must be tangent to the $n$-dimensional integral surface. The Inverse Function Theorem (Theorem~\ref{thm:inverse}) is again used, after verifying that the characteristics do not run parallel to the initial hypersurface.
 
 \subsubsection{General Nonlinear Equation}
 For $F(x, u, Du) = 0$ where $Du = (p_1, \dots, p_n)$, we form the characteristic strip in $2n+1$ dimensions $(x, u, p)$. 
@@ -221,12 +726,15 @@ Assuming $S_n(r) = c r^{n-1}$, we get $\alpha(n) R^n = \frac{c}{n} R^n$, so $c =
 Thus, the surface area is $n \alpha(n) R^{n-1}$.
 For any integrable function $f$, we can write:
 $$ \int_{B(0,R)} f(x) dx = \int_0^R \left( \int_{\partial B(0,r)} f dS \right) dr $$
+The precise statements (polar coordinates, balls with any center, scaling to the unit ball, radial functions) are collected in Fact~\ref{fact:balls}, Theorem~\ref{thm:polar} and Corollary~\ref{cor:polar}.
 
 \subsubsection{Local Integrability Lemma}
 We need to understand when $1/|x|^\gamma$ is locally integrable around the singularity at $x=0$.
 $$ \int_{B(0,1)} \frac{1}{|x|^\gamma} dx = \int_0^1 \left( \int_{\partial B(0,r)} \frac{1}{r^\gamma} dS \right) dr $$
 $$ = \int_0^1 \frac{1}{r^\gamma} \left( n \alpha(n) r^{n-1} \right) dr = n \alpha(n) \int_0^1 r^{n-1-\gamma} dr $$
 This integral converges if and only if the exponent $n - 1 - \gamma > -1$, which means $\gamma < n$.
+(The complete statement, including the behaviour at infinity, is Lemma~\ref{lem:powers}.)
+
 \textbf{Conclusion:} 
 - The fundamental solution $\Phi(x) \sim \frac{1}{|x|^{n-2}}$ is locally integrable because $n-2 < n$.
 - $D\Phi \sim \frac{1}{|x|^{n-1}}$ is locally integrable because $n-1 < n$.
@@ -256,7 +764,7 @@ However, $\Delta \Phi = 0$ everywhere except at $x=y$ where it is undefined. We 
 
 \subsection{Compact Support and Properties of Convolution}
 \subsubsection{Compact Support}
-A function $f$ has \textbf{compact support} if there exists a bounded set outside of which $f$ is identically zero. The space of continuous functions with compact support is denoted $C_c(\mathbb{R}^n)$.
+A function $f$ has \textbf{compact support} if there exists a bounded set outside of which $f$ is identically zero. The space of continuous functions with compact support is denoted $C_c(\mathbb{R}^n)$. (See Definition~\ref{def:derivatives}(4) for the support $\operatorname{spt} f$, and Definition~\ref{def:Lp} and Example~\ref{ex:locint} for local integrability.)
 
 \subsubsection{Support of Convolution}
 \textbf{Theorem:} If $f$ is continuous and compactly supported, and $g$ is locally integrable, then $(f*g)(x)$ is well-defined everywhere. If both have compact support, then $f*g$ has compact support.
@@ -268,6 +776,8 @@ $$ |x| = |x - y + y| \leq |x-y| + |y| \leq R_1 + R_2 $$
 So if $|x| > R_1 + R_2$, the integral is strictly zero. Thus, the convolution has compact support contained in $B(0, R_1+R_2)$.
 
 \subsubsection{Smoothness of Convolution}
+(A more general version, which allows $g$ to be merely locally integrable, is Lemma~\ref{lem:diffconv}.)
+
 \textbf{Theorem:} If $f \in C^2(\mathbb{R}^n)$ and has compact support, and $g$ is continuous, then $u = f * g \in C^2(\mathbb{R}^n)$.
 \textit{Step-by-step Proof:}
 We write $u(x) = \int_{\mathbb{R}^n} f(x-y) g(y) dy$.
@@ -288,5 +798,674 @@ Since $g$ is continuous on the compact set $K$, it is bounded, so $M |g(y)| \chi
 By the \textbf{Dominated Convergence Theorem}, we can interchange the limit and the integral:
 $$ \lim_{h_n \to 0} \int_{\mathbb{R}^n} F_n(y) dy = \int_{\mathbb{R}^n} \lim_{h_n \to 0} F_n(y) dy = \int_{\mathbb{R}^n} f_{x_i}(x-y) g(y) dy $$
 Thus $u \in C^2$.
+
+\subsection{Solving Poisson's Equation}
+Recall that the naive computation $\Delta u(x) = \int_{\mathbb{R}^n} \Delta_x \Phi(x-y) f(y)\, dy = 0$ is wrong, because $D^2\Phi(x-y)$ is not integrable near the singularity $y = x$. We must proceed more carefully in calculating $\Delta u$.
+
+Let us for simplicity now assume $f \in C^2_c(\mathbb{R}^n)$; that is, $f$ is twice continuously differentiable, with compact support. We consider the convolution
+\begin{equation}\label{eq:newton}
+u(x) = \int_{\mathbb{R}^n} \Phi(x-y) f(y)\, dy
+= \begin{cases}
+-\dfrac{1}{2\pi} \displaystyle\int_{\mathbb{R}^2} \log(|x-y|) f(y)\, dy & (n=2) \\[1.2em]
+\dfrac{1}{n(n-2)\alpha(n)} \displaystyle\int_{\mathbb{R}^n} \frac{f(y)}{|x-y|^{n-2}}\, dy & (n \geq 3).
+\end{cases}
+\end{equation}
+Here $\log$ denotes the natural logarithm. Since $f$ is continuous with compact support and $\Phi$ is locally integrable, $u(x)$ is well defined for every $x \in \mathbb{R}^n$ (by the theorem on the support of convolutions above).
+
+\textbf{Tools used.} The proof uses: the volumes and areas of balls and spheres (Fact~\ref{fact:balls}); averages (Definition~\ref{def:averages}); polar coordinates (Corollary~\ref{cor:polar}); differentiating a convolution (Lemma~\ref{lem:diffconv}); the outward normal and the annulus (Definition~\ref{def:normal}, Example~\ref{ex:annulus}); Green's formulas (Theorem~\ref{thm:green}). We also use the notation $|D^2 f| = \big(\sum_{i,j} |f_{x_i x_j}|^2\big)^{1/2}$, $\|D^2 f\|_{L^\infty(\mathbb{R}^n)} = \sup_{x} |D^2 f(x)|$ and $\|Df\|_{L^\infty(\mathbb{R}^n)} = \sup_{x} |Df(x)|$; for $f \in C^2_c(\mathbb{R}^n)$ these suprema are finite, since a continuous function with compact support is bounded.
+
+\subsubsection{Preliminary Computations with $\Phi$}
+
+\paragraph{(a) The gradient of $\Phi$ in every dimension.} We computed $\Phi_{x_i}$ for $n \geq 3$. For $n = 2$, $\Phi(y) = -\frac{1}{2\pi}\log|y|$ and $\frac{\partial}{\partial y_i}\log|y| = \frac{1}{|y|}\cdot\frac{y_i}{|y|}$, so $\Phi_{y_i} = -\frac{1}{2\pi}\frac{y_i}{|y|^2}$. Since $\alpha(2) = \pi$, we have $2\pi = 2\alpha(2) = n\alpha(n)$. Therefore for all $n \geq 2$:
+\begin{equation}\label{eq:DPhi}
+D\Phi(y) = -\frac{1}{n\alpha(n)} \frac{y}{|y|^n} \qquad (y \neq 0).
+\end{equation}
+
+\paragraph{(b) $\Phi$ is harmonic away from the origin.} Since $\Phi(y) = v(|y|)$ with $v$ solving $v'' + \frac{n-1}{r} v' = 0$, the radial formula for the Laplacian gives $\Delta \Phi(y) = 0$ for all $y \neq 0$.
+
+\paragraph{(c) Integrals of $|\Phi|$ over balls.}
+\begin{lemma}\label{lem:Phiball}
+For every $\rho > 0$, $\int_{B(0,\rho)} |\Phi(y)|\, dy < \infty$; in particular $\Phi \in L^1_{\mathrm{loc}}(\mathbb{R}^n)$. Moreover, for $0 < \varepsilon \leq e^{-1/2}$,
+$$ \int_{B(0,\varepsilon)} |\Phi(y)|\, dy \leq \begin{cases} \varepsilon^2 |\log \varepsilon| & (n = 2) \\ \dfrac{\varepsilon^2}{2(n-2)} & (n \geq 3). \end{cases} $$
+\end{lemma}
+
+\textit{Proof.} $|\Phi|$ is radial, so we use Corollary~\ref{cor:polar}(c). \underline{Case $n \geq 3$.} Here $|\Phi(y)| = \frac{1}{n(n-2)\alpha(n)} r^{2-n}$ with $r = |y|$, and
+$$ \int_{B(0,\rho)} |\Phi|\, dy = n\alpha(n) \int_0^\rho \frac{r^{2-n}}{n(n-2)\alpha(n)}\, r^{n-1}\, dr = \frac{1}{n-2} \int_0^\rho r\, dr = \frac{\rho^2}{2(n-2)} < \infty. $$
+(This is also Lemma~\ref{lem:powers}(iv) with $m = n - 2 < n$.) Taking $\rho = \varepsilon$ gives the stated bound.
+
+\underline{Case $n = 2$.} Here $|\Phi(y)| = \frac{1}{2\pi}|\log r|$ and $n\alpha(n) = 2\pi$, so
+$$ \int_{B(0,\rho)} |\Phi|\, dy = 2\pi \int_0^\rho \frac{|\log r|}{2\pi}\, r\, dr = \int_0^\rho r|\log r|\, dr. $$
+The integrand $r|\log r|$ is continuous on $(0,\rho]$ and tends to $0$ as $r \to 0^+$. Indeed, by L'H\^opital's rule,
+$$ \lim_{r\to 0^+} r\log r = \lim_{r \to 0^+} \frac{\log r}{1/r} = \lim_{r \to 0^+} \frac{1/r}{-1/r^2} = \lim_{r\to 0^+}(-r) = 0. $$
+So the integrand extends continuously to $[0,\rho]$ and the integral is finite.
+
+Now take $0 < \varepsilon < 1$. For $0 < r \leq \varepsilon < 1$ we have $\log r < 0$, so $|\log r| = -\log r$. Integrating by parts with antiderivative $\frac{d}{dr}\left(\frac{r^2}{2}\log r - \frac{r^2}{4}\right) = r\log r + \frac{r}{2} - \frac{r}{2} = r\log r$:
+$$ \int_0^\varepsilon r|\log r|\, dr = -\int_0^\varepsilon r\log r\, dr = -\left[\frac{r^2}{2}\log r - \frac{r^2}{4}\right]_{r=0}^{r=\varepsilon} = -\frac{\varepsilon^2}{2}\log\varepsilon + \frac{\varepsilon^2}{4}, $$
+where at the lower limit we used $r^2 \log r = r\cdot(r\log r) \to 0$. Since $-\log \varepsilon = |\log\varepsilon|$,
+$$ \int_{B(0,\varepsilon)} |\Phi|\, dy = \frac{\varepsilon^2}{2}|\log \varepsilon| + \frac{\varepsilon^2}{4}. $$
+If $\varepsilon \leq e^{-1/2}$ then $|\log\varepsilon| \geq \frac12$, so $\frac{\varepsilon^2}{4} \leq \frac{\varepsilon^2}{2}|\log\varepsilon|$, and the sum is at most $\varepsilon^2|\log\varepsilon|$. Finally, every compact set lies in some ball $B(0,\rho)$, so $\Phi \in L^1_{\mathrm{loc}}(\mathbb{R}^n)$. $\square$
+
+\paragraph{(d) Integrals of $|\Phi|$ over spheres.} On the sphere $\partial B(0,\varepsilon)$ the function $\Phi$ is constant, so the integral is (value of $|\Phi|$) $\times$ (area $n\alpha(n)\varepsilon^{n-1}$). For $0 < \varepsilon < 1$:
+$$ \int_{\partial B(0,\varepsilon)} |\Phi|\, dS = \begin{cases} \dfrac{1}{2\pi}|\log\varepsilon| \cdot 2\pi\varepsilon = \varepsilon|\log\varepsilon| & (n=2) \\[1em] \dfrac{1}{n(n-2)\alpha(n)\varepsilon^{n-2}} \cdot n\alpha(n)\varepsilon^{n-1} = \dfrac{\varepsilon}{n-2} & (n\geq 3). \end{cases} $$
+
+\paragraph{(e) Derivatives in $x$ versus derivatives in $y$.} Fix $x$ and put $w(y) = f(x-y)$. By the chain rule,
+$$ \frac{\partial w}{\partial y_i}(y) = -f_{x_i}(x-y), \qquad \frac{\partial^2 w}{\partial y_i^2}(y) = f_{x_i x_i}(x-y). $$
+The two minus signs cancel in the second derivative, so
+$$ \Delta_y f(x-y) = \Delta_x f(x-y), \qquad |D_y f(x-y)| = |Df(x-y)|. $$
+
+\paragraph{(f) Two limits.} As $\varepsilon \to 0^+$,
+$$ \varepsilon|\log\varepsilon| \to 0 \quad\text{and}\quad \varepsilon^2|\log\varepsilon| = \varepsilon \cdot \varepsilon|\log \varepsilon| \to 0, $$
+by the L'H\^opital computation in (c).
+
+\subsubsection{The Theorem}
+\textbf{Theorem 1 (Solving Poisson's equation).} \textit{Define $u$ by \eqref{eq:newton}. Then}
+\begin{enumerate}
+    \item[(i)] $u \in C^2(\mathbb{R}^n)$
+\end{enumerate}
+\textit{and}
+\begin{enumerate}
+    \item[(ii)] $-\Delta u = f$ \textit{in} $\mathbb{R}^n$.
+\end{enumerate}
+
+We consequently see that \eqref{eq:newton} provides us with a formula for a solution of Poisson's equation $-\Delta u = f$ in $\mathbb{R}^n$.
+
+\subsubsection{Proof of Theorem 1}
+Throughout, fix $R_0 > 0$ such that $f(z) = 0$ whenever $|z| \geq R_0$ (possible because $f$ has compact support).
+
+\paragraph{Step 1: $u \in C^2(\mathbb{R}^n)$.}
+
+\textit{(1a) Moving the variable $x$ onto $f$.} By commutativity of convolution (substitute $z = x - y$),
+$$ u(x) = \int_{\mathbb{R}^n} \Phi(x-y) f(y)\, dy = \int_{\mathbb{R}^n} f(x-y)\, \Phi(y)\, dy. $$
+The advantage is that now $x$ appears only in the smooth function $f$, and not in the singular function $\Phi$. We cannot differentiate $\Phi$ under the integral sign ($D^2\Phi$ is not locally integrable), but we \emph{can} differentiate $f$.
+
+\textit{(1b) Differentiating under the integral sign.} We apply Lemma~\ref{lem:diffconv} with $U = \mathbb{R}^n$ (so $U_\rho = \mathbb{R}^n$), with $g = f \in C^2(\mathbb{R}^n)$, which vanishes for $|z| > R_0 = \rho$, and with $\Phi$ in the role of the locally integrable function (Lemma~\ref{lem:Phiball}). Part (c) of that lemma with $k = 2$ gives $u \in C^2(\mathbb{R}^n)$ and
+$$ \frac{\partial u}{\partial x_i}(x) = \int_{\mathbb{R}^n} \Phi(y) \frac{\partial f}{\partial x_i}(x-y)\, dy \quad (i = 1, \dots, n), $$
+\begin{equation}\label{eq:D2u}
+\frac{\partial^2 u}{\partial x_i \partial x_j}(x) = \int_{\mathbb{R}^n} \Phi(y) \frac{\partial^2 f}{\partial x_i \partial x_j}(x-y)\, dy \quad (i,j = 1, \dots, n).
+\end{equation}
+Let us recall \emph{why} the derivative may be taken inside the integral (this is the content of Lemma~\ref{lem:diffconv}):
+\begin{itemize}
+    \item By the mean value theorem, $\frac{f(x+he_i-y) - f(x-y)}{h} = f_{x_i}(x - y + \theta h e_i)$ for some $\theta \in (0,1)$, and since $f_{x_i}$ is continuous with compact support, it is uniformly continuous. Hence
+    $$ \frac{f(x+he_i-y) - f(x-y)}{h} \to \frac{\partial f}{\partial x_i}(x-y) \quad \text{uniformly on } \mathbb{R}^n \text{ as } h \to 0 $$
+    (Lemma~\ref{lem:dq}).
+    \item For $|h| \le 1$ the integrand vanishes unless $y \in B(0, |x| + R_0 + 1) =: K$, and $\int_K |\Phi| < \infty$ by Lemma~\ref{lem:Phiball}. So the error is at most $\big(\sup|\text{difference quotient} - f_{x_i}|\big)\int_K|\Phi| \to 0$ (Lemma~\ref{lem:uniform}).
+    \item The same argument applied to $f_{x_i}$ gives \eqref{eq:D2u}; and the right hand side of \eqref{eq:D2u} is continuous in $x$ because $f_{x_ix_j}$ is uniformly continuous. Hence $u \in C^2(\mathbb{R}^n)$, proving (i).
+\end{itemize}
+
+\paragraph{Step 2: Isolating the singularity.} Summing \eqref{eq:D2u} over $i = j = 1,\dots,n$ gives
+$$ \Delta u(x) = \int_{\mathbb{R}^n} \Phi(y) \Delta_x f(x-y)\, dy. $$
+Since $\Phi$ blows up at $0$, we isolate this singularity inside a small ball. Fix $\varepsilon$ with $0 < \varepsilon \leq e^{-1/2}$ (in particular $\varepsilon < 1$). Then
+\begin{equation}\label{eq:IJ}
+\begin{aligned}
+\Delta u(x) &= \int_{B(0,\varepsilon)} \Phi(y) \Delta_x f(x-y)\, dy + \int_{\mathbb{R}^n - B(0,\varepsilon)} \Phi(y)\Delta_x f(x-y)\, dy \\
+&=: I_\varepsilon + J_\varepsilon.
+\end{aligned}
+\end{equation}
+
+\textit{Estimate of $I_\varepsilon$.} For every $z$, $|\Delta f(z)| = \left|\sum_{i=1}^n f_{x_i x_i}(z)\right| \leq \sum_{i=1}^n |f_{x_i x_i}(z)| \leq n |D^2 f(z)| \leq n\|D^2 f\|_{L^\infty(\mathbb{R}^n)}$, because each entry of the Hessian is bounded by its norm $|D^2 f(z)|$. Hence, using Lemma~\ref{lem:Phiball},
+\begin{equation}\label{eq:I}
+|I_\varepsilon| \leq n\|D^2 f\|_{L^\infty(\mathbb{R}^n)} \int_{B(0,\varepsilon)} |\Phi(y)|\, dy \leq \begin{cases} C\varepsilon^2|\log\varepsilon| & (n=2) \\ C\varepsilon^2 & (n\geq 3), \end{cases}
+\end{equation}
+where $C$ is a constant depending only on $n$ and $f$ (namely $C = 2\|D^2f\|_{L^\infty}$ for $n = 2$ and $C = \frac{n}{2(n-2)}\|D^2 f\|_{L^\infty}$ for $n \geq 3$). In particular $I_\varepsilon \to 0$ as $\varepsilon \to 0$, by (f).
+
+\textit{Making $J_\varepsilon$ an integral over a bounded region.} Green's formulas need a \emph{bounded} region, so we cut off far away. Let $R = |x| + R_0 + 1$. If $|y| \geq R - 1$, then $|x - y| \geq |y| - |x| \geq R_0$, so $f(x-y)$ and all its derivatives vanish there. Set
+$$ U = \{ y : \varepsilon < |y| < R \}. $$
+Then $J_\varepsilon = \int_U \Phi(y)\Delta_y f(x-y)\, dy$, where we used (e) to replace $\Delta_x$ by $\Delta_y$. (The sphere $|y| = \varepsilon$ has volume zero, so it does not matter whether it is included.) On $\bar U$ we have $|y| \geq \varepsilon > 0$, so $\Phi \in C^\infty(\bar U)$; and $w(y) := f(x-y)$ is in $C^2(\bar U)$. The boundary of $U$ is smooth, and its outward unit normal $\nu$ was described in Example~\ref{ex:annulus}(b). On the outer sphere $\partial B(0,R)$ we have $w = 0$ and $Dw = 0$.
+
+\textit{First integration by parts.} Apply Green's formula (ii) (Theorem~\ref{thm:green}) on $U$ with $u = \Phi$ and $v = w$:
+$$ \int_U Dw\cdot D\Phi\, dy = -\int_U \Phi\Delta w\, dy + \int_{\partial U}\frac{\partial w}{\partial\nu}\Phi\, dS. $$
+Rearranging, and dropping the outer sphere where $Dw = 0$,
+\begin{equation}\label{eq:KL}
+\begin{aligned}
+J_\varepsilon = \int_U \Phi \Delta w\, dy &= -\int_{\mathbb{R}^n - B(0,\varepsilon)} D\Phi(y)\cdot D_y f(x-y)\, dy \\
+&\quad + \int_{\partial B(0,\varepsilon)} \Phi(y)\frac{\partial f}{\partial \nu}(x-y)\, dS(y) \\
+&=: K_\varepsilon + L_\varepsilon,
+\end{aligned}
+\end{equation}
+$\nu$ denoting the \emph{inward} pointing unit normal along $\partial B(0,\varepsilon)$ (inward for the ball, i.e.\ outward for $U$). Here $\frac{\partial f}{\partial\nu}(x-y)$ stands for $\nu\cdot D_y\big(f(x-y)\big)$.
+
+\textit{Estimate of $L_\varepsilon$.} By the Cauchy--Schwarz inequality and (e), $\left|\nu \cdot D_y f(x-y)\right| \leq |\nu|\,|Df(x-y)| = |Df(x-y)| \leq \|Df\|_{L^\infty(\mathbb{R}^n)}$, since $|\nu| = 1$. Using (d),
+\begin{equation}\label{eq:L}
+|L_\varepsilon| \leq \|Df\|_{L^\infty(\mathbb{R}^n)} \int_{\partial B(0,\varepsilon)} |\Phi(y)|\, dS(y) \leq \begin{cases} C\varepsilon|\log\varepsilon| & (n=2) \\ C\varepsilon & (n\geq 3), \end{cases}
+\end{equation}
+with $C = \|Df\|_{L^\infty}$ for $n=2$ and $C = \frac{1}{n-2}\|Df\|_{L^\infty}$ for $n \geq 3$. In particular $L_\varepsilon \to 0$ as $\varepsilon \to 0$, by (f).
+
+\paragraph{Step 3: The term $K_\varepsilon$ carries the value $f(x)$.} We integrate by parts once again in the term $K_\varepsilon$. Apply Green's formula (ii) on $U$, now with $u = w$ and $v = \Phi$:
+$$ \int_U D\Phi \cdot Dw\, dy = -\int_U w\Delta\Phi\, dy + \int_{\partial U}\frac{\partial\Phi}{\partial\nu} w\, dS. $$
+Since $K_\varepsilon = -\int_U D\Phi\cdot Dw\, dy$ and $w = 0$ on the outer sphere,
+\begin{align*}
+K_\varepsilon &= \int_{\mathbb{R}^n - B(0,\varepsilon)} \Delta\Phi(y) f(x-y)\, dy - \int_{\partial B(0,\varepsilon)}\frac{\partial\Phi}{\partial\nu}(y) f(x-y)\, dS(y) \\
+&= -\int_{\partial B(0,\varepsilon)}\frac{\partial\Phi}{\partial\nu}(y) f(x-y)\, dS(y),
+\end{align*}
+since $\Phi$ is harmonic away from the origin (fact (b)).
+
+\textit{Computing the normal derivative.} By \eqref{eq:DPhi}, $D\Phi(y) = \frac{-1}{n\alpha(n)}\frac{y}{|y|^n}$ $(y \neq 0)$, and $\nu = \frac{-y}{|y|} = -\frac{y}{\varepsilon}$ on $\partial B(0,\varepsilon)$. Consequently, for $|y| = \varepsilon$,
+$$ \frac{\partial\Phi}{\partial\nu}(y) = \nu\cdot D\Phi(y) = \left(-\frac{y}{\varepsilon}\right)\cdot\left(-\frac{1}{n\alpha(n)}\frac{y}{\varepsilon^n}\right) = \frac{y\cdot y}{n\alpha(n)\varepsilon^{n+1}} = \frac{\varepsilon^2}{n\alpha(n)\varepsilon^{n+1}} = \frac{1}{n\alpha(n)\varepsilon^{n-1}}. $$
+This is a constant on the sphere, so it comes out of the integral. Since $n\alpha(n)\varepsilon^{n-1}$ is the surface area of the sphere $\partial B(0,\varepsilon)$, we have
+\begin{equation}\label{eq:K}
+K_\varepsilon = -\frac{1}{n\alpha(n)\varepsilon^{n-1}}\int_{\partial B(0,\varepsilon)} f(x-y)\, dS(y) = -\fint_{\partial B(x,\varepsilon)} f(y)\, dS(y).
+\end{equation}
+In the last equality we substituted $z = x - y$. The map $y \mapsto x - y$ is a reflection followed by a translation, so it preserves distances and surface measure, and it maps $\partial B(0,\varepsilon)$ onto $\partial B(x,\varepsilon)$ (because $|z - x| = |y| = \varepsilon$). The slash through the integral denotes the average (Definition~\ref{def:averages}).
+
+\textit{The limit of $K_\varepsilon$.} Since the average of the constant $1$ is $1$, we can write
+$$ f(x) = \fint_{\partial B(x,\varepsilon)} f(x)\, dS(y). $$
+Hence
+$$ \left| \fint_{\partial B(x,\varepsilon)} f(y)\, dS(y) - f(x) \right| = \left| \fint_{\partial B(x,\varepsilon)} \big(f(y) - f(x)\big)\, dS(y) \right| \leq \sup_{|y-x| = \varepsilon} |f(y) - f(x)|. $$
+By continuity of $f$ at $x$, the right hand side tends to $0$ as $\varepsilon \to 0$. Therefore
+$$ K_\varepsilon = -\fint_{\partial B(x,\varepsilon)} f(y)\, dS(y) \to -f(x) \quad \text{as } \varepsilon \to 0. $$
+
+\paragraph{Step 4: Conclusion.} Combining \eqref{eq:IJ}, \eqref{eq:KL} and \eqref{eq:K}, for every $0 < \varepsilon \leq e^{-1/2}$,
+$$ \Delta u(x) = I_\varepsilon + K_\varepsilon + L_\varepsilon. $$
+The left side does not depend on $\varepsilon$. Letting $\varepsilon \to 0$ and using \eqref{eq:I}, \eqref{eq:L} and Step 3,
+$$ I_\varepsilon \to 0, \qquad L_\varepsilon \to 0, \qquad K_\varepsilon \to -f(x). $$
+Hence $\Delta u(x) = -f(x)$, that is, $-\Delta u(x) = f(x)$. Since $x \in \mathbb{R}^n$ was arbitrary, this proves (ii). $\blacksquare$
+
+%=====================================================================
+\subsection{The Dirac Delta Notation}
+
+\subsubsection{Motivation: functions of total mass one concentrating at a point}
+Think of a unit amount of ``mass'' (or charge, or heat) spread over $\mathbb{R}^n$ with density $\rho(y) \geq 0$, so that $\int_{\mathbb{R}^n} \rho\, dy = 1$. What happens if we squeeze all the mass into smaller and smaller balls around the origin?
+
+A convenient family is given by the mollifiers $\eta_\varepsilon$ (Definition~\ref{def:mollifier}):
+$$ \eta_\varepsilon \geq 0, \qquad \int_{\mathbb{R}^n}\eta_\varepsilon\, dy = 1, \qquad \eta_\varepsilon = 0 \text{ outside } B(0,\varepsilon). $$
+(Any sequence of nonnegative functions with integral $1$ supported in shrinking balls would do; in one dimension one can take the ``tents'' or the rectangles $\frac{1}{2\varepsilon}\chi_{[-\varepsilon,\varepsilon]}$.)
+
+\emph{Pointwise behaviour.} For $y \neq 0$, $\eta_\varepsilon(y) = 0$ as soon as $\varepsilon < |y|$, so $\eta_\varepsilon(y) \to 0$. At the origin $\eta_\varepsilon(0) = \varepsilon^{-n}\eta(0) \to \infty$. So, pointwise, the limit ``function'' would be $0$ for $y \neq 0$, $+\infty$ at $y = 0$, and yet it should have total mass $1$. \emph{No function does this}: a function which is $0$ except at one point has (Lebesgue) integral $0$, not $1$.
+
+\emph{Behaviour against continuous functions.} Let $g$ be continuous. Since $\int \eta_\varepsilon = 1$ we can write $g(0) = \int \eta_\varepsilon(y) g(0)\, dy$, and so
+\begin{align*}
+\left| \int_{\mathbb{R}^n} \eta_\varepsilon(y) g(y)\, dy - g(0) \right| &= \left| \int_{B(0,\varepsilon)} \eta_\varepsilon(y)\big(g(y) - g(0)\big)\, dy \right| \\
+&\leq \sup_{|y| \leq \varepsilon} |g(y) - g(0)| \cdot \int \eta_\varepsilon = \sup_{|y| \leq \varepsilon} |g(y) - g(0)| \to 0.
+\end{align*}
+Thus
+$$ \lim_{\varepsilon \to 0} \int_{\mathbb{R}^n} \eta_\varepsilon(y) g(y)\, dy = g(0) \qquad \text{for every continuous } g. $$
+So although the functions $\eta_\varepsilon$ have no limit as a function, their action on continuous functions has a perfectly good limit: $g \mapsto g(0)$. This limiting object is called the \textbf{Dirac measure} (or Dirac delta) $\delta_0$: the measure on $\mathbb{R}^n$ giving unit mass to the point $0$. We use the suggestive notation
+$$ \int_{\mathbb{R}^n} \delta_0\, g(y)\, dy := g(0), \qquad \text{and more generally} \qquad \int_{\mathbb{R}^n} \delta_x\, g(y)\, dy := g(x), $$
+where $\delta_x$ gives unit mass to the point $x$. (The ``integral'' here is just notation for ``evaluate at the point''.) Formally, $\delta_x(y) = \delta_0(x - y)$, the translate of $\delta_0$.
+
+\subsubsection{The remark: $-\Delta\Phi = \delta_0$}
+\textbf{Remark.} We sometimes write
+$$ -\Delta \Phi = \delta_0 \quad \text{in } \mathbb{R}^n, $$
+$\delta_0$ denoting the Dirac measure on $\mathbb{R}^n$ giving unit mass to the point $0$. Adopting this notation, we may formally compute:
+$$ -\Delta u(x) = \int_{\mathbb{R}^n} -\Delta_x\Phi(x-y)\, f(y)\, dy = \int_{\mathbb{R}^n} \delta_x f(y)\, dy = f(x) \quad (x \in \mathbb{R}^n), $$
+in accordance with Theorem 1. This corrects the erroneous calculation $\Delta u = \int \Delta_x\Phi(x-y) f(y)\, dy = 0$.
+
+\emph{Explanation of the remark.}
+\begin{enumerate}
+    \item \emph{Why it is reasonable.} $\Delta\Phi(y) = 0$ for every $y \neq 0$ (fact (b) above). So $-\Delta\Phi$ is ``zero away from the origin''. The only place where something can happen is the singular point $y = 0$, exactly like the limit of the $\eta_\varepsilon$ above.
+    \item \emph{How much ``mass'' sits at the origin.} By Green's formula (i), the integral of $-\Delta\Phi$ over a region should equal minus the flux of $D\Phi$ through its boundary. On the sphere $\partial B(0,\varepsilon)$ with \emph{outward} normal $\nu = y/\varepsilon$, \eqref{eq:DPhi} gives $\frac{\partial \Phi}{\partial\nu} = -\frac{1}{n\alpha(n)\varepsilon^{n-1}}$, so
+    $$ -\int_{\partial B(0,\varepsilon)} \frac{\partial\Phi}{\partial\nu}\, dS = \frac{1}{n\alpha(n)\varepsilon^{n-1}}\cdot n\alpha(n)\varepsilon^{n-1} = 1 \qquad \text{for every } \varepsilon > 0. $$
+    The total ``mass'' of $-\Delta\Phi$ in every ball around $0$ is $1$, however small the ball. This is exactly the normalisation we chose when we fixed the constants in $\Phi$.
+    \item \emph{What the formula really means.} What we actually proved in Theorem 1 is: for $f \in C^2_c(\mathbb{R}^n)$ and every $x$,
+    $$ \int_{\mathbb{R}^n} \Phi(y)\,\big(-\Delta f\big)(x-y)\, dy = f(x). $$
+    Taking $x = 0$ and writing $g(y) = f(-y)$ (so $\Delta g(y) = \Delta f(-y)$; this is (e) with $x = 0$), this says
+    $$ \int_{\mathbb{R}^n} \Phi(y)\,\big(-\Delta g(y)\big)\, dy = g(0) \qquad \text{for all } g \in C^2_c(\mathbb{R}^n). $$
+    If we ``integrate by parts twice'' (moving the Laplacian from $g$ to $\Phi$, as if $\Phi$ were smooth), the left side would be $\int (-\Delta\Phi) g\, dy$. So the identity says: \emph{$-\Delta\Phi$ acts on functions $g$ exactly as $\delta_0$ does}, $g \mapsto g(0)$. This is the precise meaning of $-\Delta\Phi = \delta_0$.
+    \item \emph{Why the naive calculation fails.} In $\int \Delta_x \Phi(x-y)f(y)\, dy = 0$ we used only that $\Delta_x\Phi(x-y) = 0$ for $y \neq x$, and ignored the single point $y = x$. But all the ``mass'' of $-\Delta_x\Phi(x - \cdot)$ sits at $y = x$; in the language above, $-\Delta_x\Phi(x-y) = \delta_0(x-y) = \delta_x(y)$. Integrating this against $f$ picks out $f(x)$, not $0$.
+\end{enumerate}
+
+%=====================================================================
+\subsection{Mean-Value Formulas}
+
+Consider now an open set $U \subset \mathbb{R}^n$ and suppose $u$ is a harmonic function within $U$. We next derive the important \emph{mean-value formulas}, which declare that $u(x)$ equals both the average of $u$ over the sphere $\partial B(x,r)$ and the average of $u$ over the entire ball $B(x,r)$, provided $B(x,r) \subset U$.
+
+\textbf{Theorem 2 (Mean-value formulas for Laplace's equation).} \textit{If $u \in C^2(U)$ is harmonic, then}
+\begin{equation}\label{eq:mvf}
+u(x) = \fint_{\partial B(x,r)} u\, dS = \fint_{B(x,r)} u\, dy
+\end{equation}
+\textit{for each ball $B(x,r) \subset U$.}
+
+\textbf{Remark (the ball must lie inside $U$).} The formula is claimed only for balls $B(x,r)$ which lie \emph{completely} inside $U$ (recall that $B(x,r)$ is the closed ball, so the sphere $\partial B(x,r)$ must also be inside $U$). This is essential:
+\begin{itemize}
+    \item $u$ is only defined (and harmonic) in $U$; if part of the ball is outside $U$, the averages do not even make sense.
+    \item The proof uses $\Delta u = 0$ at \emph{every} point of the ball, and $u \in C^2$ up to the sphere (to apply Green's formula on the ball).
+\end{itemize}
+By Lemma~\ref{lem:balls}, for a point $x \in U$ the admissible radii are exactly $0 < r < \operatorname{dist}(x,\partial U)$ (all $r > 0$ if $U = \mathbb{R}^n$). Every time we use the mean-value formula below, we first check that the ball lies in $U$.
+
+\subsubsection{Proof of Theorem 2}
+Fix $x \in U$ and let $d = \operatorname{dist}(x,\partial U)$ ($d = \infty$ if $U = \mathbb{R}^n$). For $0 < r < d$, $B(x,r) \subset U$ (Lemma~\ref{lem:balls}).
+
+\paragraph{Step 1: the function $\phi$.} Set
+$$ \phi(r) := \fint_{\partial B(x,r)} u(y)\, dS(y) = \fint_{\partial B(0,1)} u(x + rz)\, dS(z) \qquad (0 < r < d). $$
+The second expression comes from the change of variables $y = x + rz$, which maps the unit sphere onto $\partial B(x,r)$ (Corollary~\ref{cor:polar}(b)). The point of this change of variables is that the domain of integration $\partial B(0,1)$ \emph{no longer depends on $r$}; now $r$ appears only inside the integrand.
+
+\paragraph{Step 2: differentiating $\phi$ (interchange of derivative and integral).} We claim
+$$ \phi'(r) = \fint_{\partial B(0,1)} Du(x + rz)\cdot z\, dS(z). $$
+\emph{Justification.} Put $F(r,z) = u(x + rz)$ for $0 < r < d$ and $z \in \partial B(0,1)$. By the chain rule,
+$$ \frac{\partial F}{\partial r}(r,z) = \sum_{i=1}^n u_{x_i}(x+rz)\, \frac{\partial (x_i + r z_i)}{\partial r} = \sum_{i=1}^n u_{x_i}(x + rz)\, z_i = Du(x+rz)\cdot z. $$
+Since $u \in C^2(U) \subset C^1(U)$, both $F$ and $\partial F/\partial r$ are continuous on $(0,d) \times \partial B(0,1)$. The sphere $\partial B(0,1)$ is compact. Hence Lemma~\ref{lem:diffint} allows us to differentiate under the integral sign. (The idea, once more: on a compact set $[a,b]\times\partial B(0,1)$ the derivative $\partial F/\partial r$ is uniformly continuous, so the difference quotients converge \emph{uniformly} in $z$, and uniform convergence lets us pass the limit through the integral.) Dividing by the constant $n\alpha(n)$ gives the claim for the average.
+
+\paragraph{Step 3: back to the sphere $\partial B(x,r)$.} Undo the change of variables, $z = \frac{y - x}{r}$:
+$$ \phi'(r) = \fint_{\partial B(x,r)} Du(y)\cdot\frac{y - x}{r}\, dS(y). $$
+By Example~\ref{ex:annulus}(a), $\nu(y) = \frac{y-x}{r}$ is the outward unit normal to the ball $B(x,r)$ at $y \in \partial B(x,r)$. Therefore $Du(y)\cdot\frac{y-x}{r} = \frac{\partial u}{\partial\nu}(y)$ and
+$$ \phi'(r) = \fint_{\partial B(x,r)} \frac{\partial u}{\partial \nu}\, dS(y). $$
+
+\paragraph{Step 4: Green's formula.} Apply Green's formula (i) (Theorem~\ref{thm:green}) on the open ball $B^\circ(x,r)$; this is allowed because $u \in C^2$ on a neighbourhood of the closed ball $B(x,r) \subset U$:
+$$ \int_{\partial B(x,r)} \frac{\partial u}{\partial\nu}\, dS = \int_{B(x,r)} \Delta u\, dy. $$
+Converting both integrals into averages (divide by $n\alpha(n)r^{n-1}$ and use $\int_{B(x,r)} = \alpha(n) r^n \fint_{B(x,r)}$):
+$$ \phi'(r) = \frac{1}{n\alpha(n)r^{n-1}}\int_{B(x,r)} \Delta u\, dy = \frac{\alpha(n)r^n}{n\alpha(n) r^{n-1}} \fint_{B(x,r)} \Delta u\, dy = \frac{r}{n}\fint_{B(x,r)} \Delta u(y)\, dy. $$
+So far we have \emph{not} used that $u$ is harmonic; the identity
+\begin{equation}\label{eq:phiprime}
+\phi'(r) = \frac{r}{n}\fint_{B(x,r)}\Delta u(y)\, dy \qquad (0 < r < d)
+\end{equation}
+holds for every $u \in C^2(U)$. Now, since $\Delta u = 0$ in $U$, we get $\phi'(r) = 0$.
+
+\paragraph{Step 5: $\phi$ is constant, and its value is $u(x)$.} Since $\phi' = 0$ on the interval $(0,d)$, $\phi$ is constant there. To find the constant, let $t \to 0$. Since the average of the constant $u(x)$ is $u(x)$,
+$$ |\phi(t) - u(x)| = \left| \fint_{\partial B(x,t)} \big(u(y) - u(x)\big)\, dS(y) \right| \leq \max_{|y - x| = t}|u(y) - u(x)| \to 0 \quad (t \to 0), $$
+by continuity of $u$ at $x$. Hence, for each $0 < r < d$,
+$$ \phi(r) = \lim_{t\to 0}\phi(t) = \lim_{t \to 0} \fint_{\partial B(x,t)} u(y)\, dS(y) = u(x). $$
+This is the first equality in \eqref{eq:mvf}: $\int_{\partial B(x,s)} u\, dS = n\alpha(n)s^{n-1}u(x)$ for $0 < s < d$.
+
+\paragraph{Step 6: the ball average.} By polar coordinates centered at $x$ (Corollary~\ref{cor:polar}(a)) and Step 5,
+$$ \int_{B(x,r)} u\, dy = \int_0^r \left( \int_{\partial B(x,s)} u\, dS \right) ds = \int_0^r n\alpha(n)s^{n-1} u(x)\, ds = u(x)\,\alpha(n) r^n. $$
+Dividing by $|B(x,r)| = \alpha(n)r^n$ gives $\fint_{B(x,r)} u\, dy = u(x)$. $\square$
+
+\subsubsection{Converse to the Mean-Value Property}
+\textbf{Theorem 3 (Converse to mean-value property).} \textit{If $u \in C^2(U)$ satisfies}
+$$ u(x) = \fint_{\partial B(x,r)} u\, dS $$
+\textit{for each ball $B(x,r) \subset U$, then $u$ is harmonic.}
+
+\textit{Proof.} \emph{Step 1: setting up a contradiction.} Suppose $\Delta u \not\equiv 0$ in $U$. Then there is a point $x \in U$ with $\Delta u(x) \neq 0$. We may assume $\Delta u(x) > 0$: otherwise replace $u$ by $-u$, which also satisfies the mean-value property (multiply the formula by $-1$) and has $\Delta(-u)(x) = -\Delta u(x) > 0$.
+
+\emph{Step 2: continuity of $\Delta u$ gives a whole ball where $\Delta u > 0$.} Since $u \in C^2(U)$, each $u_{x_ix_i}$ is continuous, so $\Delta u = \sum_i u_{x_i x_i}$ is continuous. With $\eta = \Delta u(x)/2 > 0$ there is $\delta > 0$ such that $|\Delta u(y) - \Delta u(x)| < \eta$, hence $\Delta u(y) > \Delta u(x)/2 > 0$, whenever $|y - x| < \delta$. Choose $0 < r < \min(\delta, \operatorname{dist}(x,\partial U))$. Then $B(x,r) \subset U$ (Lemma~\ref{lem:balls}) and $\Delta u > 0$ on $B(x,r)$. \emph{This is where the continuity of $\Delta u$ is used}: knowing $\Delta u(x) > 0$ at a single point would not be enough, because a single point has no volume.
+
+\emph{Step 3: the contradiction.} Let $\phi(s) = \fint_{\partial B(x,s)} u\, dS$ as in the proof of Theorem 2. By hypothesis $\phi(s) = u(x)$ for every $0 < s < \operatorname{dist}(x,\partial U)$, so $\phi$ is constant and $\phi'(r) = 0$. On the other hand, identity \eqref{eq:phiprime} (which was derived for \emph{every} $u \in C^2(U)$, without using harmonicity) gives
+$$ 0 = \phi'(r) = \frac{r}{n}\fint_{B(x,r)} \Delta u(y)\, dy > 0, $$
+because $\Delta u$ is continuous and strictly positive on $B(x,r)$, so its integral is positive (Lemma~\ref{lem:zero}). This is a contradiction. Hence $\Delta u \equiv 0$ in $U$. $\square$
+
+%=====================================================================
+\subsection{Properties of Harmonic Functions}
+We now present a sequence of interesting deductions about harmonic functions, all based upon the mean-value formulas. Assume for the following that $U \subset \mathbb{R}^n$ is open and bounded.
+
+\subsubsection{Strong Maximum Principle}
+\textbf{Theorem 4 (Strong maximum principle).} \textit{Suppose $u \in C^2(U) \cap C(\bar U)$ is harmonic within $U$.}
+\begin{enumerate}
+    \item[(i)] \textit{Then}
+    $$ \max_{\bar U} u = \max_{\partial U} u. $$
+    \item[(ii)] \textit{Furthermore, if $U$ is connected and there exists a point $x_0 \in U$ such that}
+    $$ u(x_0) = \max_{\bar U} u, $$
+    \textit{then $u$ is constant within $U$.}
+\end{enumerate}
+
+Assertion (i) is the \emph{maximum principle} for Laplace's equation and (ii) is the \emph{strong maximum principle}.
+
+\textbf{Why the maxima exist.} $U$ is bounded, so $\bar U$ is closed and bounded, i.e.\ compact, and $u \in C(\bar U)$ attains its maximum on $\bar U$. The boundary $\partial U$ is a closed subset of $\bar U$, hence compact, and it is nonempty (Lemma~\ref{lem:topology}(e) below), so $u$ attains its maximum on $\partial U$ too. Since $\partial U \subset \bar U$, we always have $\max_{\partial U} u \leq \max_{\bar U} u$; the content of (i) is the reverse inequality: \emph{the maximum over the closure is already attained on the boundary}.
+
+\textbf{The minimum principle.} The same statements hold with ``min'' replacing ``max'':
+\begin{enumerate}
+    \item[(i$'$)] $\displaystyle\min_{\bar U} u = \min_{\partial U} u$;
+    \item[(ii$'$)] if $U$ is connected and there exists $x_0 \in U$ with $u(x_0) = \min_{\bar U} u$, then $u$ is constant within $U$.
+\end{enumerate}
+\emph{Proof from Theorem 4.} Let $v = -u$. Then $v \in C^2(U)\cap C(\bar U)$ and $\Delta v = -\Delta u = 0$, so Theorem 4 applies to $v$. For any set $E$ on which $u$ attains its minimum,
+$$ \max_E v = \max_E(-u) = -\min_E u, $$
+because $-u(y) \leq -u(y_0)$ for all $y \in E$ exactly when $u(y) \geq u(y_0)$ for all $y \in E$: the point where $u$ is smallest is the point where $-u$ is largest.
+\begin{itemize}
+    \item (i$'$): by (i) for $v$, $\;-\min_{\bar U} u = \max_{\bar U} v = \max_{\partial U} v = -\min_{\partial U} u$. Multiply by $-1$.
+    \item (ii$'$): if $u(x_0) = \min_{\bar U} u$, then $v(x_0) = -\min_{\bar U} u = \max_{\bar U} v$. By (ii) for $v$, $v$ is constant in $U$, hence so is $u = -v$.
+\end{itemize}
+
+\textbf{Proof of Theorem 4 (ii).} Suppose $U$ is connected and there exists a point $x_0 \in U$ with $u(x_0) = M := \max_{\bar U} u$.
+
+\emph{Step 1: $u \equiv M$ on a ball around $x_0$.} For $0 < r < \operatorname{dist}(x_0, \partial U)$ the ball $B(x_0,r)$ lies in $U$ (Lemma~\ref{lem:balls}), so the mean-value property (Theorem 2) applies:
+$$ M = u(x_0) = \fint_{B(x_0,r)} u\, dy \leq M. $$
+The inequality holds because $u \leq M$ everywhere on $\bar U$, and the average of a function which is $\leq M$ is $\leq M$. Since the two ends are equal, $\fint_{B(x_0,r)} (M - u)\, dy = M - M = 0$. The function $M - u$ is continuous and $\geq 0$, with zero integral over the ball, so by Lemma~\ref{lem:zero}, $M - u \equiv 0$, i.e.\ $u \equiv M$ within $B(x_0,r)$. (As equality holds only if $u \equiv M$ within $B(x_0,r)$, we see $u(y) = M$ for all $y \in B(x_0,r)$.)
+
+\emph{Step 2: the set where the maximum is attained.} Let
+$$ A = \{ x \in U \mid u(x) = M \}. $$
+\begin{itemize}
+    \item $A \neq \emptyset$, since $x_0 \in A$.
+    \item $A$ is open: if $x \in A$, Step 1 applied at $x$ (instead of $x_0$) shows that a whole ball around $x$ lies in $A$.
+    \item $A$ is relatively closed in $U$: $A = U \cap u^{-1}(\{M\})$, and $u^{-1}(\{M\})$ is closed because $u$ is continuous.
+\end{itemize}
+Since $U$ is connected, a nonempty subset which is both open and relatively closed must be all of $U$ (Lemma~\ref{lem:topology}(a)). Thus $A = U$, i.e.\ $u \equiv M$ in $U$. This proves assertion (ii).
+
+\textbf{Proof of Theorem 4 (i) from (ii).} We must show $\max_{\bar U} u \leq \max_{\partial U} u$, i.e.\ that the maximum value $M = \max_{\bar U} u$ is taken at some point of $\partial U$. By compactness of $\bar U$ there is a point $x_0 \in \bar U$ with $u(x_0) = M$.
+
+\emph{Case 1: $U$ connected.}
+\begin{itemize}
+    \item If $x_0 \in \partial U$, we are done: $M = u(x_0) \leq \max_{\partial U} u$.
+    \item If $x_0 \in U$, then by (ii), $u \equiv M$ in $U$. Since $u$ is continuous on $\bar U$ and every point of $\partial U$ is a limit of points of $U$, also $u \equiv M$ on $\bar U$, in particular on $\partial U$, which is nonempty. So $\max_{\partial U} u = M$.
+\end{itemize}
+
+\emph{Case 2: $U$ not connected.} Write $U$ as the disjoint union of its connected components, $U = \bigcup_\lambda U_\lambda$ (Lemma~\ref{lem:topology}(c)); each $U_\lambda$ is open, connected and bounded. Again, if $x_0 \in \partial U$ we are done. Otherwise $x_0 \in U$, so $x_0$ lies in exactly one component, say $U_\lambda$. Now look at $u$ on $U_\lambda$ only:
+\begin{itemize}
+    \item $u \in C^2(U_\lambda) \cap C(\bar U_\lambda)$ and $\Delta u = 0$ in $U_\lambda$ (because $\bar U_\lambda \subset \bar U$).
+    \item $\max_{\bar U_\lambda} u \leq \max_{\bar U} u = M = u(x_0)$, and $x_0 \in U_\lambda$; so $u(x_0) = \max_{\bar U_\lambda} u$ is attained at an interior point of the connected set $U_\lambda$.
+\end{itemize}
+By (ii) applied on $U_\lambda$, $u \equiv M$ in $U_\lambda$, and by continuity $u \equiv M$ on $\bar U_\lambda$, in particular on $\partial U_\lambda$, which is nonempty since $U_\lambda$ is bounded (Lemma~\ref{lem:topology}(e)). Finally $\partial U_\lambda \subset \partial U$ (Lemma~\ref{lem:topology}(d)). Hence there is a point of $\partial U$ where $u = M$, and $\max_{\partial U} u = M$. This proves (i). $\square$
+
+\textbf{Remark (positivity).} The strong maximum principle asserts in particular that if $U$ is connected and $u \in C^2(U) \cap C(\bar U)$ satisfies
+$$ \begin{cases} \Delta u = 0 & \text{in } U \\ u = g & \text{on } \partial U, \end{cases} $$
+where $g \geq 0$, then $u$ is positive \emph{everywhere} in $U$ if $g$ is positive \emph{somewhere} on $\partial U$.
+
+\emph{Proof of the remark.}
+\begin{enumerate}
+    \item \emph{$u \geq 0$.} By the minimum principle (i$'$), $\min_{\bar U} u = \min_{\partial U} u = \min_{\partial U} g \geq 0$. So $u \geq 0$ on $\bar U$.
+    \item \emph{$u$ cannot vanish inside $U$.} Suppose $u(x_0) = 0$ for some $x_0 \in U$. Since $u \geq 0$, the value $0$ is the minimum of $u$ over $\bar U$, and it is attained at the \emph{interior} point $x_0$. As $U$ is connected, the strong minimum principle (ii$'$) says $u$ is constant in $U$, so $u \equiv 0$ in $U$.
+    \item \emph{Contradiction.} By continuity of $u$ on $\bar U$, $u \equiv 0$ on $\bar U$, in particular $g = u = 0$ on all of $\partial U$. This contradicts the assumption that $g$ is positive at some point of $\partial U$.
+\end{enumerate}
+Therefore $u(x) > 0$ for every $x \in U$. Note how strong this is: a positive boundary value at a single point (even if $g = 0$ on most of $\partial U$) makes $u$ positive at every point inside. Connectedness is needed: if $U$ has two components and $g > 0$ only on the boundary of one of them, then $u \equiv 0$ on the other. $\square$
+
+\subsubsection{A Topological Remark}
+The proof of Theorem 4(i) used some facts about connected sets and boundaries, which we now prove.
+
+\begin{lemma}\label{lem:topology}
+Let $U \subset \mathbb{R}^n$ be open.
+\begin{enumerate}
+    \item[(a)] \emph{(Connectedness.)} $U$ is called connected if it cannot be written as $U = A \cup B$ with $A, B$ disjoint, nonempty and open. Equivalently: if $A \subset U$ is nonempty, open, and relatively closed in $U$ (i.e.\ $A = U \cap F$ with $F$ closed), then $A = U$.
+    \item[(b)] If $C_\lambda$ ($\lambda \in \Lambda$) are connected subsets of $U$ which all contain a common point $p$, then $\bigcup_\lambda C_\lambda$ is connected. Balls are connected.
+    \item[(c)] \emph{(Connected components.)} For $x, y \in U$ write $x \sim y$ if there is a connected set $C \subset U$ with $x, y \in C$. This is an equivalence relation. Each equivalence class $U_x = [x]$ is connected and open. Hence $U$ is the disjoint union of its equivalence classes,
+    $$ U = \bigcup_\lambda U_\lambda, $$
+    called the \emph{connected components} of $U$.
+    \item[(d)] If $U = \bigcup_\lambda U_\lambda$ is a union of pairwise disjoint open sets (for example, its connected components), then $\partial U_\lambda \subset \partial U$ for each $\lambda$.
+    \item[(e)] If $U$ is nonempty and bounded, then $\partial U \neq \emptyset$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) If $A$ is nonempty, open and relatively closed with $A \neq U$, then $B = U \setminus A = U \cap F^c$ is open, nonempty and disjoint from $A$, and $U = A \cup B$, so $U$ is not connected. Conversely, if $U = A \cup B$ with $A, B$ disjoint, nonempty and open, then $A = U \setminus B = U \cap B^c$ is relatively closed, open, nonempty, and $A \neq U$.
+
+(b) Let $C = \bigcup C_\lambda$ and suppose $C = A \cup B$ with $A$, $B$ disjoint and open relative to $C$. Say $p \in A$. Each $C_\lambda = (C_\lambda \cap A) \cup (C_\lambda\cap B)$ is a splitting of the connected set $C_\lambda$ into disjoint relatively open sets, and $p \in C_\lambda \cap A \neq \emptyset$; so $C_\lambda \cap B = \emptyset$ for every $\lambda$, hence $B = \emptyset$. So $C$ is connected. A ball is convex, hence path connected, hence connected (we use this standard fact without proof).
+
+(c) \emph{Equivalence relation.} Reflexive: $\{x\}$ is connected. Symmetric: obvious. Transitive: if $x, y \in C_1$ and $y, z \in C_2$ with $C_1, C_2$ connected, then $C_1 \cup C_2$ is connected by (b) (common point $y$) and contains $x$ and $z$.
+
+\emph{Each class is connected.} $[x]$ is the union of all connected subsets of $U$ containing $x$: every such set lies in $[x]$, and every $y \in [x]$ lies in such a set. By (b) (common point $x$) this union is connected.
+
+\emph{Each class is open.} Let $y \in [x]$. Since $U$ is open there is a ball $B^\circ(y,\delta) \subset U$; it is connected and contains $y$. Then $[x] \cup B^\circ(y,\delta)$ is connected by (b) (common point $y$), lies in $U$ and contains $x$; hence it is contained in $[x]$. So $B^\circ(y,\delta) \subset [x]$.
+
+Distinct equivalence classes are disjoint and their union is $U$, which proves (c).
+
+(d) Let $z \in \partial U_\lambda = \bar U_\lambda \setminus U_\lambda$ (recall $U_\lambda$ is open).
+\begin{itemize}
+    \item $z \notin U$: otherwise $z$ lies in some $U_\mu$; $\mu \neq \lambda$ because $z \notin U_\lambda$. But $U_\mu$ is an open set containing $z \in \bar U_\lambda$, so $U_\mu$ meets $U_\lambda$, contradicting disjointness.
+    \item $z \in \bar U$: because $z \in \bar U_\lambda$ and $U_\lambda \subset U$.
+\end{itemize}
+So $z \in \bar U \setminus U = \partial U$.
+
+(e) If $\partial U = \emptyset$ then $\bar U = U$, so $U$ is both open and closed in $\mathbb{R}^n$ and nonempty. Since $\mathbb{R}^n$ is connected, (a) gives $U = \mathbb{R}^n$, which is not bounded.
+\end{proof}
+
+\textbf{Boundaries of unions in general.} What is the relation between $\partial(A \cup B)$ and $\partial A$, $\partial B$ for arbitrary sets?
+\begin{itemize}
+    \item \emph{One inclusion always holds:} $\partial(A \cup B) \subset \partial A \cup \partial B$. Indeed, if $x \notin \partial A$ and $x \notin \partial B$, there are neighbourhoods $N_A$, $N_B$ of $x$ with $N_A \subset A$ or $N_A \subset A^c$, and $N_B \subset B$ or $N_B \subset B^c$. If $N_A \subset A$ or $N_B \subset B$, this neighbourhood lies in $A \cup B$; otherwise $N_A \cap N_B \subset (A \cup B)^c$. Either way $x \notin \partial(A \cup B)$.
+    \item \emph{The reverse inclusion fails in general.} $A = [0,1]$, $B = [1,2]$: $\partial A \cup \partial B = \{0,1,2\}$, but $\partial(A\cup B) = \{0,2\}$. Overlapping open sets: $A = (0,1)$, $B = (\frac12, 2)$: $\partial A \cup \partial B = \{0, \frac12, 1, 2\}$ but $\partial(A\cup B) = \{0,2\}$. Extreme case: $A = \mathbb{Q}$, $B = \mathbb{R}\setminus\mathbb{Q}$ have $\partial A = \partial B = \mathbb{R}$, while $\partial(A \cup B) = \partial\mathbb{R} = \emptyset$.
+    \item \emph{Infinite unions:} even the first inclusion can fail. $A_k = [\frac1k, 1]$ has $\partial A_k = \{\frac1k, 1\}$, but $\bigcup_k A_k = (0,1]$ has boundary $\{0,1\}$, and $0 \notin \bigcup_k\partial A_k$.
+    \item \emph{For pairwise disjoint open sets} (as in (d)) we get equality, $\partial U = \bigcup_\lambda \partial U_\lambda$, when there are finitely many sets: ``$\supset$'' is (d) and ``$\subset$'' is the first bullet. The proof of (d) does not need finiteness, which is why it applies to components even if there are infinitely many of them.
+\end{itemize}
+
+\subsubsection{Uniqueness}
+An important application of the maximum principle is establishing the uniqueness of solutions to certain boundary-value problems for Poisson's equation.
+
+\textbf{Theorem 5 (Uniqueness).} \textit{Let $g \in C(\partial U)$, $f \in C(U)$. Then there exists at most one solution $u \in C^2(U) \cap C(\bar U)$ of the boundary-value problem}
+\begin{equation}\label{eq:bvp}
+\begin{cases} -\Delta u = f & \text{in } U \\ u = g & \text{on } \partial U. \end{cases}
+\end{equation}
+
+\textit{Proof.} Suppose $u$ and $\tilde u$ both satisfy \eqref{eq:bvp}, with $u, \tilde u \in C^2(U)\cap C(\bar U)$.
+
+\emph{Step 1: the difference is harmonic with zero boundary values.} Let $w := u - \tilde u$. Then $w \in C^2(U) \cap C(\bar U)$ and, because the Laplacian is linear,
+$$ \Delta w = \Delta u - \Delta\tilde u = (-f) - (-f) = 0 \text{ in } U, \qquad w = g - g = 0 \text{ on } \partial U. $$
+The unknown right hand side $f$ has disappeared; this is why we can use the maximum principle, which is a statement about \emph{harmonic} functions.
+
+\emph{Step 2: $w \leq 0$.} By the maximum principle (Theorem 4(i)) applied to $w$,
+$$ \max_{\bar U} w = \max_{\partial U} w = 0, \qquad\text{so } w \leq 0 \text{ on } \bar U. $$
+
+\emph{Step 3: $w \geq 0$.} The function $-w = \tilde u - u$ is also harmonic in $U$, in $C^2(U)\cap C(\bar U)$, and zero on $\partial U$. By Theorem 4(i) applied to $-w$, $\max_{\bar U}(-w) = 0$, so $-w \leq 0$, i.e.\ $w \geq 0$. (Equivalently, use the minimum principle (i$'$) for $w$.)
+
+\emph{Step 4: conclusion.} From Steps 2 and 3, $w \equiv 0$ on $\bar U$, that is, $u \equiv \tilde u$. $\square$
+
+\textbf{Remark.} Boundedness of $U$ is essential (it was used to have the maximum principle). In the unbounded half-space $U = \{x \in \mathbb{R}^n : x_n > 0\}$, both $u \equiv 0$ and $u(x) = x_n$ are harmonic, continuous up to $\partial U = \{x_n = 0\}$, and vanish on $\partial U$. So uniqueness fails there.
+
+\subsubsection{Regularity}
+Now we prove that if $u \in C^2$ is harmonic, then necessarily $u \in C^\infty$. Thus \emph{harmonic functions are automatically infinitely differentiable}. This sort of assertion is called a \emph{regularity} theorem. The interesting point is that the algebraic structure of Laplace's equation $\Delta u = \sum_{i=1}^n u_{x_i x_i} = 0$ leads to the analytic deduction that all the partial derivatives of $u$ exist, even those which do not appear in the PDE.
+
+\textbf{Remark (what is surprising here).} Being harmonic only tells us that \emph{one particular combination} of second derivatives, namely the sum $u_{x_1x_1} + \dots + u_{x_nx_n}$, is zero. It says nothing directly about $u_{x_1 x_2}$, or about any third derivative. Yet the conclusion is that \emph{all} partial derivatives of \emph{all} orders exist and are continuous, i.e.\ $u \in C^\infty(U)$. The route is through the mean-value property: Theorem 2 converts the PDE into an averaging identity, and averaging against a smooth kernel produces smooth functions.
+
+\textbf{Theorem 6 (Smoothness).} \textit{If $u \in C(U)$ satisfies the mean-value property \eqref{eq:mvf} for each ball $B(x,r) \subset U$, then}
+$$ u \in C^\infty(U). $$
+
+Note carefully that $u$ may not be smooth, or even continuous, up to $\partial U$. The theorem is an \emph{interior} statement.
+
+\textbf{Corollary.} If $u \in C^2(U)$ is harmonic, then $u$ satisfies the mean-value property (Theorem 2), so $u \in C^\infty(U)$ by Theorem 6. Since $u$ is $C^\infty$, partial derivatives commute and for any multiindex $\beta$, $\Delta(D^\beta u) = D^\beta(\Delta u) = 0$: \emph{every partial derivative of a harmonic function is again harmonic.}
+
+\textbf{Remark (notation for radial functions).} A function $f$ on $\mathbb{R}^n$ is radial if $f(x)$ depends only on $|x|$: $f(x) = \tilde f(|x|)$ for a function $\tilde f$ of one variable. It is customary to use \emph{the same letter} for both functions and write $f(x) = f(|x|)$, or $f(r)$ with $r = |x|$. We did this for $\Phi$ (where $\Phi(x) = v(|x|)$), and we do it now for the mollifier: $\eta(x) = \eta(|x|)$, where on the right $\eta(r) = C\exp\big(\frac{1}{r^2-1}\big)$ for $0 \le r < 1$ and $\eta(r) = 0$ for $r \geq 1$. Thus
+$$ \eta_\varepsilon(x - y) = \frac{1}{\varepsilon^n}\eta\left(\frac{x-y}{\varepsilon}\right) = \frac{1}{\varepsilon^n}\eta\left(\frac{|x-y|}{\varepsilon}\right). $$
+
+\textbf{Idea of the proof.} Let $u^\varepsilon = \eta_\varepsilon * u$ be the mollification of $u$. From Section~\ref{sec:zero} we know $u^\varepsilon \in C^\infty(U_\varepsilon)$ (Theorem~\ref{thm:mollifiers}(i)). We will show that the mean-value property forces
+$$ u^\varepsilon = u \quad \text{on } U_\varepsilon, $$
+so $u$ itself is $C^\infty$ on $U_\varepsilon$. Being differentiable is a \emph{local} property: to know all derivatives of $u$ at a point $x$, it is enough to know $u$ on some open set containing $x$. Given $x \in U$, we choose $\varepsilon = \frac12\operatorname{dist}(x,\partial U)$; then $x \in U_\varepsilon$, and $u$ is smooth near $x$.
+
+\textbf{Proof of Theorem 6.} Let $\eta$ be a standard mollifier (Definition~\ref{def:mollifier}), and recall that $\eta$ is a radial function. Set $u^\varepsilon := \eta_\varepsilon * u$ in $U_\varepsilon = \{x \in U \mid \operatorname{dist}(x,\partial U) > \varepsilon\}$.
+
+\emph{Step 1: $u^\varepsilon$ is defined and smooth on $U_\varepsilon$.} $u$ is continuous on $U$, hence locally integrable (Example~\ref{ex:locint}(3)). By Theorem~\ref{thm:mollifiers}(i), $u^\varepsilon \in C^\infty(U_\varepsilon)$.
+
+\emph{Step 2: $u^\varepsilon = u$ on $U_\varepsilon$.} We will prove $u$ is smooth by demonstrating that in fact $u \equiv u^\varepsilon$ on $U_\varepsilon$. Fix $x \in U_\varepsilon$. Since $\operatorname{dist}(x,\partial U) > \varepsilon$, the closed ball $B(x,\varepsilon)$ lies in $U$, and so does every $B(x,r)$, $0 < r \le \varepsilon$ (Lemma~\ref{lem:balls}). Then:
+\begin{align*}
+u^\varepsilon(x) &= \int_U \eta_\varepsilon(x-y) u(y)\, dy && \text{(definition)} \\
+&= \frac{1}{\varepsilon^n}\int_{B(x,\varepsilon)} \eta\left(\frac{|x-y|}{\varepsilon}\right) u(y)\, dy && \text{(}\eta_\varepsilon(x-y) = 0 \text{ if } |x - y| \geq \varepsilon\text{; radial notation)} \\
+&= \frac{1}{\varepsilon^n}\int_0^\varepsilon \eta\left(\frac{r}{\varepsilon}\right)\left( \int_{\partial B(x,r)} u\, dS \right) dr && \text{(polar coordinates about } x\text{)} \\
+&= \frac{1}{\varepsilon^n} u(x)\int_0^\varepsilon \eta\left(\frac{r}{\varepsilon}\right) n\alpha(n) r^{n-1}\, dr && \text{(mean-value property)} \\
+&= u(x)\int_{B(0,\varepsilon)} \eta_\varepsilon\, dy = u(x). &&
+\end{align*}
+Let us explain each line.
+\begin{enumerate}
+    \item[(1)] \emph{Restricting to the ball.} $\eta_\varepsilon(z) = 0$ for $|z| \geq \varepsilon$, so only $y \in B(x,\varepsilon)$ contribute; and $\eta_\varepsilon(x - y) = \varepsilon^{-n}\eta(|x-y|/\varepsilon)$ by the radial notation.
+    \item[(2)] \emph{Polar coordinates.} We use Corollary~\ref{cor:polar}(a) on the ball $B(x,\varepsilon)$ centered at $x$, for the continuous function $y \mapsto \varepsilon^{-n}\eta(|x-y|/\varepsilon)u(y)$. On the sphere $\partial B(x,r)$ we have $|x - y| = r$, so the factor $\eta(r/\varepsilon)$ is \emph{constant on each sphere} and comes out of the inner integral.
+    \item[(3)] \emph{Mean-value property.} Since $B(x,r) \subset U$ for $0 < r \leq \varepsilon$, the hypothesis \eqref{eq:mvf} gives $\fint_{\partial B(x,r)} u\, dS = u(x)$, i.e.\ $\int_{\partial B(x,r)} u\, dS = n\alpha(n)r^{n-1}u(x)$. The constant $u(x)$ comes out of the $r$-integral.
+    \item[(4)] \emph{Polar coordinates backwards.} Apply Corollary~\ref{cor:polar}(c) to the radial function $\eta_\varepsilon(y) = \varepsilon^{-n}\eta(|y|/\varepsilon)$ on $B(0,\varepsilon)$: $\int_{B(0,\varepsilon)}\eta_\varepsilon\, dy = n\alpha(n)\int_0^\varepsilon \varepsilon^{-n}\eta(r/\varepsilon) r^{n-1}\, dr$. And $\int_{B(0,\varepsilon)}\eta_\varepsilon = \int_{\mathbb{R}^n}\eta_\varepsilon = 1$.
+\end{enumerate}
+Thus $u^\varepsilon \equiv u$ in $U_\varepsilon$, and so $u \in C^\infty(U_\varepsilon)$ for each $\varepsilon > 0$.
+
+\emph{Step 3: $u \in C^\infty(U)$.} Let $x \in U$ and put $\varepsilon = \frac12\operatorname{dist}(x,\partial U) > 0$ (if $U = \mathbb{R}^n$, any $\varepsilon > 0$). Then $\operatorname{dist}(x,\partial U) = 2\varepsilon > \varepsilon$, so $x \in U_\varepsilon$. The set $U_\varepsilon$ is open (Lemma~\ref{lem:balls}(c)), and on it $u = u^\varepsilon$, which is $C^\infty$. Partial derivatives at $x$ only depend on the values of the function in a neighbourhood of $x$, so all partial derivatives of $u$ of all orders exist at $x$ and coincide with those of $u^\varepsilon$; they are continuous near $x$. Since $x \in U$ was arbitrary, $u \in C^\infty(U)$. $\square$
+
+\subsubsection{Local Estimates for Harmonic Functions}
+Next we employ the mean-value formulas to derive careful estimates on the various partial derivatives of a harmonic function. The precise structure of these estimates will be needed below, when we prove analyticity.
+
+\textbf{Theorem 7 (Estimates on derivatives).} \textit{Assume $u$ is harmonic in $U$. Then}
+\begin{equation}\label{eq:est}
+|D^\alpha u(x_0)| \leq \frac{C_k}{r^{n+k}}\|u\|_{L^1(B(x_0,r))}
+\end{equation}
+\textit{for each ball $B(x_0,r) \subset U$ and each multiindex $\alpha$ of order $|\alpha| = k$. Here}
+\begin{equation}\label{eq:Ck}
+C_0 = \frac{1}{\alpha(n)}, \qquad C_k = \frac{(2^{n+1}nk)^k}{\alpha(n)} \quad (k = 1, \dots).
+\end{equation}
+
+Recall $\|u\|_{L^1(B(x_0,r))} = \int_{B(x_0,r)}|u|\, dy$ and $\|u\|_{L^\infty(E)} = \sup_E|u|$. By the Corollary to Theorem 6, $u \in C^\infty(U)$, so all $D^\alpha u$ exist, and each $D^\beta u$ is harmonic.
+
+\textbf{Proof.} We establish \eqref{eq:est}, \eqref{eq:Ck} by induction on $k$.
+
+\paragraph{The case $k = 0$.} Here $\alpha = 0$ and $D^\alpha u = u$. Let $B(x_0,r) \subset U$. The mean-value formula (Theorem 2) gives the \emph{equality}
+$$ u(x_0) = \fint_{B(x_0,r)} u\, dy = \frac{1}{\alpha(n) r^n}\int_{B(x_0,r)} u\, dy, $$
+and taking absolute values (the absolute value of an integral is at most the integral of the absolute value),
+$$ |u(x_0)| \leq \frac{1}{\alpha(n)r^n}\int_{B(x_0,r)} |u|\, dy = \frac{C_0}{r^{n}}\|u\|_{L^1(B(x_0,r))}. $$
+This is \eqref{eq:est} with $k = 0$, $C_0 = 1/\alpha(n)$.
+
+\paragraph{The case $k = 1$.} Now $|\alpha| = 1$, so $D^\alpha u = u_{x_i}$ for some $i$. Let $B(x_0,r) \subset U$. The proof has two steps.
+
+\emph{Step 1: estimate $u_{x_i}(x_0)$ by the values of $u$ on the sphere $\partial B(x_0, r/2)$.} Differentiating Laplace's equation, $u_{x_i}$ $(i = 1,\dots,n)$ is harmonic (Corollary to Theorem 6). The ball $B(x_0,r/2)$ lies in $B(x_0,r) \subset U$, so the mean-value formula applies to $u_{x_i}$ on it:
+\begin{align}
+|u_{x_i}(x_0)| &= \left| \fint_{B(x_0,r/2)} u_{x_i}\, dx \right| = \frac{2^n}{\alpha(n) r^n}\left| \int_{B(x_0,r/2)} u_{x_i}\, dx \right| \notag \\
+&= \frac{2^n}{\alpha(n)r^n}\left| \int_{\partial B(x_0,r/2)} u\nu_i\, dS \right| \label{eq:k1} \\
+&\leq \frac{2^n}{\alpha(n)r^n}\, \|u\|_{L^\infty(\partial B(x_0,\frac r2))}\, n\alpha(n)\left(\frac r2\right)^{n-1} = \frac{2n}{r}\|u\|_{L^\infty(\partial B(x_0,\frac r2))}. \notag
+\end{align}
+The details:
+\begin{itemize}
+    \item $|B(x_0,r/2)| = \alpha(n)(r/2)^n = \alpha(n)r^n/2^n$, which gives the factor $2^n/(\alpha(n)r^n)$.
+    \item The second line is the Gauss--Green theorem (Theorem~\ref{thm:gaussgreen}) on the ball $B^\circ(x_0,r/2)$, with outward normal $\nu = (\nu_1,\dots,\nu_n)$; it applies since $u$ is $C^1$ on a neighbourhood of the closed ball.
+    \item For the inequality: $|u\nu_i| \leq |u|\,|\nu| = |u| \leq \|u\|_{L^\infty(\partial B(x_0,r/2))}$ on the sphere (the components of a unit vector are at most $1$ in absolute value), and the area of the sphere is $n\alpha(n)(r/2)^{n-1}$.
+    \item Simplifying the constant: $\frac{2^n}{\alpha(n)r^n}\cdot n\alpha(n)\frac{r^{n-1}}{2^{n-1}} = \frac{2n}{r}$.
+\end{itemize}
+
+\emph{Step 2: estimate $u$ on the sphere $\partial B(x_0,r/2)$ by $\|u\|_{L^1(B(x_0,r))}$.} Now if $x \in \partial B(x_0,r/2)$, then $B(x,r/2) \subset B(x_0,r) \subset U$: for $|z - x| \leq r/2$, $|z - x_0| \leq |z - x| + |x - x_0| \leq \frac r2 + \frac r2 = r$. So we may apply the case $k = 0$ at the point $x$ with radius $r/2$:
+$$ |u(x)| \leq \frac{1}{\alpha(n)}\left(\frac{2}{r}\right)^n\|u\|_{L^1(B(x,r/2))} \leq \frac{1}{\alpha(n)}\left(\frac{2}{r}\right)^n\|u\|_{L^1(B(x_0,r))}. $$
+In the last step we enlarged the domain of integration of $|u| \geq 0$ from $B(x,r/2)$ to $B(x_0,r)$. The right hand side \emph{does not depend on the point $x$} of the sphere. Taking the supremum over $x \in \partial B(x_0, r/2)$,
+$$ \|u\|_{L^\infty(\partial B(x_0,\frac r2))} \leq \frac{1}{\alpha(n)}\left(\frac2r\right)^n\|u\|_{L^1(B(x_0,r))}. $$
+
+\emph{Combining} with Step 1, we deduce
+$$ |D^\alpha u(x_0)| \leq \frac{2n}{r}\cdot\frac{2^n}{\alpha(n) r^n}\|u\|_{L^1(B(x_0,r))} = \frac{2^{n+1}n}{\alpha(n)}\frac{1}{r^{n+1}}\|u\|_{L^1(B(x_0,r))} $$
+if $|\alpha| = 1$. This verifies \eqref{eq:est}, \eqref{eq:Ck} for $k = 1$, since $C_1 = \frac{2^{n+1}n}{\alpha(n)}$.
+
+\paragraph{The induction step.} Assume now $k \geq 2$ and that \eqref{eq:est}, \eqref{eq:Ck} are valid for all balls in $U$ and each multiindex of order less than or equal to $k-1$. Explicitly, the \emph{induction hypothesis} we use is: for every ball $B(x,\rho) \subset U$ and every multiindex $\beta$ with $|\beta| = k - 1$,
+$$ |D^\beta u(x)| \leq \frac{(2^{n+1}n(k-1))^{k-1}}{\alpha(n)\,\rho^{n+k-1}}\|u\|_{L^1(B(x,\rho))}. $$
+Fix $B(x_0,r) \subset U$ and let $\alpha$ be a multiindex with $|\alpha| = k$. Choose $i$ with $\alpha_i \geq 1$ and let $\beta = \alpha - e_i$ (lower the $i$-th entry by one). Then $|\beta| = k - 1$ and $D^\alpha u = (D^\beta u)_{x_i}$. Write
+$$ w := D^\beta u, \qquad \text{so that} \qquad D^\alpha u = w_{x_i}. $$
+Now we simply \emph{imitate the case $k = 1$}, with $w$ in place of $u$: there we estimated $u_{x_i}$, now we estimate $w_{x_i}$. The only change is the choice of radii: we use the ball $B(x_0, r/k)$ instead of $B(x_0, r/2)$, and balls of radius $r - \frac rk = \frac{k-1}{k}r$ instead of $\frac r2$.
+
+\emph{Step 1 (as in \eqref{eq:k1}).} $w = D^\beta u$ is harmonic, hence so is $w_{x_i}$, and $B(x_0,r/k) \subset B(x_0,r) \subset U$. By the mean-value formula for $w_{x_i}$ on $B(x_0,r/k)$ and the Gauss--Green theorem on that ball,
+\begin{align*}
+|w_{x_i}(x_0)| &= \frac{k^n}{\alpha(n)r^n}\left|\int_{B(x_0,r/k)} w_{x_i}\, dx\right| = \frac{k^n}{\alpha(n)r^n}\left|\int_{\partial B(x_0,r/k)} w\nu_i\, dS\right| \\
+&\leq \frac{k^n}{\alpha(n) r^n}\, n\alpha(n)\left(\frac rk\right)^{n-1}\|w\|_{L^\infty(\partial B(x_0,\frac rk))}.
+\end{align*}
+Since $\frac{k^n}{r^n}\cdot n\frac{r^{n-1}}{k^{n-1}} = \frac{nk}{r}$, this is
+$$ |D^\alpha u(x_0)| \leq \frac{nk}{r}\|D^\beta u\|_{L^\infty(\partial B(x_0,\frac rk))}. $$
+
+\emph{Step 2 (bound $D^\beta u$ on the sphere $\partial B(x_0, r/k)$).} If $x \in \partial B(x_0,\frac rk)$, then $B(x, \frac{k-1}{k}r) \subset B(x_0,r) \subset U$: for $|z - x| \leq \frac{k-1}{k}r$,
+$$ |z - x_0| \leq |z - x| + |x - x_0| \leq \frac{k-1}{k}r + \frac rk = r. $$
+So the induction hypothesis applies at $x$ with $\rho = \frac{k-1}{k}r$:
+$$ |D^\beta u(x)| \leq \frac{(2^{n+1}n(k-1))^{k-1}}{\alpha(n)\left(\frac{k-1}{k}r\right)^{n+k-1}}\|u\|_{L^1(B(x,\frac{k-1}{k}r))} \leq \frac{(2^{n+1}n(k-1))^{k-1}}{\alpha(n)\left(\frac{k-1}{k}r\right)^{n+k-1}}\|u\|_{L^1(B(x_0,r))}. $$
+Again the right side does not depend on $x$, so it bounds $\|D^\beta u\|_{L^\infty(\partial B(x_0,\frac rk))}$.
+
+\emph{Combining the two steps.} We get $|D^\alpha u(x_0)| \leq \frac{Q}{\alpha(n) r^{n+k}}\|u\|_{L^1(B(x_0,r))}$ with
+$$ Q = nk\,(2^{n+1}n)^{k-1}(k-1)^{k-1}\left(\frac{k}{k-1}\right)^{n+k-1}. $$
+Let us simplify. Since $(k-1)^{k-1}\left(\frac{k}{k-1}\right)^{k-1} = k^{k-1}$,
+$$ Q = nk\,(2^{n+1}n)^{k-1}k^{k-1}\left(\frac{k}{k-1}\right)^n = (2^{n+1}n)^{k-1}\, n\, k^k\left(\frac{k}{k-1}\right)^n. $$
+Because $k \geq 2$ we have $\frac{k}{k-1} \leq 2$, so $\left(\frac{k}{k-1}\right)^n \leq 2^n \le 2^{n+1}$. Hence
+$$ Q \leq (2^{n+1}n)^{k-1}\cdot 2^{n+1}n\cdot k^k = (2^{n+1}n)^k k^k = (2^{n+1}nk)^k. $$
+Therefore
+\begin{equation}\label{eq:estk}
+|D^\alpha u(x_0)| \leq \frac{(2^{n+1}nk)^k}{\alpha(n)r^{n+k}}\|u\|_{L^1(B(x_0,r))}.
+\end{equation}
+This confirms \eqref{eq:est}, \eqref{eq:Ck} for $|\alpha| = k$. $\square$
+
+\textbf{Why the radii $r/k$ and $r - r/k$?} We need two balls: a small ball $B(x_0,\rho_1)$ for the Gauss--Green step, and balls $B(x,\rho_2)$ centered on its boundary sphere for the induction hypothesis. They must satisfy $\rho_1 + \rho_2 \leq r$ to stay inside $B(x_0,r)$. Step 1 costs a factor $n/\rho_1$ and Step 2 a factor $\rho_2^{-(n+k-1)}$. Choosing $\rho_1 = r/k$ and $\rho_2 = r(1 - 1/k)$ balances these so that the constant comes out exactly in the form $(2^{n+1}nk)^k$. For $k = 1$ this choice would give $\rho_2 = 0$, which is why the case $k = 1$ is done separately with $\rho_1 = \rho_2 = r/2$.
+
+\subsubsection{Liouville's Theorem}
+Next we see that there are no nontrivial bounded harmonic functions on all of $\mathbb{R}^n$.
+
+\textbf{Theorem 8 (Liouville's Theorem).} \textit{Suppose $u : \mathbb{R}^n \to \mathbb{R}$ is harmonic and bounded. Then $u$ is constant.}
+
+\textit{Proof.} \emph{Step 1: the estimate.} Let $M = \|u\|_{L^\infty(\mathbb{R}^n)} = \sup_{\mathbb{R}^n}|u| < \infty$. Fix $x_0 \in \mathbb{R}^n$ and $r > 0$. Since $U = \mathbb{R}^n$, every ball $B(x_0,r)$ lies in $U$, \emph{no matter how large $r$ is}. (Theorem 7 holds for any open set $U$: its proof only used balls inside $U$, never the boundedness of $U$.) Apply Theorem 7 with $k = 1$ on $B(x_0,r)$:
+$$ |u_{x_i}(x_0)| \leq \frac{C_1}{r^{n+1}}\|u\|_{L^1(B(x_0,r))}. $$
+
+\emph{Step 2: bound the $L^1$ norm by the sup norm.} $\|u\|_{L^1(B(x_0,r))} = \int_{B(x_0,r)}|u|\, dy \leq M\,|B(x_0,r)| = M\alpha(n)r^n$. Hence
+$$ |u_{x_i}(x_0)| \leq \frac{C_1}{r^{n+1}}\, \alpha(n) r^n M = \frac{C_1\alpha(n)}{r}\|u\|_{L^\infty(\mathbb{R}^n)} \to 0 \quad \text{as } r \to \infty. $$
+
+\emph{Step 3: $Du \equiv 0$.} The left side does not depend on $r$, so $u_{x_i}(x_0) = 0$, for each $i$ and each $x_0$. Thus $Du \equiv 0$.
+
+\emph{Step 4: $u$ is constant.} For any $x \in \mathbb{R}^n$, apply the fundamental theorem of calculus along the segment from $0$ to $x$:
+$$ u(x) - u(0) = \int_0^1 \frac{d}{dt}u(tx)\, dt = \int_0^1 Du(tx)\cdot x\, dt = 0. $$
+So $u(x) = u(0)$ for all $x$, and $u$ is constant. $\square$
+
+\subsubsection{Representation Formula}
+\textbf{Theorem 9 (Representation formula).} \textit{Let $f \in C^2_c(\mathbb{R}^n)$, $n \geq 3$. Then any bounded solution of}
+$$ -\Delta u = f \quad \text{in } \mathbb{R}^n $$
+\textit{has the form}
+$$ u(x) = \int_{\mathbb{R}^n}\Phi(x-y)f(y)\, dy + C \quad (x \in \mathbb{R}^n) $$
+\textit{for some constant $C$.}
+
+\textbf{Remark.} The theorem is stated only for $n \geq 3$; the proof below does not work for $n = 2$. The reason (explained after the proof) is that for $n \ge 3$, $\Phi$ is \emph{bounded away from the origin} (in fact $\Phi(x) \to 0$ as $|x|\to\infty$), whereas for $n = 2$, $\Phi(x) = -\frac{1}{2\pi}\log|x|$ is unbounded as $|x| \to \infty$.
+
+\textbf{Proof.} By a solution we mean $u \in C^2(\mathbb{R}^n)$ with $-\Delta u = f$. Let
+$$ \tilde u(x) := \int_{\mathbb{R}^n}\Phi(x-y)f(y)\, dy. $$
+
+\emph{Step 1: $\tilde u$ is a solution.} By Theorem 1, $\tilde u \in C^2(\mathbb{R}^n)$ and $-\Delta\tilde u = f$ in $\mathbb{R}^n$.
+
+\emph{Step 2: $\tilde u$ is bounded (here $n \geq 3$ is used).} Choose $R_0$ with $f = 0$ outside $B(0,R_0)$, and let $M_f = \max|f|$. By commutativity of convolution, $\tilde u(x) = \int_{\mathbb{R}^n}\Phi(y)f(x-y)\, dy$. Split the integral into the unit ball and its complement:
+$$ \tilde u(x) = \underbrace{\int_{B(0,1)}\Phi(y)f(x-y)\, dy}_{=: A(x)} + \underbrace{\int_{\mathbb{R}^n \setminus B(0,1)}\Phi(y)f(x-y)\, dy}_{=: B(x)}. $$
+\begin{itemize}
+    \item \emph{On the unit ball} the singularity of $\Phi$ is integrable: $\Phi(y) = \frac{1}{n(n-2)\alpha(n)}|y|^{-(n-2)}$ and $n - 2 < n$, so by Lemma~\ref{lem:Phiball} (or Lemma~\ref{lem:powers}), $\int_{B(0,1)}|\Phi|\, dy = \frac{1}{2(n-2)}$. Since $|f(x - y)| \leq M_f$,
+    $$ |A(x)| \leq M_f\int_{B(0,1)}|\Phi(y)|\, dy = \frac{M_f}{2(n-2)}. $$
+    \item \emph{Outside the unit ball} $\Phi$ is bounded: for $|y| \geq 1$, $|y|^{n-2} \geq 1$ (as $n - 2 > 0$), so
+    $$ 0 < \Phi(y) = \frac{1}{n(n-2)\alpha(n)|y|^{n-2}} \leq \frac{1}{n(n-2)\alpha(n)} = \Phi(1), $$
+    writing $\Phi(1)$ for the value of $\Phi$ on the unit sphere. Using the compact support of $f$ (the substitution $z = x - y$),
+    $$ |B(x)| \leq \Phi(1)\int_{\mathbb{R}^n}|f(x-y)|\, dy = \Phi(1)\int_{\mathbb{R}^n}|f(z)|\, dz = \Phi(1)\int_{B(0,R_0)}|f| \leq \Phi(1)M_f\,\alpha(n)R_0^n. $$
+\end{itemize}
+Both bounds are independent of $x$. Hence $|\tilde u(x)| \leq \frac{M_f}{2(n-2)} + \Phi(1)M_f\alpha(n)R_0^n$ for all $x$: $\tilde u$ is a bounded solution of $-\Delta u = f$.
+
+\emph{Step 3: Liouville.} If $u$ is another bounded solution, let $w := u - \tilde u$. Then $w \in C^2(\mathbb{R}^n)$,
+$$ \Delta w = \Delta u - \Delta\tilde u = -f + f = 0, $$
+so $w$ is harmonic in $\mathbb{R}^n$; and $w$ is bounded, since $|w| \leq |u| + |\tilde u|$ and both are bounded. By Liouville's Theorem (Theorem 8), $w$ is constant, say $w \equiv C$. Thus $u = \tilde u + C$, which is the claimed formula. $\square$
+
+\textbf{Remark (why the theorem is not true for $n = 2$).} If $n = 2$, $\Phi(x) = -\frac{1}{2\pi}\log|x|$ is unbounded as $|x| \to \infty$, and so may be $\int_{\mathbb{R}^2}\Phi(x-y)f(y)\, dy$. Then Step 2 fails: outside the unit ball we no longer have a bound $|\Phi(y)| \leq \Phi(1)$, and $\tilde u$ need not be bounded, so Liouville's theorem cannot be applied to $u - \tilde u$. In fact, when $\int f \neq 0$, $\tilde u$ is \emph{always} unbounded:
+
+Let $m = \int_{\mathbb{R}^2}f\, dy \neq 0$ and $f = 0$ outside $B(0,R_0)$. For $|x| \geq 2R_0$ and $|y| \leq R_0$ write $\log|x - y| = \log|x| + \log\frac{|x-y|}{|x|}$. Then
+$$ \tilde u(x) = -\frac{1}{2\pi}\int_{B(0,R_0)}\log|x-y|\, f(y)\, dy = -\frac{m}{2\pi}\log|x| - \frac{1}{2\pi}\int_{B(0,R_0)}\log\frac{|x-y|}{|x|}\, f(y)\, dy. $$
+By the triangle inequality, $\frac12 \leq 1 - \frac{R_0}{|x|} \leq \frac{|x - y|}{|x|} \leq 1 + \frac{R_0}{|x|} \leq \frac32$, so $\left|\log\frac{|x-y|}{|x|}\right| \leq \log 2$, and the last integral is bounded by $\frac{\log 2}{2\pi}\int|f|$, independently of $x$. Therefore
+$$ \left|\tilde u(x) + \frac{m}{2\pi}\log|x|\right| \leq \frac{\log 2}{2\pi}\int|f| \quad (|x| \geq 2R_0), $$
+and since $\log|x| \to \infty$, $|\tilde u(x)| \to \infty$ as $|x| \to \infty$. So for $n = 2$ the functions $\tilde u + C$ are \emph{never} bounded, and the conclusion ``bounded solutions are of the form $\tilde u + C$'' cannot be obtained in this way. (If $\int f = 0$ the $\log|x|$ term disappears, $\tilde u$ is bounded, and the proof above goes through; but this is a special situation.)
+
+\subsubsection{Analyticity}
+Next we refine Theorem 6. Recall that $u$ is \emph{analytic} in $U$ if near each point $x_0 \in U$ it can be represented by a convergent power series $\sum_\alpha \frac{D^\alpha u(x_0)}{\alpha!}(x - x_0)^\alpha$.
+
+\textbf{Theorem 10 (Analyticity).} \textit{Assume $u$ is harmonic in $U$. Then $u$ is analytic in $U$.}
+
+(We omit the proof for now. It uses the precise form of the constants $C_k$ in Theorem 7.)
+
+\subsubsection{Harnack's Inequality}
+Recall that we write $V \subset\subset U$ to mean $V \subset \bar V \subset U$ and $\bar V$ is compact (Definition~\ref{def:balls}).
+
+\textbf{Theorem 11 (Harnack's inequality).} \textit{For each connected open set $V \subset\subset U$, there exists a positive constant $C$, depending only on $V$, such that}
+$$ \sup_V u \leq C\inf_V u $$
+\textit{for all nonnegative harmonic functions $u$ in $U$.}
+
+Thus in particular
+$$ \frac1C u(y) \leq u(x) \leq Cu(y) $$
+for all points $x, y \in V$. These inequalities assert that \emph{the values of a nonnegative harmonic function within $V$ are all comparable}: $u$ cannot be very small (or very large) at any point of $V$ unless $u$ is very small (or very large) everywhere in $V$. The intuitive idea is that since $V$ is a positive distance away from $\partial U$, there is ``room for the averaging effects of Laplace's equation to occur''.
+
+\textbf{Remark (what Harnack's inequality says).}
+\begin{enumerate}
+    \item \emph{The constant does not depend on the function.} $C$ is determined by the set $V$ (and the fixed domain $U$): it is decided \emph{before} any harmonic function is chosen. The same $C$ works for \emph{every} nonnegative harmonic function $u$ in $U$.
+    \item \emph{All values are comparable.} For any two points $x, y \in V$, $u(x)$ and $u(y)$ differ at most by the factor $C$. For example, if $u(y) = 1000$ at one point of $V$, then $u(x) \geq 1000/C$ at \emph{every} point of $V$; and if $u(x) = 0.001$ at one point, then $u \leq 0.001\, C$ everywhere in $V$.
+    \item \emph{Why ``nonnegative'' is needed.} For $u(x) = x_1$ (harmonic, but changing sign) we have $\inf_V u < 0 < \sup_V u$ if $V$ contains points on both sides of $\{x_1 = 0\}$, and no inequality $\sup u \leq C\inf u$ with $C > 0$ can hold.
+    \item \emph{Why $V \subset\subset U$ is needed.} The averaging argument needs balls around points of $V$ which stay inside $U$. If $V$ were allowed to approach $\partial U$, the balls would shrink and the constant would blow up.
+    \item \emph{Why ``connected'' is needed.} If $V$ had two separate pieces, information could not travel from one piece to the other through $V$; the proof passes from point to point through a chain of overlapping balls inside $V$.
+\end{enumerate}
+
+\begin{lemma}[Chain of balls]\label{lem:chain}
+Let $V \subset \mathbb{R}^n$ be open and connected with $\bar V$ compact, and let $\rho > 0$. Then there exist finitely many open balls $B_1, \dots, B_N$ of radius $\rho$, centered at points of $\bar V$ and covering $\bar V$, with the following property: for any $x, y \in V$ there are distinct indices $i_0, i_1, \dots, i_m$ (so $m + 1 \leq N$) such that
+$$ x \in B_{i_0}, \qquad y \in B_{i_m}, \qquad B_{i_{k-1}} \cap B_{i_k} \cap V \neq \emptyset \quad (k = 1, \dots, m). $$
+\end{lemma}
+\begin{proof}
+\emph{Finite cover.} The open balls $B^\circ(z,\rho)$, $z \in \bar V$, cover $\bar V$. Since $\bar V$ is compact, finitely many of them, $B_1, \dots, B_N$, already cover $\bar V$. Each $B_j$ meets $V$: its center lies in $\bar V$, so it is a limit of points of $V$, and some of these are within distance $\rho$ of the center.
+
+\emph{Linked balls.} Call two indices $j, l$ \emph{linked} if there is a chain $j = j_0, j_1, \dots, j_p = l$ with $B_{j_{q-1}}\cap B_{j_q}\cap V \neq \emptyset$ for each $q$. This is an equivalence relation (chains can be reversed and joined). Let $\mathcal{L}$ be the set of indices linked to $1$, and put
+$$ A = \bigcup_{j \in \mathcal{L}} (B_j \cap V), \qquad A' = \bigcup_{j \notin \mathcal{L}} (B_j \cap V). $$
+Both are open (unions of open sets), $A \cup A' = V$ (the balls cover $V$), and $A \ni$ a point of $B_1 \cap V$, so $A \neq \emptyset$.
+
+\emph{$A$ and $A'$ are disjoint.} If $z \in B_j \cap B_l \cap V$ with $j \in \mathcal{L}$ and $l \notin \mathcal{L}$, then $j$ and $l$ are directly linked (the one-step chain $j, l$), so $l \in \mathcal{L}$, a contradiction.
+
+\emph{Conclusion.} $V$ is connected, $V = A \cup A'$ with $A, A'$ disjoint and open and $A \neq \emptyset$; hence $A' = \emptyset$. If some index $l$ were not in $\mathcal{L}$, then $\emptyset \neq B_l \cap V \subset A'$; so all indices are linked to $1$, hence to each other. Given $x, y \in V$, pick $i_0$ with $x \in B_{i_0}$ and $i'$ with $y \in B_{i'}$, and a chain from $i_0$ to $i'$. If an index occurs twice in the chain, delete the part of the chain between the two occurrences; repeating this, we obtain a chain with distinct indices.
+\end{proof}
+
+\textbf{Proof of Theorem 11.} Let $u \geq 0$ be harmonic in $U$, and let $V \subset\subset U$ be open and connected.
+
+\emph{Step 0: choice of $r$.} $\bar V$ is compact, $\partial U$ is closed (and nonempty since $U$ is bounded), and they are disjoint because $\bar V \subset U$. A compact set and a disjoint closed set have positive distance, so $\operatorname{dist}(V,\partial U) > 0$. Let
+$$ r := \tfrac14\operatorname{dist}(V,\partial U). $$
+Then every $x \in V$ has $\operatorname{dist}(x,\partial U) \geq 4r > 2r$, so $B(x,2r) \subset U$ (Lemma~\ref{lem:balls}). \emph{This is the purpose of the factor $\frac14$}: for every point of $V$ we have room for a ball of radius $2r$ inside $U$ (with some room to spare).
+
+\emph{Step 1: comparing $u(x)$ and $u(y)$ for nearby points.} Choose $x, y \in V$, $|x - y| \leq r$.
+\begin{itemize}
+    \item $B(x,2r) \subset U$ by Step 0, so the mean-value formula holds on it.
+    \item $B(y,r) \subset B(x,2r)$: if $|z - y| \leq r$, then $|z - x| \leq |z - y| + |y - x| \leq r + r = 2r$.
+    \item Since $u \geq 0$, integrating over the smaller set $B(y,r)$ gives a smaller value: $\int_{B(x,2r)} u\, dz \geq \int_{B(y,r)} u\, dz$. (We drop the integral over $B(x,2r)\setminus B(y,r)$, which is $\geq 0$. \emph{Here the nonnegativity of $u$ is used.})
+\end{itemize}
+Therefore
+\begin{align*}
+u(x) &= \fint_{B(x,2r)} u\, dz = \frac{1}{\alpha(n)2^nr^n}\int_{B(x,2r)} u\, dz \geq \frac{1}{\alpha(n)2^nr^n}\int_{B(y,r)} u\, dz \\
+&= \frac{1}{2^n}\fint_{B(y,r)} u\, dz = \frac{1}{2^n}u(y).
+\end{align*}
+In the last step we used the mean-value formula on $B(y,r)$, which lies in $U$ (it lies in $B(x,2r)$).
+
+\emph{Step 2: interchanging the roles of $x$ and $y$.} The point $y$ is also in $V$, so by Step 0, $B(y,2r) \subset U$ as well, and $B(x,r) \subset B(y,2r)$ (same triangle inequality). Thus the argument of Step 1 works with $x$ and $y$ interchanged, giving $u(y) \geq 2^{-n}u(x)$. Altogether,
+$$ 2^n u(y) \geq u(x) \geq \frac{1}{2^n}u(y) \qquad \text{if } x, y \in V,\ |x - y| \leq r. $$
+
+\emph{Step 3: chains of balls.} Since $V$ is connected and $\bar V$ is compact, Lemma~\ref{lem:chain} with $\rho = r/2$ gives finitely many open balls $B_1, \dots, B_N$ of radius $r/2$ covering $\bar V$, such that any two points of $V$ are joined by a chain of these balls with consecutive balls meeting inside $V$. The number $N$ depends only on $V$ (and $r$, which depends only on $V$ and $U$), \emph{not on $u$}.
+
+Now let $x, y \in V$. Take the chain $B_{i_0}, \dots, B_{i_m}$ from Lemma~\ref{lem:chain}, and choose points
+$$ p_0 = x, \qquad p_k \in B_{i_{k-1}} \cap B_{i_k} \cap V \ (k = 1,\dots,m), \qquad p_{m+1} = y. $$
+All $p_k$ lie in $V$. For each $k = 0, \dots, m$, the two consecutive points $p_k$ and $p_{k+1}$ both lie in the ball $B_{i_k}$ (check: $p_0 = x \in B_{i_0}$; $p_k \in B_{i_k}$ for $k \geq 1$; $p_{k+1} \in B_{i_k}$ for $k < m$; $p_{m+1} = y \in B_{i_m}$). A ball of radius $r/2$ has diameter $r$, so $|p_k - p_{k+1}| < r$. By Step 2, $u(p_k) \geq 2^{-n}u(p_{k+1})$ for $k = 0,\dots,m$. Chaining these $m+1$ inequalities (all quantities are $\geq 0$),
+$$ u(x) = u(p_0) \geq \frac{1}{2^n}u(p_1) \geq \frac{1}{2^{2n}}u(p_2) \geq \cdots \geq \frac{1}{2^{n(m+1)}}u(p_{m+1}) = \frac{1}{2^{n(m+1)}}u(y) \geq \frac{1}{2^{nN}}u(y), $$
+since $m + 1 \leq N$.
+
+\emph{Step 4: conclusion.} Let $C := 2^{nN}$, which depends only on $V$. We have shown $u(y) \leq C u(x)$ for all $x, y \in V$; by symmetry also $u(x) \le C u(y)$, i.e.\ $\frac1C u(y) \leq u(x) \leq Cu(y)$. Fix $x$ and take the supremum over $y \in V$: $\sup_V u \leq C u(x)$. Now take the infimum over $x \in V$: $\sup_V u \leq C\inf_V u$. $\square$
 
 \end{document}
