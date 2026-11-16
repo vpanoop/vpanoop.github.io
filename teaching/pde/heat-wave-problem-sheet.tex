@@ -1,0 +1,358 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[R]{DMS KU - AVP}
+\fancyhead[L]{PDE Problem Sheet}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newcounter{prob}
+\newcommand{\prob}[1]{\refstepcounter{prob}\par\medskip\noindent\textbf{Problem \theprob.} \textit{(#1)}\quad}
+\setlist{itemsep=2pt, topsep=3pt}
+
+\begin{document}
+\begin{center}
+\textbf{\Large Partial Differential Equations} \\[0.5em]
+\textbf{Course Code: MSMAT03DSC12} \\[0.5em]
+\textbf{Problem Sheet: Heat Equation and Wave Equation} \\[0.5em]
+\textbf{Anoop V. P.}
+\end{center}
+
+\noindent\textbf{Instructions.} These problems check your understanding of Section 3 (Heat Equation) and Section 4 (Wave Equation, including the Transport Equation) of the lecture notes. Each problem is a computation or a question that needs a short reason.
+
+\smallskip
+\noindent\textbf{Notation.} $\Phi(x,t) = (4\pi t)^{-n/2}e^{-|x|^2/4t}$ $(t > 0)$ is the fundamental solution of the heat equation. For the heat equation with initial value $g$, ``the solution'' means $u(x,t) = \int_{\mathbb{R}^n}\Phi(x-y,t)\,g(y)\,dy$. For the wave equation $u_{tt} - c^2u_{xx} = 0$ with $u(x,0) = g(x)$, $u_t(x,0) = h(x)$, ``the solution'' means the one given by d'Alembert's formula. You may use $\int_{-\infty}^\infty e^{-s^2}\,ds = \sqrt\pi$.
+
+%=====================================================================
+\section*{Part A: The Heat Equation}
+
+\prob{Recognising solutions}
+Decide which of the following functions solve the heat equation $u_t - \Delta u = 0$ in $\mathbb{R}^n \times (0,\infty)$ for the indicated $n$. For those that do not, find $f$ such that they solve $u_t - \Delta u = f$.
+\begin{enumerate}[label=(\alph*)]
+    \item $u(x,t) = x^2 + 2t$ \quad ($n = 1$).
+    \item $u(x,t) = e^{-t}\sin x$ \quad ($n = 1$).
+    \item $u(x,t) = e^{-k^2t}\cos(kx)$, $k \in \mathbb{R}$ \quad ($n = 1$).
+    \item $u(x,t) = x^2 - 2t$ \quad ($n = 1$).
+    \item $u(x,y,t) = x^2 + y^2 + 4t$ \quad ($n = 2$).
+    \item $u(x,y,t) = e^{-2t}\sin x\sin y$ \quad ($n = 2$).
+\end{enumerate}
+
+\prob{Homogeneous and nonhomogeneous}
+\begin{enumerate}[label=(\alph*)]
+    \item Show that if $u_1, u_2$ solve the heat equation, then so does $au_1 + bu_2$ for constants $a, b$.
+    \item Show that if $u_1$ solves $u_t - \Delta u = f$ and $u_2$ solves $u_t - \Delta u = 0$, then $u_1 + u_2$ solves $u_t - \Delta u = f$.
+    \item Is the sum of two solutions of $u_t - \Delta u = f$ again a solution of $u_t - \Delta u = f$? Explain.
+    \item Find one solution of $u_t - u_{xx} = 1$ that depends only on $t$, and one that depends only on $x$.
+\end{enumerate}
+
+\prob{The constant $a$}
+Suppose $\mathbf F = -aDu$ with a constant $a > 0$ and $u_t = -\operatorname{div}\mathbf F$.
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $u_t = a\Delta u$.
+    \item Show that if $u$ solves $u_t = a\Delta u$, then $v(x,t) := u(x, t/a)$ solves $v_t = \Delta v$.
+    \item Using (b) and $\Phi$, write down a solution of $u_t = a\Delta u$ in $\mathbb{R}^n \times (0,\infty)$.
+\end{enumerate}
+
+\prob{The scaling $u(\lambda x, \lambda^2t)$}
+\begin{enumerate}[label=(\alph*)]
+    \item Let $u(x,t) = x^2 + 2t$ $(n = 1)$ and $\lambda = 3$. Write down $w(x,t) = u(\lambda x, \lambda^2 t)$ and check directly that $w$ solves the heat equation.
+    \item For the same $u$, show that $u(\lambda x, \lambda t)$ is \emph{not} a solution when $\lambda = 3$.
+    \item Show that the ratio $\frac{|x|^2}{t}$ is unchanged under $(x,t) \mapsto (\lambda x, \lambda^2 t)$, but changes under $(x,t) \mapsto (\lambda x,\lambda t)$.
+    \item Explain in two or three sentences why the scaling in (a) works but the one in (b) does not, in terms of the number of $t$- and $x$-derivatives in the equation.
+\end{enumerate}
+
+\prob{The dilation scaling}
+Let $u$ solve the heat equation in $\mathbb{R}^n \times (0,\infty)$ and let $w(x,t) = \lambda^\alpha u(\lambda^\beta x, \lambda t)$ for a fixed $\lambda > 0$.
+\begin{enumerate}[label=(\alph*)]
+    \item Compute $w_t$ and $\Delta w$ in terms of derivatives of $u$.
+    \item For which $\beta$ is $w$ a solution for every $\lambda > 0$? Does the answer depend on $\alpha$?
+    \item Verify that $\Phi(x,t) = \lambda^{n/2}\,\Phi(\lambda^{1/2}x, \lambda t)$ for all $\lambda > 0$, $x \in \mathbb{R}^n$, $t > 0$.
+    \item Setting $\lambda = t^{-1}$ in (c), express $\Phi(x,t)$ in the form $t^{-\alpha}v(x/t^\beta)$. What are $\alpha$, $\beta$ and $v$?
+\end{enumerate}
+
+\prob{Inserting the ansatz ($n = 1$)}
+Let $n = 1$ and $u(x,t) = t^{-\alpha}v(y)$ with $y = t^{-\beta}x$.
+\begin{enumerate}[label=(\alph*)]
+    \item Compute $u_t$ and $u_{xx}$ in terms of $v(y)$, $v'(y)$, $v''(y)$ and powers of $t$.
+    \item Write down the equation for $v$ that results from $u_t - u_{xx} = 0$, and show that $t$ drops out if and only if $\beta = \frac12$.
+    \item With $\beta = \frac12$ and $\alpha = \frac12$, show that the equation for $v$ can be written as $\big(v' + \frac12 yv\big)' = 0$.
+    \item Solve the equation in (c) under the assumption that $v$ and $v'$ tend to $0$ as $y \to \pm\infty$.
+\end{enumerate}
+
+\prob{The radial ODE}
+\begin{enumerate}[label=(\alph*)]
+    \item Let $v(y) = w(|y|)$ in $\mathbb{R}^n$ and $r = |y| \neq 0$. Show that $y\cdot Dv(y) = rw'(r)$.
+    \item Write down the ODE for $w$ obtained from $\alpha v + \frac12 y\cdot Dv + \Delta v = 0$ when $n = 3$.
+    \item Show that for $\alpha = \frac n2$, the ODE in (b) can be written as $(r^{n-1}w')' + \frac12(r^nw)' = 0$.
+    \item Check directly that $w(r) = e^{-r^2/4}$ satisfies $w' = -\frac12 rw$ and hence the ODE in (c).
+\end{enumerate}
+
+\prob{$\Phi$ solves the heat equation}
+\begin{enumerate}[label=(\alph*)]
+    \item For $n = 1$, compute $\Phi_t$ and $\Phi_{xx}$ explicitly and check that $\Phi_t = \Phi_{xx}$ for $t > 0$.
+    \item For $n = 2$, write $\Phi(x,t) = \Phi_1(x_1,t)\,\Phi_1(x_2,t)$ where $\Phi_1$ is the one-dimensional fundamental solution. Use this product form and (a) to show that $\Phi$ solves the heat equation in $\mathbb{R}^2 \times (0,\infty)$.
+    \item Show that $(x,t) \mapsto \Phi(x - y, t - s)$ solves the heat equation for $t > s$, for each fixed $y \in \mathbb{R}^n$ and $s \in \mathbb{R}$.
+\end{enumerate}
+
+\prob{The shape of $\Phi$ ($n = 1$)}
+Let $n = 1$.
+\begin{enumerate}[label=(\alph*)]
+    \item For fixed $t > 0$, where does $x \mapsto \Phi(x,t)$ attain its maximum, and what is the maximum value?
+    \item Sketch $\Phi(\cdot,t)$ for $t = 1$, $t = \frac14$ and $t = \frac1{16}$ on the same axes. What happens to the height and to the width as $t$ decreases?
+    \item Show that $\Phi(0,t) \to \infty$ and $\Phi(x,t) \to 0$ for each $x \neq 0$, as $t \to 0^+$.
+    \item Fix $x \neq 0$. Find the time $t > 0$ at which $t \mapsto \Phi(x,t)$ is largest.
+\end{enumerate}
+
+\prob{Integrals of $\Phi$}
+\begin{enumerate}[label=(\alph*)]
+    \item For $n = 1$, show $\int_{-\infty}^\infty \Phi(x,t)\,dx = 1$ using the substitution $x = 2\sqrt t\,z$.
+    \item For $n = 2$, compute $\int_{\mathbb{R}^2}\Phi(x,t)\,dx$ using polar coordinates.
+    \item For $n = 1$, compute $\int_{-\infty}^\infty x^2\,\Phi(x,t)\,dx$. (You may use $\int_{-\infty}^\infty s^2e^{-s^2}ds = \frac{\sqrt\pi}{2}$.) How does it depend on $t$?
+    \item For $n = 1$, show that $\int_{|x| \geq \delta}\Phi(x,t)\,dx = \frac{2}{\sqrt\pi}\int_{\delta/(2\sqrt t)}^\infty e^{-s^2}ds$, and deduce that it tends to $0$ as $t \to 0^+$ for each $\delta > 0$.
+\end{enumerate}
+
+\prob{The Gaussian integral}
+\begin{enumerate}[label=(\alph*)]
+    \item In $\mathbb{R}^2$, compute $\int_{B(0,R)} e^{-|x|^2}dx$ by polar coordinates, and let $R \to \infty$.
+    \item Deduce $\int_{-\infty}^\infty e^{-s^2}ds = \sqrt\pi$, explaining where Fubini--Tonelli is used.
+    \item Compute $\int_{\mathbb{R}^n} e^{-|x|^2}dx$ and $\int_{\mathbb{R}^n}e^{-a|x|^2}dx$ for $a > 0$.
+\end{enumerate}
+
+\prob{Solving initial-value problems}
+In each case $n = 1$. Compute $u(x,t) = \int_{\mathbb{R}}\Phi(x - y,t)g(y)\,dy$ and verify that it solves the heat equation and $u(x,t) \to g(x)$ as $t \to 0^+$.
+\begin{enumerate}[label=(\alph*)]
+    \item $g(x) \equiv 5$.
+    \item $g(x) = \cos x$. (You may use $\int_{-\infty}^\infty e^{-as^2}\cos(bs)\,ds = \sqrt{\pi/a}\;e^{-b^2/4a}$ for $a > 0$.)
+    \item $g(x) = e^{-x^2}$. (Complete the square in the exponent.)
+\end{enumerate}
+
+\prob{Properties of the solution formula}
+Let $g, g_1, g_2$ be bounded and continuous on $\mathbb{R}^n$, and let $u, u_1, u_2$ be the corresponding solutions.
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $|u(x,t)| \leq \sup_{\mathbb{R}^n}|g|$ for all $x$ and $t > 0$.
+    \item Show that if $g_1 \leq g_2$ everywhere, then $u_1 \leq u_2$ everywhere.
+    \item Show that if $a \in \mathbb{R}^n$ and $\tilde g(x) = g(x - a)$, then the solution with initial value $\tilde g$ is $u(x - a, t)$.
+    \item If $g$ is even ($n = 1$), show that $u(\cdot,t)$ is even for each $t > 0$.
+\end{enumerate}
+
+\prob{The hypotheses of the solution theorem}
+\begin{enumerate}[label=(\alph*)]
+    \item Let $g(x) = \min\{|x|, 1\}$ $(n = 1)$. Is $g$ differentiable? Is the solution $u$ differentiable in $\mathbb{R}\times(0,\infty)$? What is $\lim_{(x,t)\to(0,0),\,t>0}u(x,t)$?
+    \item Let $g(x) = e^{x^2}$ $(n = 1)$. Show that $\int_{\mathbb{R}}\Phi(x - y,t)g(y)\,dy = \infty$ for $t \geq \frac14$. Which hypothesis of the theorem on the solution of the initial-value problem fails?
+    \item In the proof that $u \in C^\infty(\mathbb{R}^n\times(0,\infty))$, explain why it is not enough to know that the derivatives of $\Phi$ are bounded on $\mathbb{R}^n \times [\delta,\infty)$ to differentiate under the integral sign over $\mathbb{R}^n$.
+\end{enumerate}
+
+\prob{Understanding the proof of the initial condition}
+Let $g$ be bounded and continuous on $\mathbb{R}^n$ and $x^0 \in \mathbb{R}^n$.
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $u(x,t) - g(x^0) = \int_{\mathbb{R}^n}\Phi(x - y,t)\big[g(y) - g(x^0)\big]\,dy$, and say which result of the notes is used.
+    \item Show: if $|x - x^0| \leq \frac\delta2$ and $|y - x^0| \geq \delta$, then $|x - y| \geq \frac12|y - x^0|$. Draw a picture for $n = 1$.
+    \item Why is it important in the proof that the estimate of the integral over $\{|y - x^0| \geq \delta\}$ does not depend on $x$?
+    \item The proof gives $|u(x,t) - g(x^0)| < 2\varepsilon$ rather than $< \varepsilon$. Why is this enough?
+\end{enumerate}
+
+\prob{$\Phi$ and the Dirac delta}
+Let $\varphi$ be bounded and continuous on $\mathbb{R}^n$.
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $\int_{\mathbb{R}^n}\Phi(x,t)\varphi(x)\,dx = u(0,t)$, where $u$ is the solution with initial value $g = \varphi$. (Use that $\Phi(\cdot,t)$ is even.)
+    \item Deduce that $\int_{\mathbb{R}^n}\Phi(x,t)\varphi(x)\,dx \to \varphi(0)$ as $t \to 0^+$.
+    \item Explain how (b) and the fact that $\int_{\mathbb{R}^n}\Phi(x,t)\,dx = 1$ justify the notation ``$\Phi = \delta_0$ on $t = 0$''.
+\end{enumerate}
+
+\prob{Positivity}
+Let $n = 1$ and $g(x) = \max\{0, 1 - |x|\}$.
+\begin{enumerate}[label=(\alph*)]
+    \item Sketch $g$. Is $g$ bounded and continuous? Where is $g = 0$?
+    \item Show that the solution satisfies $u(100, 10^{-3}) > 0$.
+    \item Show that $u(x,t) > 0$ for every $x \in \mathbb{R}$ and $t > 0$.
+    \item Show that $u(x,t) \leq \frac{1}{\sqrt{4\pi t}}\int_{-1}^1 g(y)\,dy$, and deduce that $u(x,t) \to 0$ as $t \to \infty$, uniformly in $x$.
+\end{enumerate}
+
+%=====================================================================
+\section*{Part B: The Transport Equation}
+
+\prob{Solving homogeneous problems}
+Solve the following initial-value problems and verify your answers.
+\begin{enumerate}[label=(\alph*)]
+    \item $u_t + 2u_x = 0$ in $\mathbb{R}\times(0,\infty)$, $u(x,0) = \sin x$.
+    \item $u_t - 3u_x = 0$ in $\mathbb{R}\times(0,\infty)$, $u(x,0) = \dfrac{1}{1 + x^2}$.
+    \item $u_t + u_{x_1} - u_{x_2} = 0$ in $\mathbb{R}^2\times(0,\infty)$, $u(x_1,x_2,0) = x_1x_2$.
+    \item $u_t + b\cdot Du = 0$ in $\mathbb{R}^n\times(0,\infty)$, $u(x,0) = |x|^2$, for a given $b \in \mathbb{R}^n$.
+\end{enumerate}
+
+\prob{Geometry of the lines}
+Consider $u_t + 2u_x = 0$ ($n = 1$, $b = 2$).
+\begin{enumerate}[label=(\alph*)]
+    \item In the $(x,t)$-plane, sketch the lines $L_y$ for $y = -2, 0, 2$. What is their slope?
+    \item Find the line through the point $(5,1)$ and the point where it meets $t = 0$.
+    \item Show that $(5,1)$ lies on no other line $L_y$.
+    \item If $u(x,0) = g(x)$ and $u(5,1) = 7$, what can you say about $g$? What is $u(3 + 2s, s)$ for $s \geq 0$?
+\end{enumerate}
+
+\prob{Lines in higher dimensions}
+Let $n = 2$ and $b = (1,2)$.
+\begin{enumerate}[label=(\alph*)]
+    \item Describe the half-line $L_y$ starting at $y = (0,0)$ in $\mathbb{R}^2 \times [0,\infty)$.
+    \item Which line $L_y$ passes through the point $(x,t) = ((3,4),1)$?
+    \item Show that the map $(y,\sigma) \mapsto (y + \sigma b, \sigma)$ is a bijection of $\mathbb{R}^2\times[0,\infty)$ onto itself, and find its inverse.
+    \item Explain, using (c), why the lines $L_y$ are pairwise disjoint and fill $\mathbb{R}^2\times[0,\infty)$.
+\end{enumerate}
+
+\prob{Transport of a profile}
+Let $u$ solve $u_t + bu_x = 0$ ($n = 1$), $u(x,0) = e^{-x^2}$, with $b > 0$.
+\begin{enumerate}[label=(\alph*)]
+    \item Write down $u$. Where does $u(\cdot,t)$ attain its maximum, and what is the maximum value?
+    \item Sketch $u(\cdot,t)$ for $t = 0, 1, 2$. Describe what happens to the graph.
+    \item Compare with the heat equation with the same initial value (Problem 12(c)): what happens there to the maximum value as $t$ increases?
+\end{enumerate}
+
+\prob{Solving nonhomogeneous problems}
+Solve the following problems using the solution formula for the nonhomogeneous transport equation, and verify your answers.
+\begin{enumerate}[label=(\alph*)]
+    \item $u_t + u_x = t$, $u(x,0) = 0$.
+    \item $u_t + 2u_x = x$, $u(x,0) = 0$.
+    \item $u_t - u_x = e^t$, $u(x,0) = \cos x$.
+    \item $u_t + u_x = \sin t$, $u(x,0) = x^2$.
+\end{enumerate}
+
+\prob{A transport equation with a zero-order term}
+Let $c \in \mathbb{R}$ and $b \in \mathbb{R}^n$, and consider $u_t + b\cdot Du + cu = 0$ in $\mathbb{R}^n\times(0,\infty)$, $u = g$ on $t = 0$.
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $v(x,t) := e^{ct}u(x,t)$ solves $v_t + b\cdot Dv = 0$.
+    \item Find $v(x,0)$ and solve the problem for $u$.
+    \item Alternatively, compute $\dot z(s)$ for $z(s) = u(x + sb, t + s)$, solve the resulting ODE, and obtain the same formula.
+\end{enumerate}
+
+\prob{The role of the hypotheses}
+\begin{enumerate}[label=(\alph*)]
+    \item Let $g(x) = \sin x$ and define $u(x,t) = g(x - t)$ for $t > 0$ and $u(x,0) = 0$. Show that $u$ satisfies $u_t + u_x = 0$ for $t > 0$ and $u(x,0) = 0$, but $u \not\equiv 0$. Which requirement in the definition of a solution fails?
+    \item Let $g(x) = |x|$ and $b = 1$. At which points $(x,t)$ is $u(x,t) = g(x - t)$ not differentiable? Sketch this set.
+    \item Show that if $u \in C^1(\mathbb{R}\times(0,\infty))$ solves $u_t + u_x = 0$ and $u(x,1) = |x|$ for all $x$, we get a contradiction.
+\end{enumerate}
+
+%=====================================================================
+\section*{Part C: The Wave Equation}
+
+\prob{Recognising solutions}
+\begin{enumerate}[label=(\alph*)]
+    \item Decide which of the following solve $u_{tt} - u_{xx} = 0$: \ $\sin x\cos t$, \ $(x + t)^3$, \ $e^{x - t}$, \ $xt$, \ $x^2 + t^2$, \ $x^2 - t^2$, \ $\sin x\sin 2t$.
+    \item For each solution in (a), write it in the form $F(x + t) + G(x - t)$.
+    \item Show that both $u \equiv 0$ and $u = t$ solve $u_{tt} - u_{xx} = 0$ with $u(x,0) = 0$. What does this say about the number of initial conditions needed?
+    \item For which constants $k$ does $u = \sin(x)\cos(kt)$ solve $u_{tt} - c^2u_{xx} = 0$?
+\end{enumerate}
+
+\prob{A radial wave in three dimensions}
+Let $n = 3$, $r = |x| > 0$, $F \in C^2(\mathbb{R})$, and $u(x,t) = \dfrac{F(r - t)}{r}$.
+\begin{enumerate}[label=(\alph*)]
+    \item Using the radial formula $\Delta u = u_{rr} + \frac{n-1}{r}u_r$, show that $\Delta u = \dfrac{F''(r - t)}{r}$.
+    \item Show that $u_{tt} - \Delta u = 0$ for $x \neq 0$.
+    \item Is $\dfrac{F(r + t)}{r}$ also a solution?
+\end{enumerate}
+
+\prob{The factorization}
+\begin{enumerate}[label=(\alph*)]
+    \item For $u \in C^2$, verify $\big(\partial_t + c\,\partial_x\big)\big(\partial_t - c\,\partial_x\big)u = u_{tt} - c^2u_{xx}$. Where is $u \in C^2$ used?
+    \item Show that the two factors commute: $\big(\partial_t - c\,\partial_x\big)\big(\partial_t + c\,\partial_x\big)u = u_{tt} - c^2u_{xx}$ as well.
+    \item Show that every $C^2$ solution of $u_t - cu_x = 0$ and every $C^2$ solution of $u_t + cu_x = 0$ solves the wave equation $u_{tt} - c^2u_{xx} = 0$.
+    \item Which transport equation is solved by $F(x + ct)$, and which by $G(x - ct)$?
+\end{enumerate}
+
+\prob{The derivation, step by step}
+Let $u(x,t) = x^2 + t^2$, the solution of $u_{tt} - u_{xx} = 0$ with $g(x) = x^2$, $h(x) = 0$.
+\begin{enumerate}[label=(\alph*)]
+    \item Compute $v = u_t - u_x$ and $a(x) = v(x,0)$. Check that $a = h - g'$.
+    \item Check that $v(x,t) = a(x - t)$, and that $v_t + v_x = 0$. Which transport equation (which $b$) is this?
+    \item Check that $u$ solves $u_t - u_x = a(x - t)$. Which transport equation (which $b$, which $f$) is this?
+    \item Recover $u$ from the formula $u(x,t) = g(x + t) + \frac12\int_{x-t}^{x+t}a(y)\,dy$.
+\end{enumerate}
+
+\prob{d'Alembert's formula}
+Solve $u_{tt} - u_{xx} = 0$, $u(x,0) = g(x)$, $u_t(x,0) = h(x)$ for:
+\begin{enumerate}[label=(\alph*)]
+    \item $g(x) = \sin x$, $h(x) = 0$;
+    \item $g(x) = 0$, $h(x) = \cos x$;
+    \item $g(x) = x^2$, $h(x) = x$;
+    \item $g(x) = e^{-x^2}$, $h(x) = 0$.
+\end{enumerate}
+In (a)--(c) simplify the answer and verify it. In (d) sketch $u(\cdot,t)$ for $t = 0$, $t = 1$ and $t = 4$.
+
+\prob{The wave equation with speed $c$}
+\begin{enumerate}[label=(\alph*)]
+    \item Solve $u_{tt} = 4u_{xx}$, $u(x,0) = \sin x$, $u_t(x,0) = 2\cos x$, and simplify. Is the answer of the form $F(x + 2t)$, $G(x - 2t)$, or a sum of both?
+    \item Solve $u_{tt} = 4u_{xx}$, $u(x,0) = 0$, $u_t(x,0) = \dfrac{1}{1 + x^2}$.
+    \item Solve $u_{tt} = 9u_{xx}$, $u(x,0) = x$, $u_t(x,0) = x^2$.
+    \item Let $u$ solve $u_{tt} = c^2u_{xx}$. Show that $w(x,\tau) = u(x,\tau/c)$ solves $w_{\tau\tau} = w_{xx}$, and find the initial values of $w$ in terms of $g$, $h$, $c$.
+\end{enumerate}
+
+\prob{General solution and initial values}
+Suppose $u(x,t) = F(x + t) + G(x - t)$ with $F, G \in C^2(\mathbb{R})$, and $u(x,0) = g(x)$, $u_t(x,0) = h(x)$.
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $F + G = g$ and $F' - G' = h$.
+    \item Deduce $F - G = \int_0^x h(y)\,dy + K$ for a constant $K$, and solve for $F$ and $G$.
+    \item Substitute into $u$ and recover d'Alembert's formula. What happens to $K$?
+    \item Use d'Alembert's formula to show that if $g \equiv 0$ and $h \equiv 0$, then the only $C^2$ solution is $u \equiv 0$. Deduce that two $C^2$ solutions with the same $g, h$ coincide.
+\end{enumerate}
+
+\prob{No smoothing}
+Let $g(x) = x|x|$ and $h(x) = 0$.
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $g \in C^1(\mathbb{R})$ but $g \notin C^2(\mathbb{R})$.
+    \item Write down $u$ from d'Alembert's formula. Show that $u_{tt} = u_{xx}$ except on the lines $x = t$ and $x = -t$.
+    \item On which lines is $u$ not $C^2$? Sketch them. Is $u(\cdot,t)$ smoother than $g$ for $t > 0$?
+    \item Compare with the heat equation: is the solution with a bounded, continuous, non-differentiable initial value (such as $\min\{|x|,1\}$) smooth for $t > 0$?
+\end{enumerate}
+
+\prob{Odd and even data}
+Let $g \in C^2(\mathbb{R})$, $h \in C^1(\mathbb{R})$ and let $u$ solve $u_{tt} - u_{xx} = 0$, $u = g$, $u_t = h$ at $t = 0$.
+\begin{enumerate}[label=(\alph*)]
+    \item If $g$ and $h$ are odd, show that $u(0,t) = 0$ for all $t \geq 0$.
+    \item If $g$ and $h$ are even, show that $u(\cdot,t)$ is even and $u_x(0,t) = 0$ for all $t \ge 0$.
+    \item If $g$ and $h$ are $2\pi$-periodic, show that $u(\cdot,t)$ is $2\pi$-periodic for each $t$.
+\end{enumerate}
+
+\prob{Domains of dependence and influence}
+Consider $u_{tt} - 4u_{xx} = 0$ ($c = 2$).
+\begin{enumerate}[label=(\alph*)]
+    \item Find the domain of dependence of the point $(1,3)$.
+    \item Find the range of influence of the point $(0,0)$, and the segment it occupies at time $t = 1$.
+    \item Find the range of influence of the interval $[-1,1]$, and the segment it occupies at time $t = 2$.
+    \item Find the domain of determinacy of $[0,4]$: its vertices, its height, and the inequalities describing it.
+    \item Decide whether the point $(3,1)$ lies in each of the sets in (b), (c), (d).
+\end{enumerate}
+
+\prob{Data with compact support}
+Let $c = 1$, $g \equiv 0$ and $h(x) = (1 - x^2)^2$ for $|x| \leq 1$, $h(x) = 0$ for $|x| > 1$.
+\begin{enumerate}[label=(\alph*)]
+    \item Show that $h \in C^1(\mathbb{R})$.
+    \item For $t = 2$, for which $x$ is $u(x,2) = 0$? Relate your answer to the range of influence of $[-1,1]$.
+    \item Show that $u(x,t) = \frac{8}{15}$ whenever $|x| \leq t - 1$.
+    \item For the heat equation with the same initial value $h$, is the solution zero anywhere for $t > 0$? Explain the difference.
+\end{enumerate}
+
+\prob{Domain of determinacy}
+Let $c = 1$ and $[a,b] = [0,2]$.
+\begin{enumerate}[label=(\alph*)]
+    \item Sketch the domain of determinacy $T$ of $[0,2]$ and the range of influence of $[0,2]$ on the same picture.
+    \item Show that if two sets of data $(g_1,h_1)$, $(g_2,h_2)$ agree on $[0,2]$, then $u_1(1,\frac12) = u_2(1,\frac12)$.
+    \item The point $(2,1)$ is not in $T$. Give explicit data $(g_1,h_1)$ and $(g_2,h_2)$, both $C^1$ in $h$ and $C^2$ in $g$, which agree on $[0,2]$ but give $u_1(2,1) \neq u_2(2,1)$.
+    \item For a point $(x,t)$ in the range of influence of $[0,2]$ but not in $T$, is $u(x,t)$ determined by the data on $[0,2]$ alone? Explain.
+\end{enumerate}
+
+\prob{Heat versus wave}
+Answer each question with one or two sentences, giving the reason from the notes.
+\begin{enumerate}[label=(\alph*)]
+    \item How many initial conditions are prescribed for the heat equation, and how many for the wave equation? Why?
+    \item If the initial data are continuous but not differentiable, is the solution smooth for $t > 0$? (Answer for both equations.)
+    \item If the initial data vanish outside $[-1,1]$, is the solution at time $t = 1$ zero outside some bounded interval? (Answer for both equations.)
+    \item Does $u(x,t)$ depend on the initial data on all of $\mathbb{R}$, or only on part of it? (Answer for both equations, $n = 1$.)
+\end{enumerate}
+
+\end{document}

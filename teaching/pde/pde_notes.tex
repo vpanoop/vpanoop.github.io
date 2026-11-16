@@ -5,6 +5,7 @@
 \geometry{a4paper, margin=1in}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
+\usepackage{tikz}
 \usepackage{hyperref}
 
 \pagestyle{fancy}
@@ -160,6 +161,7 @@ Let $E \subset \mathbb{R}^n$ be measurable and $U \subset \mathbb{R}^n$ open.
 \begin{enumerate}
     \item $f$ is \emph{integrable} (or \emph{summable}) on $E$, written $f \in L^1(E)$, if $\int_E |f|\, dx < \infty$. For $1 \le p < \infty$, $f \in L^p(E)$ if $\|f\|_{L^p(E)} = \big(\int_E |f|^p dx\big)^{1/p} < \infty$.
     \item $f$ is \emph{locally integrable} on $U$, written $f \in L^1_{\mathrm{loc}}(U)$, if $f \in L^1(K)$ for every compact set $K \subset U$ (equivalently, $f \in L^1(V)$ for each $V \subset\subset U$). Similarly $f \in L^p_{\mathrm{loc}}(U)$ if $f \in L^p(K)$ for every compact $K \subset U$.
+    \item $f$ is \emph{essentially bounded} on $E$, written $f \in L^\infty(E)$, if there is a constant $M$ with $|f| \le M$ a.e.\ on $E$; the smallest such $M$ is $\|f\|_{L^\infty(E)}$. If $f$ is \emph{continuous} on $\mathbb{R}^n$, then $|f(x)| \le \|f\|_{L^\infty}$ for \emph{every} $x$: if $|f(x_1)| > M := \|f\|_{L^\infty}$ at some point, then by continuity $|f| > M$ on a small ball around $x_1$, a set of positive measure, which is impossible. So for continuous $f$, $\|f\|_{L^\infty(\mathbb{R}^n)} = \sup_{\mathbb{R}^n}|f|$, and $f \in C(\mathbb{R}^n)\cap L^\infty(\mathbb{R}^n)$ simply means $f$ is continuous and bounded.
 \end{enumerate}
 Integrability is a condition on the whole set; local integrability only asks that $f$ is not ``too singular'' anywhere inside $U$ (it may still grow at infinity or near $\partial U$).
 \end{definition}
@@ -250,6 +252,27 @@ By uniform continuity, $\big|\partial_t F(t_0 + \theta h, z) - \partial_t F(t_0,
 $$ \frac{\Psi(t_0+h) - \Psi(t_0)}{h} = \int_K \frac{F(t_0+h,z) - F(t_0,z)}{h}\, dz \to \int_K \frac{\partial F}{\partial t}(t_0, z)\, dz. \qquad \qedhere $$
 \end{proof}
 
+\begin{lemma}[Integrals with a variable upper limit]\label{lem:leibniz}
+Let $V \subset \mathbb{R}^m$ be open and let $h : V \times [0,\infty) \to \mathbb{R}$, $h = h(p,s)$, be continuous, with continuous partial derivatives $\frac{\partial h}{\partial p_j}$ $(j = 1,\dots,m)$ on $V \times [0,\infty)$. Define
+$$ H(p,\tau) := \int_0^\tau h(p,s)\, ds \qquad (p \in V,\ \tau \geq 0). $$
+Then $H$ is continuous on $V \times [0,\infty)$, $H \in C^1(V \times (0,\infty))$, and
+$$ \frac{\partial H}{\partial \tau}(p,\tau) = h(p,\tau), \qquad \frac{\partial H}{\partial p_j}(p,\tau) = \int_0^\tau \frac{\partial h}{\partial p_j}(p,s)\, ds. $$
+\end{lemma}
+\begin{proof}
+\emph{(a) Continuity of integrals of the form $G(p,\tau) = \int_0^\tau k(p,s)\,ds$, $k$ continuous.} Fix $(p_0,\tau_0)$. Choose $r > 0$ with the closed ball $B(p_0,r) \subset V$, and let $N := B(p_0,r) \times [0,\tau_0 + 1]$, a compact set. On $N$, $k$ is bounded, $|k| \leq M$, and uniformly continuous. For $p \in B(p_0,r)$ and $0 \le \tau \leq \tau_0 + 1$,
+\begin{align*}
+|G(p,\tau) - G(p_0,\tau_0)| &\leq \Big|\int_{\tau_0}^{\tau} k(p,s)\, ds\Big| + \int_0^{\tau_0}|k(p,s) - k(p_0,s)|\, ds \\
+&\leq M|\tau - \tau_0| + \tau_0\sup_{0 \le s \le \tau_0}|k(p,s) - k(p_0,s)|.
+\end{align*}
+The first term tends to $0$ as $\tau \to \tau_0$, and the second as $p \to p_0$, by uniform continuity of $k$ on $N$. So $G$ is continuous. With $k = h$ this shows $H$ is continuous on $V \times [0,\infty)$.
+
+\emph{(b) $\partial H/\partial\tau$.} For fixed $p$, $s \mapsto h(p,s)$ is continuous, so by the Fundamental Theorem of Calculus $\frac{\partial H}{\partial\tau}(p,\tau) = h(p,\tau)$, which is continuous in $(p,\tau)$.
+
+\emph{(c) $\partial H/\partial p_j$.} Fix $\tau > 0$. Apply Lemma~\ref{lem:diffint} with the compact set $K = [0,\tau] \subset \mathbb{R}$, the variable $p_j$ in place of $t$ (the other coordinates of $p$ held fixed) and $F(p_j, s) = h(p,s)$: it gives $\frac{\partial H}{\partial p_j}(p,\tau) = \int_0^\tau \frac{\partial h}{\partial p_j}(p,s)\, ds$. By (a) with $k = \frac{\partial h}{\partial p_j}$, this is continuous in $(p,\tau)$.
+
+All first partial derivatives of $H$ exist and are continuous on $V \times (0,\infty)$, so $H \in C^1$ there.
+\end{proof}
+
 \begin{lemma}[Differentiating a convolution]\label{lem:diffconv}
 Let $U \subset \mathbb{R}^n$ be open (possibly $U = \mathbb{R}^n$), $\rho > 0$, $f \in L^1_{\mathrm{loc}}(U)$, and let $g \in C^1(\mathbb{R}^n)$ with $g(z) = 0$ for $|z| > \rho$. For $x \in U_\rho$ define
 $$ F(x) = \int_U g(x - y) f(y)\, dy. $$
@@ -290,6 +313,31 @@ by Lemma~\ref{lem:dq}(b) ($g_{x_i}$ is continuous and vanishes for $|z| > \rho$,
     \item \emph{Density.} If $W$ is open and $1 \leq p < \infty$, then $C_c(W)$ is dense in $L^p(W)$: for each $f \in L^p(W)$ and $\delta > 0$ there is a continuous $g$ with compact support in $W$ and $\|f - g\|_{L^p(W)} < \delta$.
 \end{enumerate}
 \end{fact}
+
+\begin{lemma}[Differentiation under the integral sign over $\mathbb{R}^n$]\label{lem:diffintRn}
+Let $W \subset \mathbb{R}^m$ be open and let $F : W \times \mathbb{R}^n \to \mathbb{R}$, $F = F(z,y)$, be continuous, with continuous partial derivatives $\frac{\partial F}{\partial z_j}$ $(j = 1,\dots,m)$ on $W \times \mathbb{R}^n$. Suppose that every $z_0 \in W$ has a ball $B(z_0,\rho) \subset W$ and an integrable function $G \geq 0$ on $\mathbb{R}^n$ (both may depend on $z_0$) such that
+$$ |F(z,y)| \leq G(y), \qquad \Big|\frac{\partial F}{\partial z_j}(z,y)\Big| \leq G(y) \qquad \text{for all } z \in B(z_0,\rho),\ y \in \mathbb{R}^n,\ j = 1,\dots,m. $$
+Then $\Psi(z) := \int_{\mathbb{R}^n} F(z,y)\, dy$ belongs to $C^1(W)$, and
+$$ \frac{\partial \Psi}{\partial z_j}(z) = \int_{\mathbb{R}^n}\frac{\partial F}{\partial z_j}(z,y)\, dy. $$
+Consequently, if all partial derivatives $D^\alpha_z F$ of all orders exist, are continuous, and satisfy such a local bound, then $\Psi \in C^\infty(W)$ and $D^\alpha\Psi(z) = \int_{\mathbb{R}^n} D^\alpha_z F(z,y)\, dy$.
+\end{lemma}
+\begin{proof}
+Fix $z_0 \in W$ and take $\rho$, $G$ as in the hypothesis.
+
+\emph{$\Psi$ is well defined near $z_0$:} $|F(z,\cdot)| \leq G$ and $G$ is integrable.
+
+\emph{$\Psi$ is continuous at $z_0$.} Let $z_k \to z_0$; we may assume all $z_k \in B(z_0,\rho)$. For each fixed $y$, $F(z_k,y) \to F(z_0,y)$ by continuity of $F$, and $|F(z_k,y)| \leq G(y)$ with $G$ integrable. By the Dominated Convergence Theorem (Fact~\ref{fact:measure}), $\Psi(z_k) \to \Psi(z_0)$. Since this holds for every sequence $z_k \to z_0$, $\Psi$ is continuous at $z_0$.
+
+\emph{The partial derivative.} Let $e_j$ be the $j$-th unit vector and let $h_k \to 0$, $0 < |h_k| < \rho$. For each $y$, the mean value theorem applied to $s \mapsto F(z_0 + s e_j, y)$ on the segment between $0$ and $h_k$ (which stays in $B(z_0,\rho)$) gives
+$$ q_k(y) := \frac{F(z_0 + h_k e_j, y) - F(z_0,y)}{h_k} = \frac{\partial F}{\partial z_j}(z_0 + \theta_k h_k e_j, y), \qquad \theta_k = \theta_k(y) \in (0,1). $$
+Hence $|q_k(y)| \leq G(y)$, and $q_k(y) \to \frac{\partial F}{\partial z_j}(z_0,y)$ by continuity of $\frac{\partial F}{\partial z_j}$. By Dominated Convergence,
+$$ \frac{\Psi(z_0 + h_k e_j) - \Psi(z_0)}{h_k} = \int_{\mathbb{R}^n} q_k(y)\, dy \to \int_{\mathbb{R}^n}\frac{\partial F}{\partial z_j}(z_0,y)\, dy. $$
+As the sequence $h_k$ was arbitrary, $\frac{\partial\Psi}{\partial z_j}(z_0)$ exists and is given by the formula.
+
+\emph{Continuity of $\frac{\partial\Psi}{\partial z_j}$.} Apply the continuity step to $\frac{\partial F}{\partial z_j}$ in place of $F$ (it is continuous and also bounded by $G$). A function whose first partial derivatives exist and are continuous is $C^1$.
+
+\emph{Higher derivatives.} Apply what we proved to $\frac{\partial F}{\partial z_j}$ in place of $F$, and repeat (induction on $|\alpha|$).
+\end{proof}
 
 \begin{theorem}[Lebesgue's Differentiation Theorem]\label{thm:lebesgue}
 Let $f : \mathbb{R}^n \to \mathbb{R}$ be locally summable.
@@ -527,7 +575,7 @@ and
 The function $\mathbf{g}$ is \emph{implicitly defined} near $x_0$ by the equation $\mathbf{f}(x,y) = z_0$.
 \end{theorem}
 
-\section{Method of Characteristics}
+\section{Method of Characteristics}\label{sec:moc}
 
 \subsection{Introduction and Linear Equations}
 \subsubsection{Introduction}
@@ -633,7 +681,7 @@ The equations generalize gracefully:
 $$ \frac{dx_i}{d\tau} = F_{p_i}, \quad \frac{du}{d\tau} = \sum_{i=1}^n p_i F_{p_i}, \quad \frac{dp_i}{d\tau} = -(F_{x_i} + p_i F_u) $$
 The initial hypersurface must be augmented with compatible values for all partial derivatives $p_i$, satisfying both the PDE itself and the geometric strip condition on the hypersurface. Once again, by solving this extended system of ODEs, we can construct the unique local solution.
 
-\section{Laplace's Equation}
+\section{Laplace's Equation}\label{sec:laplace}
 
 \subsection{Definitions}
 The \textbf{Laplace equation} is given by:
@@ -642,7 +690,7 @@ where $\Delta u = \sum_{i=1}^n u_{x_i x_i}$ is the Laplacian of $u$. A $C^2$ fun
 If a source term $f$ is present, the equation becomes \textbf{Poisson's equation}:
 $$ -\Delta u = f $$
 
-\subsection{Rotational Invariance of the Laplacian}
+\subsection{Rotational Invariance of the Laplacian}\label{ssec:rotinv}
 The Laplacian operator is invariant under rotations of the coordinate system.
 
 \subsubsection{2D Case with $2 \times 2$ Matrix}
@@ -676,7 +724,7 @@ This rotational invariance suggests that we should look for radial solutions to 
 \subsection{Derivation of the Fundamental Solution}
 We seek a solution $u(x) = v(r)$ where $r = |x| = (x_1^2 + \dots + x_n^2)^{1/2}$.
 
-\subsubsection{Radial Formula for Laplacian}
+\subsubsection{Radial Formula for Laplacian}\label{sssec:radlap}
 First, observe $\frac{\partial r}{\partial x_i} = \frac{1}{2} (x_1^2 + \dots + x_n^2)^{-1/2} 2x_i = \frac{x_i}{r}$.
 By the chain rule:
 $$ u_{x_i} = v'(r) \frac{\partial r}{\partial x_i} = v'(r) \frac{x_i}{r} $$
@@ -961,7 +1009,7 @@ $$ I_\varepsilon \to 0, \qquad L_\varepsilon \to 0, \qquad K_\varepsilon \to -f(
 Hence $\Delta u(x) = -f(x)$, that is, $-\Delta u(x) = f(x)$. Since $x \in \mathbb{R}^n$ was arbitrary, this proves (ii). $\blacksquare$
 
 %=====================================================================
-\subsection{The Dirac Delta Notation}
+\subsection{The Dirac Delta Notation}\label{ssec:dirac}
 
 \subsubsection{Motivation: functions of total mass one concentrating at a point}
 Think of a unit amount of ``mass'' (or charge, or heat) spread over $\mathbb{R}^n$ with density $\rho(y) \geq 0$, so that $\int_{\mathbb{R}^n} \rho\, dy = 1$. What happens if we squeeze all the mass into smaller and smaller balls around the origin?
@@ -1467,5 +1515,1593 @@ $$ u(x) = u(p_0) \geq \frac{1}{2^n}u(p_1) \geq \frac{1}{2^{2n}}u(p_2) \geq \cdot
 since $m + 1 \leq N$.
 
 \emph{Step 4: conclusion.} Let $C := 2^{nN}$, which depends only on $V$. We have shown $u(y) \leq C u(x)$ for all $x, y \in V$; by symmetry also $u(x) \le C u(y)$, i.e.\ $\frac1C u(y) \leq u(x) \leq Cu(y)$. Fix $x$ and take the supremum over $y \in V$: $\sup_V u \leq C u(x)$. Now take the infimum over $x \in V$: $\sup_V u \leq C\inf_V u$. $\square$
+
+%=====================================================================
+\newpage
+\section{Heat Equation}\label{sec:heat}
+
+\subsection{Definitions}
+
+Next we study the \textbf{heat equation}
+\begin{equation}\label{eq:heat}
+u_t - \Delta u = 0
+\end{equation}
+and the \textbf{nonhomogeneous heat equation}
+\begin{equation}\label{eq:heatf}
+u_t - \Delta u = f,
+\end{equation}
+subject to appropriate initial and boundary conditions. Here $t > 0$ and $x \in U$, where $U \subset \mathbb{R}^n$ is open. The unknown is $u : \bar U \times [0,\infty) \to \mathbb{R}$, $u = u(x,t)$, and the Laplacian $\Delta$ is taken with respect to the spatial variables $x = (x_1,\dots,x_n)$: $\Delta u = \Delta_x u = \sum_{i=1}^n u_{x_i x_i}$. In \eqref{eq:heatf} the function $f : U \times [0,\infty) \to \mathbb{R}$ is given.
+
+So \eqref{eq:heat} is the \emph{homogeneous} equation (no source term), and \eqref{eq:heatf} is the \emph{nonhomogeneous} one, with the given source $f$. Note the structure: \emph{one} derivative in the time variable $t$, \emph{two} derivatives in each space variable $x_i$. The variable $t$ plays a different role from the $x_i$'s; in particular $\Delta$ does not act on $t$.
+
+A guiding principle is that any assertion about harmonic functions yields an analogous (but more complicated) statement about solutions of the heat equation. Accordingly our development will largely parallel the corresponding theory for Laplace's equation (Section~\ref{sec:laplace}).
+
+\paragraph{Physical interpretation.} The heat equation, also known as the \emph{diffusion equation}, describes in typical applications the evolution in time of the density $u$ of some quantity such as heat, chemical concentration, etc. If $V \subset U$ is any smooth subregion, the rate of change of the total quantity within $V$ equals the negative of the net flux through $\partial V$:
+$$ \frac{d}{dt}\int_V u\, dx = -\int_{\partial V} \mathbf{F}\cdot\nu\, dS, $$
+$\mathbf{F}$ being the flux density. Thus
+\begin{equation}\label{eq:heatflux}
+u_t = -\operatorname{div}\mathbf{F},
+\end{equation}
+as $V$ was arbitrary.
+
+Let us see why \eqref{eq:heatflux} follows. Take $V$ bounded with $\bar V \subset U$ (for instance a ball), and assume $u$ and $\mathbf F = (F^1,\dots,F^n)$ are $C^1$.
+\begin{itemize}
+    \item \emph{Left side.} $\bar V$ is compact and $u_t$ is continuous, so we may differentiate under the integral sign (Lemma~\ref{lem:diffint}): $\frac{d}{dt}\int_V u\, dx = \int_V u_t\, dx$.
+    \item \emph{Right side.} Apply the Gauss--Green Theorem (Theorem~\ref{thm:gaussgreen}) to each component $F^i$ with the $i$-th derivative, and add over $i$:
+    $$ \int_{\partial V}\mathbf F\cdot\nu\, dS = \sum_{i=1}^n \int_{\partial V} F^i\nu^i\, dS = \sum_{i=1}^n \int_V F^i_{x_i}\, dx = \int_V \operatorname{div}\mathbf F\, dx. $$
+\end{itemize}
+Hence $\int_V (u_t + \operatorname{div}\mathbf F)\, dx = 0$ for \emph{every} such $V$. Write $g := u_t + \operatorname{div}\mathbf F$ (at a fixed time); $g$ is continuous. If $g(x_0) > 0$ at some point, then by continuity $g > \frac12 g(x_0) > 0$ on a small ball $V = B(x_0,\rho)$, so $\int_V g\, dx \geq \frac12 g(x_0)|B(x_0,\rho)| > 0$, a contradiction. Similarly $g(x_0) < 0$ is impossible. So $g \equiv 0$, which is \eqref{eq:heatflux}.
+
+In many situations $\mathbf F$ is proportional to the gradient of $u$, but points in the opposite direction (since the flow is from regions of higher to lower concentration):
+$$ \mathbf F = -aDu \qquad (a > 0). $$
+Substituting into \eqref{eq:heatflux}, we obtain the PDE
+$$ u_t = a\operatorname{div}(Du) = a\Delta u, $$
+(recall $\operatorname{div}(Du) = \sum_i (u_{x_i})_{x_i} = \Delta u$), which for $a = 1$ is the heat equation.
+
+The heat equation appears as well in the study of Brownian motion.
+
+%---------------------------------------------------------------------
+\subsection{Fundamental Solution}
+
+\subsubsection{Derivation of the fundamental solution}
+
+As for Laplace's equation, an important first step in studying any PDE is often to come up with some specific solutions. For Laplace's equation we used the symmetry of the equation (rotational invariance, Section~\ref{ssec:rotinv}) to guess the form of a special solution. For the heat equation we use a \emph{scaling} symmetry.
+
+\paragraph{Step 1: the scaling $u(\lambda x, \lambda^2 t)$.}
+We observe that the heat equation involves one derivative with respect to the time variable $t$, but two derivatives with respect to the space variables $x_i$ $(i = 1,\dots,n)$. Consequently we see that if $u$ solves \eqref{eq:heat}, then so does $u(\lambda x, \lambda^2 t)$ for $\lambda \in \mathbb{R}$.
+
+Let us verify this. Fix a constant $\lambda$ and put
+$$ w(x,t) := u(\lambda x, \lambda^2 t). $$
+Here $\lambda$ is a \emph{fixed number}; it does not depend on $x$ or $t$. We compute the derivatives of $w$ by the chain rule. The inner functions are $x \mapsto \lambda x$ (in each slot $x_i \mapsto \lambda x_i$) and $t \mapsto \lambda^2 t$.
+\begin{itemize}
+    \item \emph{Time derivative.} Only the last slot depends on $t$, and $\frac{\partial}{\partial t}(\lambda^2 t) = \lambda^2$. So
+    $$ w_t(x,t) = \lambda^2\, u_t(\lambda x, \lambda^2 t). $$
+    \item \emph{First space derivatives.} Only the $i$-th slot depends on $x_i$, and $\frac{\partial}{\partial x_i}(\lambda x_i) = \lambda$. So
+    $$ w_{x_i}(x,t) = \lambda\, u_{x_i}(\lambda x, \lambda^2 t). $$
+    \item \emph{Second space derivatives.} Differentiating once more in $x_i$ brings out another factor $\lambda$:
+    $$ w_{x_i x_i}(x,t) = \lambda^2\, u_{x_i x_i}(\lambda x, \lambda^2 t). $$
+    Summing over $i = 1,\dots,n$:
+    $$ \Delta w(x,t) = \lambda^2\, \Delta u(\lambda x, \lambda^2 t). $$
+\end{itemize}
+Therefore
+$$ w_t(x,t) - \Delta w(x,t) = \lambda^2\, u_t(\lambda x,\lambda^2 t) - \lambda^2\, \Delta u(\lambda x,\lambda^2 t) = \lambda^2\big[u_t - \Delta u\big](\lambda x, \lambda^2 t) = 0, $$
+because $u$ solves the heat equation at \emph{every} point, in particular at the point $(\lambda x,\lambda^2 t)$. So $w$ is again a solution.
+
+\emph{Why the power $\lambda^2$ on $t$?} The time derivative produces the factor by which $t$ is scaled ($\lambda^2$), while $\Delta$ produces the \emph{square} of the factor by which $x$ is scaled ($\lambda\cdot\lambda$). The two factors agree, so they can be pulled out together; this is exactly the ``one derivative in $t$, two in $x$'' structure.
+
+\paragraph{The invariant ratio $r^2/t$.} This scaling indicates the ratio $\frac{r^2}{t}$ $(r = |x|)$ is important for the heat equation. Indeed, if we replace $x$ by $\lambda x$ and $t$ by $\lambda^2 t$, then
+$$ \frac{|\lambda x|^2}{\lambda^2 t} = \frac{\lambda^2|x|^2}{\lambda^2 t} = \frac{|x|^2}{t}: $$
+the factors $\lambda^2$ cancel, so the ratio does not change under the scaling. This suggests that we search for a solution of \eqref{eq:heat} having the form $u(x,t) = v\big(\frac{r^2}{t}\big) = v\big(\frac{|x|^2}{t}\big)$ $(t > 0,\ x \in \mathbb{R}^n)$, for some function $v$ as yet undetermined.
+
+Here is the reasoning behind this guess. Since the equation does not change under the scaling, it is natural to look for a solution which \emph{also} does not change, i.e.\ with
+$$ u(x,t) = u(\lambda x, \lambda^2 t) \qquad \text{for all } \lambda > 0. $$
+Fix a point $(x,t)$ with $t > 0$. The identity holds for every number $\lambda > 0$, so we may use it with the particular number $\lambda = \frac{1}{\sqrt t}$ (this is a legitimate choice: $(x,t)$ is fixed, so $\frac1{\sqrt t}$ is just a positive number). Since $\lambda^2 t = \frac1t\cdot t = 1$,
+$$ u(x,t) = u\Big(\frac{x}{\sqrt t},\, 1\Big). $$
+The second slot is now the constant $1$: the value of $u$ at $(x,t)$ depends only on the single combination $\frac{x}{\sqrt t}$. If, in addition, $u$ depends only on the distance $|x|$ (radial in $x$), then it depends only on $\frac{|x|}{\sqrt t}$, or equivalently on its square $\frac{|x|^2}{t}$; that is, $u(x,t) = v\big(\frac{|x|^2}{t}\big)$.
+
+\paragraph{Step 2: the dilation scaling and the ansatz.}
+Although this approach eventually leads to what we want (see Problem below), it is quicker to seek a solution $u$ having the special structure
+\begin{equation}\label{eq:ansatz}
+u(x,t) = \frac{1}{t^\alpha}\, v\Big(\frac{x}{t^\beta}\Big) \qquad (x \in \mathbb{R}^n,\ t > 0),
+\end{equation}
+where the constants $\alpha, \beta$ and the function $v : \mathbb{R}^n \to \mathbb{R}$ must be found. We come to \eqref{eq:ansatz} if we look for a solution $u$ of the heat equation invariant under the \emph{dilation scaling}
+$$ u(x,t) \mapsto \lambda^\alpha u(\lambda^\beta x, \lambda t). $$
+That is, we ask
+$$ u(x,t) = \lambda^\alpha u(\lambda^\beta x, \lambda t) $$
+for all $\lambda > 0$, $x \in \mathbb{R}^n$, $t > 0$. Setting $\lambda = t^{-1}$, we derive \eqref{eq:ansatz} for $v(y) := u(y,1)$.
+
+Let us explain each point of this.
+
+\emph{(a) Why this more general scaling?} In Step 1 we found the scaling $(\lambda x, \lambda^2 t)$ by inspection. We now do not want to fix the powers in advance; we let the equation decide them. So we scale $t$ by $\lambda$ and $x$ by $\lambda^\beta$, with $\beta$ unknown. (Scaling $t$ by $\lambda$ and $x$ by $\lambda^\beta$ is the same family as scaling $x$ by $\mu = \lambda^\beta$ and $t$ by $\mu^{1/\beta}$; it is only a change of notation.) We also allow the \emph{height} of the solution to be scaled by a power $\lambda^\alpha$, with $\alpha$ unknown.
+
+\emph{(b) Which scalings preserve the heat equation?} Let $u$ solve \eqref{eq:heat}, fix $\lambda > 0$, and let $w(x,t) := \lambda^\alpha u(\lambda^\beta x, \lambda t)$. Exactly as in Step 1 (chain rule; $\lambda$ is a constant):
+$$ w_t = \lambda^{\alpha}\cdot\lambda\, u_t(\lambda^\beta x, \lambda t) = \lambda^{\alpha+1} u_t(\lambda^\beta x,\lambda t), \qquad w_{x_i x_i} = \lambda^\alpha\cdot\lambda^\beta\cdot\lambda^\beta\, u_{x_ix_i}(\lambda^\beta x,\lambda t), $$
+so $\Delta w = \lambda^{\alpha+2\beta}\Delta u(\lambda^\beta x,\lambda t)$, and
+$$ w_t - \Delta w = \lambda^{\alpha+1}\Big[u_t - \lambda^{2\beta - 1}\Delta u\Big](\lambda^\beta x, \lambda t). $$
+Since $u_t = \Delta u$, the bracket equals $(1 - \lambda^{2\beta-1})\Delta u(\lambda^\beta x,\lambda t)$. If $\beta = \frac12$, then $\lambda^{2\beta-1} = \lambda^0 = 1$, the bracket vanishes, and $w$ is a solution for every $\alpha$ and every $\lambda > 0$. If $\beta \neq \frac12$, then $\lambda^{2\beta - 1} \neq 1$ for $\lambda \ne 1$, and $w$ is in general \emph{not} a solution. So the equation itself already points to $\beta = \frac12$; we will see this again, from a different angle, in Step 3.
+
+\emph{(c) Why $\lambda = t^{-1}$ is allowed.} The identity $u(x,t) = \lambda^\alpha u(\lambda^\beta x,\lambda t)$ is required for \emph{all} numbers $\lambda > 0$. Fix a point $(x,t)$ with $t > 0$; then $t^{-1}$ is one particular positive number, and we may use the identity with $\lambda = t^{-1}$. (We are not making $\lambda$ a variable and differentiating with respect to it; we only evaluate an identity, valid for all $\lambda$, at one value of $\lambda$.) Since $\lambda t = 1$, $\lambda^\alpha = t^{-\alpha}$ and $\lambda^\beta x = t^{-\beta}x$,
+$$ u(x,t) = t^{-\alpha}\, u\big(t^{-\beta}x,\, 1\big) = \frac{1}{t^\alpha}\, v\Big(\frac{x}{t^\beta}\Big), \qquad v(y) := u(y,1). $$
+This is \eqref{eq:ansatz}: $u$ is determined by its values at the single time $t = 1$, stretched in space by $t^\beta$ and scaled in height by $t^{-\alpha}$. Such solutions are called \emph{self-similar}: the graphs of $u(\cdot,t)$ at different times are rescaled copies of one another.
+
+\emph{(d) No points are lost.} Setting $\lambda = t^{-1}$ does not restrict the domain. For each fixed $y \in \mathbb{R}^n$ consider the curve $t \mapsto (t^\beta y, t)$, $t > 0$, in $\mathbb{R}^n\times(0,\infty)$; along it $\frac{x}{t^\beta} = y$ is constant. Every point $(x,t)$ with $t > 0$ lies on exactly one of these curves, namely the one with $y = t^{-\beta}x$. So the curves fill out all of $\mathbb{R}^n \times (0,\infty)$, and \eqref{eq:ansatz} defines $u$ everywhere there once $v$ is known on $\mathbb{R}^n$. (For $\beta = \frac12$ and $|y|$ fixed, these curves fill out the paraboloids $|x|^2 = |y|^2 t$, i.e.\ the level sets of the ratio $\frac{|x|^2}{t}$ of Step 1.)
+
+\emph{(e) We are looking for a special solution.} The heat equation has very many solutions. Here we are not trying to find all of them; we look for one particular solution with the extra structure \eqref{eq:ansatz}. The gain is that a PDE in the $n+1$ variables $(x,t)$ will become an equation for $v$ in the $n$ variables $y$ (and later, an ODE in one variable).
+
+\paragraph{Step 3: inserting \eqref{eq:ansatz} into \eqref{eq:heat}.}
+Let us insert \eqref{eq:ansatz} into \eqref{eq:heat}, and thereafter compute
+\begin{equation}\label{eq:heat5}
+\alpha t^{-(\alpha+1)} v(y) + \beta t^{-(\alpha+1)} y\cdot Dv(y) + t^{-(\alpha+2\beta)}\Delta v(y) = 0
+\end{equation}
+for $y := t^{-\beta}x$.
+
+Here are the computations. Write
+$$ u(x,t) = t^{-\alpha} v(y), \qquad y = y(x,t) = t^{-\beta}x, \quad\text{i.e.}\quad y_i = t^{-\beta}x_i \ (i = 1,\dots,n). $$
+Remember that $y = (y_1,\dots,y_n)$ is a vector, and $v$ is a function of the $n$ variables $y_1,\dots,y_n$, each of which depends on $x$ and $t$.
+
+\emph{The time derivative $u_t$.} By the product rule,
+$$ u_t = \frac{\partial}{\partial t}\big(t^{-\alpha}\big)\, v(y) + t^{-\alpha}\, \frac{\partial}{\partial t}\big[v(y(x,t))\big]. $$
+The first term is $-\alpha t^{-\alpha-1}v(y)$. For the second we use the chain rule in several variables: $v$ depends on $t$ through each of $y_1,\dots,y_n$, so
+$$ \frac{\partial}{\partial t}\big[v(y)\big] = \frac{\partial v}{\partial y_1}\frac{\partial y_1}{\partial t} + \cdots + \frac{\partial v}{\partial y_n}\frac{\partial y_n}{\partial t} = \sum_{i=1}^n v_{y_i}(y)\,\frac{\partial y_i}{\partial t}. $$
+This is the dot product of the gradient $Dv(y) = (v_{y_1},\dots,v_{y_n})$ with the vector $\big(\frac{\partial y_1}{\partial t},\dots,\frac{\partial y_n}{\partial t}\big)$. Now ($x$ is held fixed)
+$$ \frac{\partial y_i}{\partial t} = \frac{\partial}{\partial t}\big(t^{-\beta}x_i\big) = -\beta t^{-\beta-1}x_i = -\beta t^{-1}\big(t^{-\beta}x_i\big) = -\beta t^{-1} y_i, $$
+where we wrote $t^{-\beta - 1} = t^{-1}t^{-\beta}$ and used $t^{-\beta}x_i = y_i$. Hence
+$$ \frac{\partial}{\partial t}\big[v(y)\big] = \sum_{i=1}^n v_{y_i}(y)\,(-\beta t^{-1}y_i) = -\beta t^{-1}\, y\cdot Dv(y), $$
+and altogether
+$$ u_t = -\alpha t^{-(\alpha+1)} v(y) - \beta t^{-(\alpha+1)}\, y\cdot Dv(y). $$
+
+\emph{The Laplacian $\Delta u$.} Now $t$ is held fixed. The variable $x_i$ enters only through $y_i$, with $\frac{\partial y_i}{\partial x_i} = t^{-\beta}$ (and $\frac{\partial y_k}{\partial x_i} = 0$ for $k \neq i$). So
+$$ u_{x_i} = t^{-\alpha}\, v_{y_i}(y)\,\frac{\partial y_i}{\partial x_i} = t^{-\alpha-\beta}\, v_{y_i}(y), $$
+and differentiating once more in $x_i$ (again bringing out $\frac{\partial y_i}{\partial x_i} = t^{-\beta}$)
+$$ u_{x_ix_i} = t^{-\alpha-\beta}\, v_{y_iy_i}(y)\, t^{-\beta} = t^{-\alpha-2\beta}\, v_{y_iy_i}(y). $$
+Summing over $i$:
+$$ \Delta u = t^{-(\alpha+2\beta)}\,\Delta v(y). $$
+
+\emph{Substitution.} The equation $u_t - \Delta u = 0$ now reads
+$$ -\alpha t^{-(\alpha+1)} v(y) - \beta t^{-(\alpha+1)}\, y\cdot Dv(y) - t^{-(\alpha+2\beta)}\Delta v(y) = 0, $$
+and multiplying by $-1$ we get \eqref{eq:heat5}.
+
+\paragraph{Step 4: the choice $\beta = \frac12$.}
+In order to transform \eqref{eq:heat5} into an expression involving the variable $y$ alone, we take $\beta = \frac12$. Then the terms with $t$ are identical, and so \eqref{eq:heat5} reduces to
+\begin{equation}\label{eq:heat6}
+\alpha v + \frac12 y\cdot Dv + \Delta v = 0.
+\end{equation}
+
+Let us see why $\beta = \frac12$ is forced. In \eqref{eq:heat5} the first two terms carry the factor $t^{-(\alpha+1)}$ and the third carries $t^{-(\alpha+2\beta)}$. Divide \eqref{eq:heat5} by $t^{-(\alpha+1)}$. The power of $t$ remaining in the third term is
+$$ -(\alpha+2\beta) - \big(-(\alpha+1)\big) = -\alpha - 2\beta + \alpha + 1 = 1 - 2\beta, $$
+so \eqref{eq:heat5} becomes
+$$ \alpha v(y) + \beta\, y\cdot Dv(y) + t^{1-2\beta}\,\Delta v(y) = 0. $$
+This must hold for all $y \in \mathbb{R}^n$ and all $t > 0$, and $y$ and $t$ can be varied independently (given $y$ and $t$, take $x = t^\beta y$). If $\beta \neq \frac12$, then for a fixed $y$ the factor $t^{1-2\beta}$ takes different values for different $t$, while the other terms do not depend on $t$; this forces $\Delta v(y) = 0$ and $\alpha v + \beta y\cdot Dv = 0$ separately, which is far too restrictive. With $\beta = \frac12$ we get $t^{1-2\beta} = t^0 = 1$: the variable $t$ disappears completely, and we are left with \eqref{eq:heat6}, an equation for $v$ in the variable $y$ alone. (This agrees with Step 2(b), where $\beta = \frac12$ was exactly the case in which the dilation scaling maps solutions to solutions.)
+
+\paragraph{Step 5: radial $v$.}
+We simplify further by guessing $v$ to be radial; that is, $v(y) = w(|y|)$ for some $w : \mathbb{R} \to \mathbb{R}$. Thereupon \eqref{eq:heat6} becomes
+\begin{equation}\label{eq:heatradial}
+\alpha w + \frac12 r w' + w'' + \frac{n-1}{r}w' = 0,
+\end{equation}
+for $r = |y|$, $' = \frac{d}{dr}$.
+
+\emph{Why radial?} The Laplacian is invariant under rotations (Section~\ref{ssec:rotinv}): diffusion has no preferred direction. Also \eqref{eq:heat6} is still a PDE in the $n$ variables $y_1,\dots,y_n$; assuming $v$ radial reduces it to an ODE in the single variable $r$, exactly as we did for Laplace's equation.
+
+\emph{The computation} (for $y \neq 0$). Let $r = |y|$. As in Section~\ref{sssec:radlap}, $\frac{\partial r}{\partial y_i} = \frac{y_i}{r}$, so
+$$ v_{y_i} = w'(r)\frac{y_i}{r}, \qquad\text{i.e.}\qquad Dv(y) = w'(r)\frac{y}{r}. $$
+Therefore
+$$ y\cdot Dv(y) = w'(r)\,\frac{y\cdot y}{r} = w'(r)\frac{|y|^2}{r} = w'(r)\frac{r^2}{r} = r\,w'(r). $$
+The radial formula for the Laplacian (Section~\ref{sssec:radlap}) gives
+$$ \Delta v(y) = w''(r) + \frac{n-1}{r}w'(r). $$
+Substituting $v = w$, $y\cdot Dv = rw'$ and this expression for $\Delta v$ into \eqref{eq:heat6} gives \eqref{eq:heatradial}.
+
+\paragraph{Step 6: the choice $\alpha = \frac n2$ and solving the ODE.}
+Now if we set $\alpha = \frac n2$, this simplifies to read
+$$ (r^{n-1}w')' + \frac12(r^n w)' = 0. $$
+
+To see this, multiply \eqref{eq:heatradial} by $r^{n-1}$:
+$$ r^{n-1}w'' + (n-1)r^{n-2}w' + \alpha r^{n-1} w + \frac12 r^n w' = 0. $$
+\begin{itemize}
+    \item The first two terms form an exact derivative: by the product rule $(r^{n-1}w')' = r^{n-1}w'' + (n-1)r^{n-2}w'$.
+    \item The last two terms: $(r^n w)' = n r^{n-1}w + r^n w'$, so $\frac12(r^nw)' = \frac n2 r^{n-1}w + \frac12 r^n w'$. This equals $\alpha r^{n-1}w + \frac12 r^nw'$ \emph{exactly when} $\alpha = \frac n2$.
+\end{itemize}
+So $\alpha = \frac n2$ is the choice which makes the whole left side an exact derivative. (There is also a physical reason for this choice; see the remark after the Lemma below.)
+
+Thus
+$$ r^{n-1}w' + \frac12 r^n w = a $$
+for some constant $a$: a function whose derivative is zero on the interval $(0,\infty)$ is constant. Assuming $\lim_{r\to\infty} w, w' = 0$, we conclude $a = 0$. (More precisely we need $r^{n-1}w'(r) \to 0$ and $r^n w(r) \to 0$ as $r \to \infty$; that is, $w$ and $w'$ decay fast. We are \emph{looking for} a solution, so we are free to impose this; the function we find, a Gaussian, decays faster than any power of $r$ and does satisfy it.) Letting $r \to \infty$ in the identity, the left side tends to $0$, so $a = 0$; whence, dividing by $r^{n-1} > 0$,
+$$ w' = -\frac12 rw. $$
+But then for some constant $b$
+\begin{equation}\label{eq:heatw}
+w = be^{-\frac{r^2}{4}}.
+\end{equation}
+Indeed, multiply by the integrating factor $e^{r^2/4}$ (note $\frac{d}{dr}e^{r^2/4} = \frac r2 e^{r^2/4}$):
+$$ \frac{d}{dr}\Big(e^{\frac{r^2}{4}}w\Big) = e^{\frac{r^2}{4}}\Big(w' + \frac r2 w\Big) = 0, $$
+so $e^{r^2/4}w(r) = b$ is constant, which is \eqref{eq:heatw}. (This avoids dividing by $w$, which might vanish.)
+
+\paragraph{Step 7: conclusion.}
+Combining \eqref{eq:ansatz}, \eqref{eq:heatw} and our choices for $\alpha, \beta$, we conclude that $\frac{b}{t^{n/2}}e^{-\frac{|x|^2}{4t}}$ solves the heat equation \eqref{eq:heat}.
+
+Indeed, with $\alpha = \frac n2$, $\beta = \frac12$ we have $y = \frac{x}{\sqrt t}$, $r = |y| = \frac{|x|}{\sqrt t}$, $\frac{r^2}{4} = \frac{|x|^2}{4t}$, and $v(y) = w(|y|) = be^{-|y|^2/4}$, so
+$$ u(x,t) = \frac{1}{t^{n/2}}\, v\Big(\frac{x}{\sqrt t}\Big) = \frac{b}{t^{n/2}}e^{-\frac{|x|^2}{4t}}. $$
+
+\emph{Direct check.} Since the derivation contained guesses, let us verify directly that $u(x,t) = b\,t^{-n/2}e^{-|x|^2/4t}$ solves \eqref{eq:heat} for $x \in \mathbb{R}^n$, $t > 0$. Write $E = e^{-|x|^2/4t}$. Using $\frac{\partial}{\partial t}\big(-\frac{|x|^2}{4t}\big) = \frac{|x|^2}{4t^2}$,
+$$ u_t = b\Big(-\frac n2 t^{-\frac n2 - 1}E + t^{-\frac n2}\frac{|x|^2}{4t^2}E\Big) = b\,t^{-\frac n2}E\Big(\frac{|x|^2}{4t^2} - \frac{n}{2t}\Big). $$
+Using $\frac{\partial}{\partial x_i}\big(-\frac{|x|^2}{4t}\big) = -\frac{x_i}{2t}$,
+$$ u_{x_i} = b\,t^{-\frac n2}E\Big(-\frac{x_i}{2t}\Big), \qquad u_{x_ix_i} = b\,t^{-\frac n2}\Big[E\Big(-\frac{x_i}{2t}\Big)^2 + E\Big(-\frac{1}{2t}\Big)\Big] = b\,t^{-\frac n2}E\Big(\frac{x_i^2}{4t^2} - \frac{1}{2t}\Big). $$
+Summing over $i$, $\Delta u = b\,t^{-\frac n2}E\big(\frac{|x|^2}{4t^2} - \frac{n}{2t}\big) = u_t$. \checkmark
+
+This computation motivates the following
+
+\begin{definition}[Fundamental solution of the heat equation]\label{def:heatPhi}
+The function
+$$ \Phi(x,t) := \begin{cases} \dfrac{1}{(4\pi t)^{n/2}}\, e^{-\frac{|x|^2}{4t}} & (x \in \mathbb{R}^n,\ t > 0) \\[1em] 0 & (x \in \mathbb{R}^n,\ t < 0) \end{cases} $$
+is called the \emph{fundamental solution} of the heat equation.
+\end{definition}
+
+Notice that $\Phi$ is singular at the point $(0,0)$. We will sometimes write $\Phi(x,t) = \Phi(|x|,t)$ to emphasize that the fundamental solution is radial in the variable $x$. The choice of the normalizing constant $(4\pi)^{-n/2}$ is dictated by the following Lemma.
+
+\emph{About the singularity.} $\Phi$ is not defined at $t = 0$, and it cannot be extended continuously to $(0,0)$:
+\begin{itemize}
+    \item along $x = 0$: $\Phi(0,t) = (4\pi t)^{-n/2} \to +\infty$ as $t \to 0^+$;
+    \item for fixed $x \neq 0$: $\Phi(x,t) \to 0$ as $t \to 0^+$ (put $s = \frac1t \to \infty$; then $\Phi = (4\pi)^{-n/2}s^{n/2}e^{-s|x|^2/4}$, and the exponential decay beats the power growth).
+\end{itemize}
+So as $t \downarrow 0$ the function $\Phi(\cdot,t)$ becomes very large near $x = 0$ and very small away from $x = 0$. Compare $\Phi(x) = \frac{1}{n(n-2)\alpha(n)}|x|^{2-n}$ for Laplace's equation ($n \ge 3$), which is singular at $x = 0$.
+
+\begin{lemma}[Integral of fundamental solution]\label{lem:heatint}
+For each time $t > 0$,
+$$ \int_{\mathbb{R}^n}\Phi(x,t)\, dx = 1. $$
+\end{lemma}
+
+\begin{proof}
+We calculate
+\begin{align*}
+\int_{\mathbb{R}^n}\Phi(x,t)\, dx &= \frac{1}{(4\pi t)^{n/2}}\int_{\mathbb{R}^n} e^{-\frac{|x|^2}{4t}}\, dx \\
+&= \frac{1}{\pi^{n/2}}\int_{\mathbb{R}^n} e^{-|z|^2}\, dz \\
+&= \frac{1}{\pi^{n/2}}\prod_{i=1}^n\int_{-\infty}^\infty e^{-z_i^2}\, dz_i = 1.
+\end{align*}
+
+Let us justify each equality.
+
+\emph{First line.} For $t > 0$ this is the definition of $\Phi$; the constant $(4\pi t)^{-n/2}$ does not depend on $x$ and comes out of the integral.
+
+\emph{Second line: change of variables $x = 2\sqrt t\, z$.} Fix $t > 0$. Then $\frac{|x|^2}{4t} = \frac{4t|z|^2}{4t} = |z|^2$. The map $z \mapsto 2\sqrt t\, z$ is linear, multiplying each of the $n$ coordinates by $2\sqrt t$; its Jacobian determinant is $(2\sqrt t)^n = 2^n t^{n/2}$, so $dx = 2^n t^{n/2}\, dz$ (as $z$ runs over $\mathbb{R}^n$, so does $x$). Hence
+$$ \frac{1}{(4\pi t)^{n/2}}\int_{\mathbb{R}^n} e^{-\frac{|x|^2}{4t}}\, dx = \frac{2^n t^{n/2}}{4^{n/2}\pi^{n/2}t^{n/2}}\int_{\mathbb{R}^n} e^{-|z|^2}\, dz = \frac{1}{\pi^{n/2}}\int_{\mathbb{R}^n} e^{-|z|^2}\, dz, $$
+since $4^{n/2} = 2^n$.
+
+\emph{Third line: splitting into one-dimensional integrals.} Since $|z|^2 = z_1^2 + \cdots + z_n^2$,
+$$ e^{-|z|^2} = e^{-z_1^2}e^{-z_2^2}\cdots e^{-z_n^2}. $$
+The integrand is nonnegative, so by Fubini--Tonelli (Fact~\ref{fact:measure}) we may integrate in $z_1, \dots, z_n$ one at a time, in any order; each factor depends on one variable only and comes out of the integrals in the other variables. This gives the product of the $n$ one-dimensional integrals.
+
+\emph{Last equality: the Gaussian integral.} We show $I := \int_{-\infty}^\infty e^{-s^2}\, ds = \sqrt\pi$; then the product is $(\sqrt\pi)^n = \pi^{n/2}$, which cancels the factor $\pi^{-n/2}$. First, $I$ is finite: $e^{-s^2} \le e^{1-2|s|}$ for all $s$ (because $s^2 - 2|s| + 1 = (|s|-1)^2 \geq 0$), and $\int_{-\infty}^\infty e^{1-2|s|}\, ds = e < \infty$. Next, by the case $n = 2$ of what we just did (Tonelli),
+$$ I^2 = \int_{-\infty}^\infty e^{-z_1^2}\, dz_1\int_{-\infty}^\infty e^{-z_2^2}\, dz_2 = \int_{\mathbb{R}^2} e^{-|z|^2}\, dz. $$
+The integrand is radial, $e^{-|z|^2} = g(|z|)$ with $g(r) = e^{-r^2}$. By polar coordinates (Corollary~\ref{cor:polar}(c), with $n = 2$, $n\alpha(n) = 2\pi$),
+$$ \int_{B(0,R)} e^{-|z|^2}\, dz = 2\pi\int_0^R e^{-r^2}\, r\, dr = 2\pi\Big[-\frac12 e^{-r^2}\Big]_0^R = \pi\big(1 - e^{-R^2}\big). $$
+As $R \to \infty$ the left side increases to $\int_{\mathbb{R}^2} e^{-|z|^2}\, dz$ (Monotone Convergence Theorem, Fact~\ref{fact:measure}, applied to $e^{-|z|^2}\chi_{B(0,R)}$), and the right side tends to $\pi$. So $I^2 = \pi$, and since $I > 0$, $I = \sqrt\pi$.
+\end{proof}
+
+\begin{remark}[Why $\alpha = \frac n2$ and why the constant $(4\pi)^{-n/2}$]
+(i) For any $\alpha$ and $\beta = \frac12$, the change of variables $x = \sqrt t\, y$ (so $dx = t^{n/2}dy$) gives
+$$ \int_{\mathbb{R}^n}\frac{1}{t^\alpha}\, v\Big(\frac{x}{\sqrt t}\Big)\, dx = t^{\frac n2 - \alpha}\int_{\mathbb{R}^n} v(y)\, dy. $$
+If $\int v \ne 0$, this is independent of $t$ exactly when $\alpha = \frac n2$. In the physical interpretation, $\int_{\mathbb{R}^n} u(x,t)\,dx$ is the total amount of heat at time $t$, and with no source it should not change in time. So the choice $\alpha = \frac n2$, which made the ODE exactly integrable in Step 6, is also the one which conserves the total heat.
+
+(ii) The constant $b$ in Step 7 is arbitrary (the equation is linear). We choose $b = (4\pi)^{-n/2}$ so that the total heat is exactly $1$ at every time (Lemma~\ref{lem:heatint}). Together with the behaviour as $t \to 0^+$ described after the Definition, this says: $\Phi(\cdot,t)$ describes a unit amount of heat which at time $0$ is concentrated at the origin and then spreads out.
+\end{remark}
+
+\paragraph{Problem.} Assume $n = 1$ and $u(x,t) = v\big(\frac{x^2}{t}\big)$.
+\begin{enumerate}
+    \item[(a)] Show $u_t = u_{xx}$ if and only if
+    $$ 4zv''(z) + (2 + z)v'(z) = 0 \qquad (z > 0). $$
+    \item[(b)] Show that the general solution of the ODE in (a) is
+    $$ v(z) = c\int_0^z e^{-s/4}s^{-1/2}\, ds + d. $$
+    \item[(c)] Differentiate $v\big(\frac{x^2}{t}\big)$ with respect to $x$ and select the constant $c$ properly, so as to obtain the fundamental solution $\Phi$ for $n = 1$. Explain why this procedure produces the fundamental solution.
+\end{enumerate}
+
+%---------------------------------------------------------------------
+\subsubsection{Initial-value problem}\label{sssec:ivp}
+
+We now employ $\Phi$ to fashion a solution to the \emph{initial-value} (or \emph{Cauchy}) \emph{problem}
+\begin{equation}\label{eq:ivp}
+\begin{cases} u_t - \Delta u = 0 & \text{in } \mathbb{R}^n \times (0,\infty) \\ u = g & \text{on } \mathbb{R}^n \times \{t = 0\}. \end{cases}
+\end{equation}
+Here $g : \mathbb{R}^n \to \mathbb{R}$ is the given \emph{initial temperature}. We look for a function $u$ which solves the heat equation for all positive times and equals $g$ at time $0$.
+
+Let us note the function $(x,t) \mapsto \Phi(x,t)$ solves the heat equation away from the singularity at $(0,0)$, and thus so does $(x,t) \mapsto \Phi(x - y, t)$ for each fixed $y \in \mathbb{R}^n$. Consequently the convolution
+\begin{equation}\label{eq:ivpsol}
+\begin{aligned}
+u(x,t) &= \int_{\mathbb{R}^n}\Phi(x - y, t)\, g(y)\, dy \\
+&= \frac{1}{(4\pi t)^{n/2}}\int_{\mathbb{R}^n} e^{-\frac{|x-y|^2}{4t}}\, g(y)\, dy \qquad (x \in \mathbb{R}^n,\ t > 0)
+\end{aligned}
+\end{equation}
+should also be a solution.
+
+\emph{Why is this a reasonable guess?}
+\begin{itemize}
+    \item For $t > 0$, $\Phi$ solves the heat equation (Step 7 of the derivation, with $b = (4\pi)^{-n/2}$). For $t < 0$, $\Phi \equiv 0$, which trivially solves it. So $\Phi$ solves the heat equation at every point except possibly where it is not smooth, the point $(0,0)$.
+    \item For fixed $y$, the function $(x,t) \mapsto \Phi(x - y, t)$ is $\Phi$ shifted in space so that its singularity sits at $(y,0)$. Shifting does not change derivatives: by the chain rule, with inner map $x \mapsto x - y$ whose derivative is the identity, $\frac{\partial}{\partial x_i}[\Phi(x-y,t)] = \Phi_{x_i}(x - y,t)$, $\frac{\partial^2}{\partial x_i^2}[\Phi(x-y,t)] = \Phi_{x_ix_i}(x - y,t)$ and $\frac{\partial}{\partial t}[\Phi(x-y,t)] = \Phi_t(x-y,t)$. Hence it is again a solution for $t > 0$.
+    \item The heat equation is linear: sums and constant multiples of solutions are solutions. The integral $\int \Phi(x-y,t)g(y)\,dy$ is a ``continuous sum'' of the solutions $\Phi(x - y,t)$ with weights $g(y)$, so it should again be a solution.
+    \item As $t \to 0^+$, $\Phi(\cdot - y,t)$ concentrates its unit mass at the point $y$ (see the remarks after the Definition of $\Phi$). So $u(x,t)$ is an \emph{average} of the values $g(y)$ with weights $\Phi(x-y,t)$, and for small $t$ almost all the weight sits at $y$ near $x$. So we expect $u(x,t) \to g(x)$ as $t \to 0^+$.
+\end{itemize}
+
+\emph{$u$ is well defined.} Fix $x \in \mathbb{R}^n$ and $t > 0$. Since $\Phi > 0$ and $|g| \leq \|g\|_{L^\infty}$ everywhere (Definition~\ref{def:Lp}),
+$$ |\Phi(x - y,t)\, g(y)| \leq \|g\|_{L^\infty}\, \Phi(x - y,t), \qquad\text{and}\qquad \int_{\mathbb{R}^n}\Phi(x - y,t)\, dy = 1. $$
+The last identity follows from Lemma~\ref{lem:heatint} by the change of variables $z = x - y$ (a translation followed by the reflection $y \mapsto -y$; its Jacobian determinant has absolute value $1$, and $z$ runs over all of $\mathbb{R}^n$ as $y$ does):
+\begin{equation}\label{eq:mass1}
+\int_{\mathbb{R}^n}\Phi(x - y,t)\, dy = \int_{\mathbb{R}^n}\Phi(z,t)\, dz = 1 \qquad (x \in \mathbb{R}^n,\ t > 0).
+\end{equation}
+So the integral in \eqref{eq:ivpsol} converges absolutely and $|u(x,t)| \leq \|g\|_{L^\infty}$.
+
+\bigskip
+\textbf{Theorem 1 (Solution of initial-value problem).} \textit{Assume $g \in C(\mathbb{R}^n) \cap L^\infty(\mathbb{R}^n)$, and define $u$ by \eqref{eq:ivpsol}. Then}
+\begin{enumerate}
+    \item[(i)] $u \in C^\infty(\mathbb{R}^n \times (0,\infty))$,
+    \item[(ii)] $u_t(x,t) - \Delta u(x,t) = 0 \quad (x \in \mathbb{R}^n,\ t > 0)$,
+\end{enumerate}
+\textit{and}
+\begin{enumerate}
+    \item[(iii)] $\displaystyle\lim_{\substack{(x,t)\to(x^0,0)\\ x\in\mathbb{R}^n,\ t>0}} u(x,t) = g(x^0)$ \textit{for each point $x^0 \in \mathbb{R}^n$.}
+\end{enumerate}
+
+\emph{Reading the statement.}
+\begin{itemize}
+    \item The hypothesis $g \in C(\mathbb{R}^n)\cap L^\infty(\mathbb{R}^n)$ just means $g$ is continuous and bounded (Definition~\ref{def:Lp}). Boundedness makes the integral \eqref{eq:ivpsol} converge; continuity is used in (iii).
+    \item (i) says $u$ is infinitely differentiable for $t > 0$, even though $g$ is only continuous. The heat equation \emph{smooths} the initial data instantly.
+    \item (ii) says $u$ solves the PDE in \eqref{eq:ivp}.
+    \item The formula \eqref{eq:ivpsol} makes no sense at $t = 0$ (there is a factor $t^{-n/2}$). So the condition ``$u = g$ on $t = 0$'' in \eqref{eq:ivp} is understood in the sense of (iii): as $(x,t)$ approaches a point $(x^0,0)$ of the initial plane, \emph{from inside the region $t > 0$ and from any direction}, $u(x,t)$ tends to $g(x^0)$. Equivalently: if we \emph{define} $u(x,0) := g(x)$, then $u$ is continuous on $\mathbb{R}^n \times [0,\infty)$.
+    \item In (iii) both $x$ and $t$ move. It is \emph{not} enough to fix $x = x^0$ and let $t \to 0^+$; this is what makes (iii) the hard part.
+\end{itemize}
+
+%-----------------------------------------
+\paragraph{Proof of (i).} Since the function $\frac{1}{t^{n/2}}e^{-\frac{|x|^2}{4t}}$ is infinitely differentiable, with uniformly bounded derivatives of all orders, on $\mathbb{R}^n \times [\delta,\infty)$ for each $\delta > 0$, we see that $u \in C^\infty(\mathbb{R}^n \times (0,\infty))$.
+
+The idea: we want to differentiate \eqref{eq:ivpsol} under the integral sign as often as we like. Then every derivative of $u$ is $\int (\text{derivative of }\Phi)(x-y,t)\, g(y)\, dy$, and these are continuous. The tool is Lemma~\ref{lem:diffintRn}, with $z = (x,t)$, $W = \mathbb{R}^n \times (0,\infty)$ (an open subset of $\mathbb{R}^{n+1}$), and
+$$ F(x,t,y) = \Phi(x - y,t)\, g(y). $$
+$F$ is continuous, and smooth in $(x,t)$ for $t > 0$. What we must check is the \emph{domination}: near each point $(x_0,t_0)$, every derivative $D^\alpha_{(x,t)}F$ is bounded by one integrable function $G(y)$. Since we integrate over all of $\mathbb{R}^n$, which has infinite volume, it is not enough that the derivatives are bounded; we also need decay in $y$. Both come from the Gaussian factor. We proceed in three steps.
+
+\emph{Step A: the form of the derivatives.} Write $K(x,t) := t^{-n/2}e^{-\frac{|x|^2}{4t}}$, so $\Phi = (4\pi)^{-n/2}K$ for $t > 0$, and write $E := e^{-\frac{|x|^2}{4t}}$. We claim: \emph{every partial derivative of $K$ of any order, in the variables $x_1,\dots,x_n,t$, is a finite sum of terms of the form}
+$$ c\; t^{-m}\, x^\gamma\, E, \qquad c \in \mathbb{R},\ m \geq 0,\ \gamma \text{ a multi-index},\ x^\gamma = x_1^{\gamma_1}\cdots x_n^{\gamma_n}. $$
+$K$ itself has this form ($c = 1$, $m = \frac n2$, $\gamma = 0$). It suffices to show that the derivative of one such term, with respect to $t$ or any $x_i$, is again a sum of such terms; then the claim follows by induction on the order. Using $E_t = \frac{|x|^2}{4t^2}E$ and $E_{x_i} = -\frac{x_i}{2t}E$:
+\begin{align*}
+\frac{\partial}{\partial t}\big(t^{-m}x^\gamma E\big) &= -m\,t^{-m-1}x^\gamma E + \frac14\, t^{-m-2}\, x^\gamma |x|^2 E, \\
+\frac{\partial}{\partial x_i}\big(t^{-m}x^\gamma E\big) &= \gamma_i\, t^{-m}x^{\gamma - e_i}E - \frac12\, t^{-m-1}x^{\gamma+e_i}E,
+\end{align*}
+(the first term in the second line is absent if $\gamma_i = 0$), and $x^\gamma|x|^2 = \sum_j x^{\gamma + 2e_j}$ is a sum of monomials. So all terms are again of the required form. In particular $K$ is $C^\infty$ on $\mathbb{R}^n \times (0,\infty)$: it is built from smooth functions by products and compositions.
+
+\emph{Step B: bounds for $t$ in a compact interval.} Let $0 < \delta \leq t \leq T$. Since each $|x_i| \leq |x|$, we have $|x^\gamma| \leq |x|^{|\gamma|}$. Also $t^{-m} \leq \delta^{-m}$ and $e^{-|x|^2/4t} \leq e^{-|x|^2/4T}$ (because $\frac{1}{4t} \geq \frac{1}{4T}$). So each term satisfies
+$$ |c\, t^{-m}x^\gamma E| \leq |c|\,\delta^{-m}\,|x|^{|\gamma|}e^{-\frac{|x|^2}{8T}}\cdot e^{-\frac{|x|^2}{8T}} \leq |c|\,\delta^{-m}M\, e^{-\frac{|x|^2}{8T}}, $$
+where we split the exponential into two halves and used that $s \mapsto s^{k}e^{-s^2/8T}$ is continuous on $[0,\infty)$ and tends to $0$ as $s \to \infty$, hence is bounded by some $M$ (with $k = |\gamma|$). Adding the finitely many terms: \emph{for each derivative $D^\alpha K$ there is a constant $C$ (depending on $\alpha, \delta, T, n$) with}
+\begin{equation}\label{eq:DKbound}
+|D^\alpha K(x,t)| \leq C\, e^{-\frac{|x|^2}{8T}} \qquad (x \in \mathbb{R}^n,\ \delta \leq t \leq T).
+\end{equation}
+In particular, all derivatives of $K$ are bounded on $\mathbb{R}^n \times [\delta,T]$. (Bounded even on $\mathbb{R}^n \times [\delta,\infty)$, since $t^{-m}|x|^ke^{-|x|^2/4t} = t^{k/2-m}\,(|x|/\sqrt t)^ke^{-|x|^2/4t}$; we will not need this.)
+
+\emph{Step C: domination near a point.} Fix $(x_0,t_0)$ with $t_0 > 0$. Take $\rho = \min\{1, \frac{t_0}{2}\}$, $\delta = \frac{t_0}{2}$, $T = 2t_0$. If $(x,t) \in B((x_0,t_0),\rho)$, then $|x - x_0| < 1$ and $\delta < t < T$. By the chain rule (second item of ``Why is this a reasonable guess?''), $D^\alpha_{(x,t)}[\Phi(x-y,t)] = (D^\alpha\Phi)(x - y,t)$, so by \eqref{eq:DKbound},
+$$ |D^\alpha_{(x,t)}F(x,t,y)| = |(D^\alpha\Phi)(x-y,t)|\,|g(y)| \leq C\,\|g\|_{L^\infty}\, e^{-\frac{|x-y|^2}{8T}}. $$
+The right side still depends on $x$; we need a bound by a function of $y$ alone. From $|y - x_0| \leq |y - x| + |x - x_0|$ and $(a + b)^2 \leq 2a^2 + 2b^2$,
+$$ |y - x_0|^2 \leq 2|x - y|^2 + 2|x - x_0|^2 \leq 2|x-y|^2 + 2, \qquad\text{so}\qquad |x - y|^2 \geq \tfrac12|y - x_0|^2 - 1. $$
+Hence $e^{-\frac{|x-y|^2}{8T}} \leq e^{\frac{1}{8T}}\,e^{-\frac{|y-x_0|^2}{16T}}$, and
+$$ |D^\alpha_{(x,t)}F(x,t,y)| \leq G(y) := C'\, e^{-\frac{|y-x_0|^2}{16T}} \qquad ((x,t) \in B((x_0,t_0),\rho),\ y \in \mathbb{R}^n), $$
+with $C' = C\|g\|_{L^\infty}e^{1/8T}$. (For finitely many $\alpha$ at a time we take the largest of the constants.) $G$ is integrable: it is a constant multiple of a Gaussian, and by the change of variables $y = x_0 + 4\sqrt T z$ and Lemma~\ref{lem:heatint}'s proof, $\int e^{-|y - x_0|^2/16T}dy = (16\pi T)^{n/2} < \infty$.
+
+\emph{Conclusion.} The hypotheses of Lemma~\ref{lem:diffintRn} hold for all orders, so $u \in C^\infty(\mathbb{R}^n \times (0,\infty))$, and every derivative may be taken inside the integral:
+$$ D^\alpha u(x,t) = \int_{\mathbb{R}^n}(D^\alpha\Phi)(x-y,t)\, g(y)\, dy. $$
+
+%-----------------------------------------
+\paragraph{Proof of (ii).} Furthermore
+\begin{equation}\label{eq:heat10}
+\begin{aligned}
+u_t(x,t) - \Delta u(x,t) &= \int_{\mathbb{R}^n}\big[(\Phi_t - \Delta_x\Phi)(x - y,t)\big]\, g(y)\, dy \\
+&= 0 \qquad (x \in \mathbb{R}^n,\ t > 0),
+\end{aligned}
+\end{equation}
+since $\Phi$ itself solves the heat equation.
+
+In detail: by the formula for $D^\alpha u$ just proved, with $\alpha$ corresponding to $\partial_t$ and to $\partial_{x_i}^2$,
+$$ u_t(x,t) = \int_{\mathbb{R}^n}\Phi_t(x-y,t)\,g(y)\,dy, \qquad u_{x_ix_i}(x,t) = \int_{\mathbb{R}^n}\Phi_{x_ix_i}(x-y,t)\,g(y)\,dy. $$
+Sum the second over $i = 1,\dots,n$ and subtract from the first; the integrals combine by linearity. For $t > 0$ the point $(x - y,t)$ has positive time coordinate, so it is not the singular point, and $(\Phi_t - \Delta_x\Phi)(x-y,t) = 0$ by Step~7 of the derivation. The integrand is identically zero, so the integral is zero. $\square$
+
+%-----------------------------------------
+\paragraph{Proof of (iii): the idea.}
+Two $\varepsilon$--$\delta$ statements are involved.
+
+\emph{What we know (continuity of $g$ at $x^0$).} For every $\varepsilon > 0$ there is $\delta > 0$ such that $|g(y) - g(x^0)| < \varepsilon$ whenever $|y - x^0| < \delta$.
+
+\emph{What we want (the limit in (iii)).} For every $\varepsilon > 0$ there is $\eta > 0$ such that
+$$ |u(x,t) - g(x^0)| < \varepsilon \qquad \text{whenever } |x - x^0| < \eta \text{ and } 0 < t < \eta. $$
+(Requiring $|x - x^0| < \eta$ and $0 < t < \eta$ is the same as requiring that $(x,t)$ is close to $(x^0,0)$ in $\mathbb{R}^{n+1}$, up to changing $\eta$: a ball of radius $\eta$ around $(x^0,0)$ lies inside this box, and the box lies inside the ball of radius $\sqrt2\,\eta$.)
+
+\emph{How to get the second from the first.} Three observations.
+\begin{enumerate}
+    \item \emph{Write $g(x^0)$ as an average.} By \eqref{eq:mass1}, $g(x^0) = g(x^0)\int\Phi(x - y,t)\,dy = \int\Phi(x - y,t)\,g(x^0)\,dy$: a constant is its own weighted average, because the weights have total mass $1$. Therefore
+    $$ u(x,t) - g(x^0) = \int_{\mathbb{R}^n}\Phi(x-y,t)\,\big[g(y) - g(x^0)\big]\, dy. $$
+    So we must show: the weighted average of $g(y) - g(x^0)$ is small.
+    \item \emph{Near $x^0$, the integrand is small because $g$ is continuous.} On the ball $|y - x^0| < \delta$ we have $|g(y) - g(x^0)| < \varepsilon$. The weights are nonnegative with total mass $1$, so this part contributes at most $\varepsilon$. This works for every $t > 0$ and every $x$.
+    \item \emph{Far from $x^0$, the weight is small because $t$ is small.} On $|y - x^0| \geq \delta$ we only know $|g(y) - g(x^0)| \leq 2\|g\|_{L^\infty}$. But if $x$ is close to $x^0$ (say $|x - x^0| < \frac\delta2$), then such $y$ are far from $x$ too (at distance $\ge \frac{\delta}{2}$ or so), and as $t \to 0^+$ the heat kernel $\Phi(x-y,t)$ puts almost no mass at points far from $x$. So this part tends to $0$ as $t \to 0^+$, and the bound we get will not depend on $x$.
+\end{enumerate}
+Putting these together: the near part is $< \varepsilon$, the far part is $< \varepsilon$ for small $t$, so $|u(x,t) - g(x^0)| < 2\varepsilon$ when $|x - x^0| < \frac{\delta}{2}$ and $t$ is small. Since $\varepsilon > 0$ is arbitrary, ``$< 2\varepsilon$'' is as good as ``$< \varepsilon$'' (run the argument with $\frac\varepsilon2$ in place of $\varepsilon$).
+
+The point of the splitting: continuity of $g$ controls $g(y) - g(x^0)$ only for $y$ near $x^0$, and the concentration of $\Phi$ controls the weights only for $y$ far from $x$. We split the integral so that each part is handled by the fact that applies to it.
+
+%-----------------------------------------
+\paragraph{Proof of (iii): the details.}
+
+\emph{Step 1: choice of $\delta$.} Fix $x^0 \in \mathbb{R}^n$, $\varepsilon > 0$. Choose $\delta > 0$ such that
+\begin{equation}\label{eq:gcont}
+|g(y) - g(x^0)| < \varepsilon \quad \text{if } |y - x^0| < \delta,\ y \in \mathbb{R}^n.
+\end{equation}
+This is possible because $g$ is continuous at $x^0$. Note that $\delta$ depends only on $x^0$, $\varepsilon$ and $g$; it has nothing to do with $x$ or $t$.
+
+\emph{Step 2: splitting the integral.} Then if $|x - x^0| < \frac\delta2$, we have, according to the lemma,
+\begin{align*}
+|u(x,t) - g(x^0)| &= \Big|\int_{\mathbb{R}^n}\Phi(x - y,t)\,[g(y) - g(x^0)]\, dy\Big| \\
+&\leq \int_{B(x^0,\delta)}\Phi(x-y,t)\,|g(y) - g(x^0)|\, dy \\
+&\qquad + \int_{\mathbb{R}^n - B(x^0,\delta)}\Phi(x-y,t)\,|g(y) - g(x^0)|\, dy \\
+&=: I + J.
+\end{align*}
+Explanation of each line:
+\begin{itemize}
+    \item The first equality is observation 1 of the idea: $\int\Phi(x-y,t)\,dy = 1$ by \eqref{eq:mass1} (this is where ``the lemma'', Lemma~\ref{lem:heatint}, is used), so $g(x^0) = \int\Phi(x-y,t)\,g(x^0)\,dy$, and we subtract the two integrals.
+    \item The inequality: the absolute value of an integral is at most the integral of the absolute value, and $|\Phi(x - y,t)\,[g(y) - g(x^0)]| = \Phi(x-y,t)\,|g(y) - g(x^0)|$ because $\Phi > 0$. Then we split $\mathbb{R}^n$ into the ball $B(x^0,\delta)$ and its complement $\mathbb{R}^n - B(x^0,\delta)$. Both integrals are finite: the integrand is at most $2\|g\|_{L^\infty}\Phi(x-y,t)$.
+\end{itemize}
+Note that the ball is centred at $x^0$, not at $x$: it is the ball on which \eqref{eq:gcont} holds.
+
+\emph{Step 3: estimate of $I$ (the near part).} Now
+$$ I \leq \varepsilon\int_{\mathbb{R}^n}\Phi(x - y,t)\, dy = \varepsilon, $$
+owing to \eqref{eq:gcont} and the lemma. Indeed, for $y \in B(x^0,\delta)$, \eqref{eq:gcont} gives $|g(y) - g(x^0)| < \varepsilon$, and $\Phi \geq 0$, so the integrand is at most $\varepsilon\,\Phi(x - y,t)$. Then we enlarge the domain of integration from $B(x^0,\delta)$ to $\mathbb{R}^n$, which can only increase the integral since $\Phi \ge 0$, and use \eqref{eq:mass1}. This bound holds for \emph{all} $x \in \mathbb{R}^n$ and \emph{all} $t > 0$.
+
+\emph{Step 4: a geometric inequality.} Furthermore, if $|x - x^0| \leq \frac\delta2$ and $|y - x^0| \geq \delta$, then
+$$ |y - x^0| \leq |y - x| + \frac\delta2 \leq |y - x| + \frac12|y - x^0|. $$
+Thus $|y - x| \geq \frac12|y - x^0|$.
+
+Explanation: the first inequality is the triangle inequality $|y - x^0| \leq |y - x| + |x - x^0|$ together with $|x - x^0| \leq \frac\delta2$. The second uses $\delta \leq |y - x^0|$, so $\frac\delta2 \leq \frac12|y - x^0|$. Subtracting $\frac12|y - x^0|$ from both sides of $|y - x^0| \leq |y - x| + \frac12|y-x^0|$ gives $\frac12|y - x^0| \leq |y - x|$.
+
+In words: $x$ is within $\frac\delta2$ of $x^0$, and $y$ is at least $\delta$ away from $x^0$, so $y$ is at least half as far from $x$ as it is from $x^0$. This lets us replace the distance $|x - y|$, which depends on $x$, by $|y - x^0|$, which does not.
+
+\emph{Step 5: estimate of $J$ (the far part).} Consequently
+\begin{align*}
+J &\leq 2\|g\|_{L^\infty}\int_{\mathbb{R}^n - B(x^0,\delta)}\Phi(x - y,t)\, dy \\
+&\leq \frac{C}{t^{n/2}}\int_{\mathbb{R}^n - B(x^0,\delta)} e^{-\frac{|x-y|^2}{4t}}\, dy \\
+&\leq \frac{C}{t^{n/2}}\int_{\mathbb{R}^n - B(x^0,\delta)} e^{-\frac{|y-x^0|^2}{16t}}\, dy \\
+&= \frac{C}{t^{n/2}}\int_\delta^\infty e^{-\frac{r^2}{16t}}r^{n-1}\, dr \to 0 \quad \text{as } t \to 0^+.
+\end{align*}
+Here $C$ denotes a constant depending only on $n$ and $\|g\|_{L^\infty}$, which may change from line to line. Line by line:
+\begin{itemize}
+    \item \emph{First line.} $|g(y) - g(x^0)| \leq |g(y)| + |g(x^0)| \leq 2\|g\|_{L^\infty}$ (for continuous $g$ the bound holds at every point, Definition~\ref{def:Lp}).
+    \item \emph{Second line.} Insert the formula $\Phi(x-y,t) = (4\pi t)^{-n/2}e^{-|x-y|^2/4t}$ (here $t > 0$); $C = 2\|g\|_{L^\infty}(4\pi)^{-n/2}$.
+    \item \emph{Third line.} Let $|x - x^0| < \frac\delta2$. For $y$ in the domain of integration, $|y - x^0| \geq \delta$, so by Step 4, $|x - y| \geq \frac12|y - x^0|$, i.e.\ $|x - y|^2 \geq \frac14|y - x^0|^2$. Dividing by $-4t < 0$ reverses the inequality: $-\frac{|x-y|^2}{4t} \leq -\frac{|y-x^0|^2}{16t}$. Since $s \mapsto e^s$ is increasing, $e^{-|x-y|^2/4t} \leq e^{-|y-x^0|^2/16t}$. \emph{From this line on, $x$ has disappeared}: the bound is the same for all $x$ with $|x - x^0| < \frac\delta2$.
+    \item \emph{Fourth line: polar coordinates around $x^0$.} The integrand is radial about $x^0$: $e^{-|y-x^0|^2/16t} = h(|y - x^0|)$ with $h(r) = e^{-r^2/16t}$. By Corollary~\ref{cor:polar}(c), for $R > \delta$,
+    $$ \int_{\delta \le |y - x^0| < R} h(|y - x^0|)\, dy = \int_{B(x^0,R)} - \int_{B(x^0,\delta)} = n\alpha(n)\int_\delta^R e^{-\frac{r^2}{16t}}r^{n-1}\, dr. $$
+    (The sphere $|y - x^0| = \delta$ has volume zero, so it does not matter whether it is included.) Letting $R \to \infty$ (Monotone Convergence, Fact~\ref{fact:measure}; the integrand is $\geq 0$) gives the fourth line, with $n\alpha(n)$ absorbed into $C$.
+    \item \emph{The limit.} Substitute $r = 4\sqrt t\, s$, so $dr = 4\sqrt t\, ds$, $\frac{r^2}{16t} = s^2$, $r^{n-1} = 4^{n-1}t^{\frac{n-1}{2}}s^{n-1}$, and $r = \delta$ corresponds to $s = \frac{\delta}{4\sqrt t}$:
+    $$ \frac{1}{t^{n/2}}\int_\delta^\infty e^{-\frac{r^2}{16t}}r^{n-1}\, dr = \frac{4^n\,t^{\frac{n-1}{2}}\,t^{\frac12}}{t^{n/2}}\int_{\frac{\delta}{4\sqrt t}}^\infty e^{-s^2}s^{n-1}\, ds = 4^n\int_{\frac{\delta}{4\sqrt t}}^\infty e^{-s^2}s^{n-1}\, ds. $$
+    \emph{All powers of $t$ cancel}; $t$ remains only in the lower limit. The integral $\int_0^\infty e^{-s^2}s^{n-1}\,ds$ is finite: $s^{n+1}e^{-s^2}$ is bounded on $[0,\infty)$ (continuous, tends to $0$), say by $M$, so $e^{-s^2}s^{n-1} \leq \frac{M}{s^2}$ for $s \geq 1$, which is integrable on $[1,\infty)$, while $[0,1]$ is a bounded interval with a continuous integrand. As $t \to 0^+$ the lower limit $\frac{\delta}{4\sqrt t} \to +\infty$, and the tail $\int_A^\infty$ of a convergent integral tends to $0$ as $A \to \infty$. Hence the last expression tends to $0$.
+\end{itemize}
+Interpretation: $\int_{|y-x^0|\ge\delta}\Phi(x-y,t)\,dy$ is the amount of the unit mass of $\Phi(x - \cdot,t)$ lying outside $B(x^0,\delta)$; it tends to $0$ as $t \to 0^+$, uniformly for $|x - x^0| < \frac\delta2$. All the heat stays concentrated near $x$.
+
+\emph{Step 6: conclusion.} Hence if $|x - x^0| < \frac\delta2$ and $t > 0$ is small enough, $|u(x,t) - g(x^0)| < 2\varepsilon$.
+
+Precisely: by Step 5 there is $t_1 > 0$ (depending on $\delta$, $n$, $\|g\|_{L^\infty}$, hence on $\varepsilon$, but \emph{not} on $x$) such that $J < \varepsilon$ whenever $|x - x^0| < \frac\delta2$ and $0 < t < t_1$. Put $\eta := \min\{\frac\delta2, t_1\}$. If $|x - x^0| < \eta$ and $0 < t < \eta$, then by Steps 2, 3 and 5
+$$ |u(x,t) - g(x^0)| \leq I + J < \varepsilon + \varepsilon = 2\varepsilon. $$
+Since $\varepsilon > 0$ was arbitrary, this is the $\varepsilon$--$\eta$ statement of the limit (iii) (with $2\varepsilon$ in place of $\varepsilon$, which does not matter). $\square$
+
+\emph{Why it mattered that the bound for $J$ does not depend on $x$.} We want a limit as $(x,t) \to (x^0,0)$ with $x$ and $t$ moving together. If the bound on $J$ were only good for each fixed $x$, the time $t_1$ might shrink as $x$ moves, and we could not find one $\eta$ working for all $x$ near $x^0$. Step 4 removed $x$ from the estimate, which gave a single $t_1$ for all $|x - x^0| < \frac\delta2$.
+
+%-----------------------------------------
+\paragraph{Remarks.}
+
+(i) In view of Theorem 1 we sometimes write
+$$ \begin{cases} \Phi_t - \Delta\Phi = 0 & \text{in } \mathbb{R}^n\times(0,\infty) \\ \Phi = \delta_0 & \text{on } \mathbb{R}^n\times\{t = 0\}, \end{cases} $$
+$\delta_0$ denoting the Dirac measure on $\mathbb{R}^n$ giving unit mass to the point $0$.
+
+\emph{Explanation.} Compare Section~\ref{ssec:dirac}, where $-\Delta\Phi = \delta_0$ for Laplace's equation was explained. Here: $\Phi$ solves the heat equation for $t > 0$; each $\Phi(\cdot,t)$ has total mass $1$ (Lemma~\ref{lem:heatint}); and as $t \to 0^+$ this mass concentrates at $x = 0$ (Step 5 with $x = x^0 = 0$ shows $\int_{|y| \geq \delta}\Phi(y,t)\,dy \to 0$ for every $\delta > 0$). No function has all its unit mass at one point; the ``initial value'' of $\Phi$ is the Dirac measure $\delta_0$. Formally, \eqref{eq:ivpsol} with $g = \delta_0$ gives $u(x,t) = \int\Phi(x - y,t)\,\delta_0(y)\,dy = \Phi(x,t)$. This is the meaning of the name \emph{fundamental solution}: $\Phi$ is the solution whose initial temperature is a unit amount of heat placed at the origin.
+
+(ii) Notice that if $g$ is bounded, continuous, $g \geq 0$, $g \not\equiv 0$, then
+$$ u(x,t) = \frac{1}{(4\pi t)^{n/2}}\int_{\mathbb{R}^n}e^{-\frac{|x-y|^2}{4t}}\, g(y)\, dy $$
+is in fact positive for \emph{all} points $x \in \mathbb{R}^n$ and times $t > 0$.
+
+\emph{Proof.} Fix $x$ and $t > 0$. Since $g \not\equiv 0$ and $g \geq 0$, there is $y_0$ with $g(y_0) > 0$, and by continuity $g > \frac12 g(y_0)$ on some ball $B(y_0,\rho)$. The exponential $e^{-|x-y|^2/4t}$ is \emph{strictly} positive for every $y$, however far $y$ is from $x$, and on the compact ball $B(y_0,\rho)$ it has a positive minimum $m$. The integrand is $\geq 0$ everywhere, so
+$$ u(x,t) \geq \frac{1}{(4\pi t)^{n/2}}\int_{B(y_0,\rho)} e^{-\frac{|x-y|^2}{4t}}\, g(y)\, dy \geq \frac{1}{(4\pi t)^{n/2}}\cdot m\cdot\frac{g(y_0)}{2}\cdot\alpha(n)\rho^n > 0. $$
+The point $x$ may be very far from where $g$ is positive, and $t$ may be very small; still $u(x,t) > 0$, because the Gaussian kernel is never zero. $\square$
+
+%=====================================================================
+\newpage
+\section{Wave Equation}\label{sec:wave}
+
+\subsection{Definitions}\label{ssec:wavedef}
+
+In this section we investigate the \textbf{wave equation}
+\begin{equation}\label{eq:wave}
+u_{tt} - \Delta u = 0
+\end{equation}
+and the \textbf{nonhomogeneous wave equation}
+\begin{equation}\label{eq:wavef}
+u_{tt} - \Delta u = f,
+\end{equation}
+subject to appropriate initial and boundary conditions. Here $t > 0$ and $x \in U$, where $U \subset \mathbb{R}^n$ is open. The unknown is $u : \bar U \times [0,\infty) \to \mathbb{R}$, $u = u(x,t)$, and the Laplacian $\Delta$ is taken with respect to the spatial variables $x = (x_1,\dots,x_n)$. In \eqref{eq:wavef} the function $f : U \times [0,\infty) \to \mathbb{R}$ is given. A common abbreviation is to write
+$$ \Box u = u_{tt} - \Delta u. $$
+
+Written out,
+$$ u_{tt} - (u_{x_1x_1} + u_{x_2x_2} + \cdots + u_{x_nx_n}) = 0. $$
+Compare with the heat equation $u_t - \Delta u = 0$: the only change is that the first time derivative is replaced by the \emph{second} time derivative. The equation is now of second order in $t$ as well as in $x$.
+
+We shall discover that solutions of the wave equation behave quite differently than solutions of Laplace's equation or the heat equation. For example, these solutions are generally not $C^\infty$, exhibit finite speed of propagation, etc.
+
+\paragraph{Initial conditions.} Since \eqref{eq:wave} contains the second derivative $u_{tt}$, it is appropriate to specify \emph{two} initial conditions at time $t = 0$: the values of $u$ and of $u_t$. This is as for a second-order ODE $y'' = F(y)$, where one prescribes $y(0)$ and $y'(0)$. (For the heat equation, which is first order in $t$, we prescribed only $u$ at $t = 0$.)
+
+\paragraph{The case $n = 1$.} For one space variable $x \in \mathbb{R}$, $\Delta u = u_{xx}$ and the wave equation reads
+$$ u_{tt} - u_{xx} = 0. $$
+This is the case we solve first.
+
+To solve the case $n = 1$ we shall need the transport equation, so we study it first.
+
+\subsection{Transport Equation}\label{ssec:transport}
+
+Probably the simplest partial differential equation of all is the \emph{transport equation} with constant coefficients. This is the PDE
+\begin{equation}\label{eq:transport}
+u_t + b\cdot Du = 0 \qquad \text{in } \mathbb{R}^n \times (0,\infty),
+\end{equation}
+where $b$ is a fixed vector in $\mathbb{R}^n$, $b = (b_1,\dots,b_n)$, and $u : \mathbb{R}^n \times [0,\infty) \to \mathbb{R}$ is the unknown, $u = u(x,t)$. Here $x = (x_1,\dots,x_n) \in \mathbb{R}^n$ denotes a typical point in space, and $t \geq 0$ denotes a typical time. We write $Du = D_xu = (u_{x_1},\dots,u_{x_n})$ for the gradient of $u$ with respect to the spatial variables $x$.
+
+Written out, \eqref{eq:transport} is
+$$ u_t + b_1u_{x_1} + b_2u_{x_2} + \cdots + b_nu_{x_n} = 0. $$
+It is a linear first-order equation with constant coefficients.
+
+\subsubsection{The key observation: a directional derivative vanishes}
+
+Which functions $u$ solve \eqref{eq:transport}? To answer, let us suppose for the moment we are given some smooth solution $u$ and try to compute it. To do so, we first must recognize that the partial differential equation \eqref{eq:transport} asserts that a particular directional derivative of $u$ vanishes.
+
+Indeed, regard $u$ as a function of the $n+1$ variables $(x,t) = (x_1,\dots,x_n,t)$. Its full gradient in $\mathbb{R}^{n+1}$ is
+$$ D_{(x,t)}u = (u_{x_1},\dots,u_{x_n},u_t), $$
+and the derivative of $u$ in the direction of the vector $(b,1) = (b_1,\dots,b_n,1) \in \mathbb{R}^{n+1}$ is
+$$ D_{(x,t)}u\cdot(b,1) = b_1u_{x_1} + \cdots + b_nu_{x_n} + u_t = u_t + b\cdot Du. $$
+So \eqref{eq:transport} says exactly: \emph{the derivative of $u$ in the direction $(b,1)$ is zero at every point}. A function whose derivative in a fixed direction vanishes does not change as we move in that direction; so $u$ should be constant along every straight line with direction $(b,1)$. We now make this precise.
+
+We exploit this insight by fixing any point $(x,t) \in \mathbb{R}^n \times (0,\infty)$ and defining
+$$ z(s) := u(x + sb, t + s) \qquad (s \in \mathbb{R}). $$
+As $s$ varies, the point $(x + sb, t + s) = (x,t) + s(b,1)$ runs along the straight line through $(x,t)$ with direction $(b,1)$, and $z(s)$ records the value of $u$ there. (Since $u$ is defined only for times $\ge 0$, and \eqref{eq:transport} holds only for times $> 0$, $z(s)$ is defined for $t + s \geq 0$, i.e.\ $s \geq -t$, and the equation can be used for $s > -t$; see Lemma~\ref{lem:transconst}.) We then calculate
+$$ \dot z(s) = Du(x + sb, t + s)\cdot b + u_t(x + sb, t + s) = 0 \qquad \Big(\dot{} = \frac{d}{ds}\Big), $$
+the second equality holding owing to \eqref{eq:transport}. Thus $z(\cdot)$ is a constant function of $s$, and consequently for each point $(x,t)$, $u$ is constant on the line through $(x,t)$ with the direction $(b,1) \in \mathbb{R}^{n+1}$. Hence if we know the value of $u$ at any point on each such line, we know its value everywhere in $\mathbb{R}^n \times (0,\infty)$.
+
+Here is the precise statement.
+
+\begin{lemma}[$u$ is constant along the lines]\label{lem:transconst}
+Let $u \in C^1(\mathbb{R}^n \times (0,\infty))$ solve \eqref{eq:transport}, and fix $(x,t)$ with $t > 0$. Then $z(s) = u(x + sb, t + s)$ is constant on the interval $(-t,\infty)$.
+\end{lemma}
+\begin{proof}
+\emph{$z$ is defined on $(-t,\infty)$:} for $s > -t$, the point $\gamma(s) := (x + sb, t + s)$ has time coordinate $t + s > 0$, so it lies in $\mathbb{R}^n \times (0,\infty)$ where $u$ is defined.
+
+\emph{The derivative of $z$.} The map $\gamma : (-t,\infty) \to \mathbb{R}^{n+1}$, $\gamma(s) = (x_1 + sb_1, \dots, x_n + sb_n, t + s)$ is differentiable, with
+$$ \gamma'(s) = (b_1,\dots,b_n,1) = (b,1). $$
+Since $u \in C^1$, $u$ is differentiable, and the chain rule gives
+$$ \dot z(s) = \frac{d}{ds}u(\gamma(s)) = \sum_{i=1}^n u_{x_i}(\gamma(s))\,b_i + u_t(\gamma(s))\cdot 1 = \big(u_t + b\cdot Du\big)(\gamma(s)). $$
+The point $\gamma(s)$ lies in $\mathbb{R}^n \times (0,\infty)$, where \eqref{eq:transport} holds; hence $\dot z(s) = 0$ for every $s \in (-t,\infty)$.
+
+\emph{Conclusion.} A differentiable function with zero derivative on an interval is constant there: for $s_1 < s_2$ in $(-t,\infty)$, the mean value theorem gives $z(s_2) - z(s_1) = \dot z(\sigma)(s_2 - s_1) = 0$ for some $\sigma \in (s_1,s_2)$.
+\end{proof}
+
+\subsubsection{The geometry of the lines}
+
+Before solving, let us understand these lines and see that they fill the whole domain without overlapping. For $y \in \mathbb{R}^n$ let
+$$ L_y := \{(y + \sigma b,\ \sigma) : \sigma \geq 0\} \subset \mathbb{R}^n \times [0,\infty). $$
+$L_y$ is the half-line which starts at the point $(y,0)$ of the initial plane and goes in the direction $(b,1)$. Along $L_y$ the time coordinate is $\sigma$ and the space coordinate is $y + \sigma b$: \emph{as time increases by $\sigma$, the space position moves by $\sigma b$.} So the lines move in space with constant velocity $b$.
+
+\paragraph{The case $n = 1$: the slope of the lines.} Here $b$ is a number. Draw the $x$-axis horizontally and the $t$-axis vertically. The line $L_y$ is the set of points $(x,t)$ with
+$$ x = y + bt, \qquad t \ge 0. $$
+\begin{itemize}
+    \item If $b \neq 0$, solving for $t$ gives $t = \frac{1}{b}(x - y)$: a straight line through $(y,0)$ with slope $\frac1b$. For $b > 0$ it leans to the right (as $t$ increases, $x$ increases), for $b < 0$ to the left. The larger $|b|$, the flatter the line.
+    \item If $b = 0$, it is the vertical line $x = y$: then \eqref{eq:transport} says $u_t = 0$, so $u$ does not change in time.
+\end{itemize}
+All the lines $L_y$, $y \in \mathbb{R}$, have the \emph{same} slope, so they are parallel; they differ only in their starting point $y$ on the $x$-axis.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  % axes
+  \draw[->] (-0.5,0) -- (7.6,0) node[right] {$x$};
+  \draw[->] (0,-0.3) -- (0,3.6) node[above] {$t$};
+  % characteristic lines x = y + b t with b = 1
+  \foreach \y in {-0.5,0.5,1.5,2.5,3.5,4.5} {
+    \draw[thick,blue!70!black] (\y,0) -- ({\y+3.2},3.2);
+  }
+  % highlighted line through (x,t)
+  \draw[very thick,red!75!black] (2.5,0) -- (5.7,3.2);
+  \fill[red!75!black] (4.5,2) circle (2pt) node[right=3pt] {$(x,t)$};
+  \fill[red!75!black] (2.5,0) circle (2pt) node[below] {$(x - tb,\,0)$};
+  % initial plane label
+  \node[below] at (6.6,0) {$\Gamma = \{t = 0\}$};
+  % time marker
+  \draw[dashed] (0,2) -- (4.5,2);
+  \node[left] at (0,2) {$t$};
+  % displacement
+  \draw[dashed] (4.5,2) -- (4.5,0);
+  \draw[<->] (2.5,-0.55) -- (4.5,-0.55);
+  \node[below] at (3.5,-0.55) {$tb$};
+\end{tikzpicture}
+
+\small The lines $x = y + bt$ for several $y$ (here $n = 1$, $b > 0$). The line through $(x,t)$ meets $t = 0$ at $x - tb$.
+\end{center}
+
+\paragraph{The general case.} The following lemma says precisely that the half-lines $L_y$ are disjoint and that together they make up the whole closed half-space.
+
+\begin{lemma}[The lines $L_y$ fill the domain]\label{lem:transgeom}
+\begin{enumerate}
+    \item[(a)] Each $L_y$ meets the initial plane $\Gamma := \mathbb{R}^n \times \{t = 0\}$ in exactly one point, namely $(y,0)$.
+    \item[(b)] If $y \neq y'$, then $L_y \cap L_{y'} = \emptyset$.
+    \item[(c)] $\displaystyle\bigcup_{y \in \mathbb{R}^n} L_y = \mathbb{R}^n \times [0,\infty)$. More precisely, the point $(x,t)$ with $t \geq 0$ lies on the line $L_{x - tb}$, and on no other.
+    \item[(d)] For $(x,t)$ with $t > 0$, the set $\{(x + sb, t + s) : s \geq -t\}$ (the part of the line through $(x,t)$ with direction $(b,1)$ which lies in $t \geq 0$) is exactly $L_{x - tb}$; it reaches $\Gamma$ when $s = -t$, at the point $(x - tb,0)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) A point $(y + \sigma b,\sigma)$ of $L_y$ lies on $\Gamma$ if and only if its time coordinate is $0$, i.e.\ $\sigma = 0$; the point is then $(y,0)$.
+
+(b) Suppose a point lies on both, $(y + \sigma b, \sigma) = (y' + \sigma' b,\sigma')$. Comparing time coordinates, $\sigma = \sigma'$. Comparing space coordinates, $y + \sigma b = y' + \sigma b$, so $y = y'$. Hence if $y \ne y'$ there is no common point.
+
+(c) Every $L_y$ lies in $\mathbb{R}^n \times [0,\infty)$ since $\sigma \geq 0$. Conversely, given $(x,t)$ with $t \geq 0$, put $y := x - tb$ and $\sigma := t$. Then $(y + \sigma b,\sigma) = (x - tb + tb, t) = (x,t)$, so $(x,t) \in L_{x - tb}$. By (b), $(x,t)$ lies on no other $L_{y'}$.
+
+(d) Put $\sigma = t + s$; then $s \ge -t$ if and only if $\sigma \geq 0$, and
+$$ (x + sb,\ t + s) = \big((x - tb) + (t + s)b,\ t + s\big) = \big((x - tb) + \sigma b,\ \sigma\big). $$
+So as $s$ runs over $[-t,\infty)$ the point runs over all of $L_{x - tb}$. The time coordinate $t + s$ vanishes for $s = -t$, where the point is $(x - tb,0)$.
+\end{proof}
+
+\emph{Why every line meets the initial plane.} The direction $(b,1)$ has time component $1 \neq 0$; so the lines are never parallel to the plane $\Gamma = \{t = 0\}$, and going backwards in time along any line we reach $t = 0$ after exactly the time $t$. (This is the \emph{transversality} of the lines to the initial plane, as in Section~\ref{sec:moc}.)
+
+\paragraph{Summary of the idea.} Lemmas~\ref{lem:transconst} and~\ref{lem:transgeom} together say:
+\begin{itemize}
+    \item the closed half-space $\mathbb{R}^n \times [0,\infty)$ is the union of the disjoint half-lines $L_y$, $y \in \mathbb{R}^n$;
+    \item a solution $u$ is constant on each $L_y$;
+    \item each $L_y$ touches the initial plane exactly once, at $(y,0)$, where the value of $u$ is the given initial value $g(y)$.
+\end{itemize}
+Therefore, if we know $u$ on the initial plane, we know the constant value of $u$ on each line, hence on all lines, hence everywhere. This is carried out next.
+
+\subsubsection{Initial-value problem}
+
+For definiteness therefore, let us consider the initial-value problem
+\begin{equation}\label{eq:transivp}
+\begin{cases} u_t + b\cdot Du = 0 & \text{in } \mathbb{R}^n \times (0,\infty) \\ u = g & \text{on } \mathbb{R}^n \times \{t = 0\}. \end{cases}
+\end{equation}
+Here $b \in \mathbb{R}^n$ and $g : \mathbb{R}^n \to \mathbb{R}$ are known, and the problem is to compute $u$. Given $(x,t)$ as above, the line through $(x,t)$ with direction $(b,1)$ is represented parametrically by $(x + sb, t + s)$ $(s \in \mathbb{R})$. This line hits the plane $\Gamma := \mathbb{R}^n \times \{t = 0\}$ when $s = -t$, at the point $(x - tb, 0)$. Since $u$ is constant on the line and $u(x - tb,0) = g(x - tb)$, we deduce
+\begin{equation}\label{eq:transsol}
+u(x,t) = g(x - tb) \qquad (x \in \mathbb{R}^n,\ t \geq 0).
+\end{equation}
+So, \emph{if} \eqref{eq:transivp} has a sufficiently regular solution $u$, it must certainly be given by \eqref{eq:transsol}. And conversely, it is easy to check directly that if $g$ is $C^1$, then $u$ defined by \eqref{eq:transsol} is indeed a solution of \eqref{eq:transivp}.
+
+To make this rigorous we must say what ``solution'' means. By a \emph{solution} of \eqref{eq:transivp} we mean a function $u \in C^1(\mathbb{R}^n \times (0,\infty)) \cap C(\mathbb{R}^n \times [0,\infty))$ which satisfies the PDE at every point with $t > 0$ and satisfies $u(x,0) = g(x)$ for all $x$. The continuity up to $t = 0$ is what connects the values for $t > 0$ to the initial values; without it the initial condition would have no influence on $u$ for $t > 0$.
+
+\begin{theorem}[Transport equation: uniqueness and existence]\label{thm:transport}
+\begin{enumerate}
+    \item[(a)] (Uniqueness) If $u$ is a solution of \eqref{eq:transivp}, then $u(x,t) = g(x - tb)$ for all $x \in \mathbb{R}^n$, $t \geq 0$.
+    \item[(b)] (Existence) If $g \in C^1(\mathbb{R}^n)$, then $u(x,t) := g(x - tb)$ is a solution of \eqref{eq:transivp}; in fact $u \in C^1(\mathbb{R}^n \times \mathbb{R})$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) Let $(x,t)$ be given. If $t = 0$, the claim is the initial condition $u(x,0) = g(x)$. Let $t > 0$ and put $z(s) := u(x + sb, t + s)$ for $s \geq -t$.
+\begin{itemize}
+    \item By Lemma~\ref{lem:transconst}, $z$ is constant on $(-t,\infty)$; in particular $z(s) = z(0) = u(x,t)$ for all $s \in (-t, \infty)$.
+    \item $z$ is continuous on $[-t,\infty)$: it is the composition of the continuous map $s \mapsto (x + sb, t + s)$ (into $\mathbb{R}^n \times [0,\infty)$) with $u$, which is continuous on $\mathbb{R}^n \times [0,\infty)$.
+    \item Hence $z(-t) = \lim_{s \to -t^+} z(s) = \lim_{s\to -t^+} u(x,t) = u(x,t)$. The limit of a constant is that constant.
+    \item But $z(-t) = u(x - tb, 0) = g(x - tb)$ by the initial condition.
+\end{itemize}
+Therefore $u(x,t) = g(x - tb)$. Note where each hypothesis was used: the PDE (and $u \in C^1$) gives $z$ constant for $s > -t$, i.e.\ at points with positive time; the continuity of $u$ up to $t = 0$ carries this constant value down to the initial plane, at $s = -t$; and the initial condition identifies it as $g(x - tb)$.
+
+(b) Let $g \in C^1(\mathbb{R}^n)$ and $u(x,t) = g(x - tb)$, i.e.\ $u(x,t) = g(x_1 - tb_1, \dots, x_n - tb_n)$. This is the composition of $g$ with the smooth map $(x,t) \mapsto x - tb$, so $u \in C^1(\mathbb{R}^n \times \mathbb{R})$, and by the chain rule:
+\begin{itemize}
+    \item The $j$-th slot $x_j - tb_j$ has $t$-derivative $-b_j$, so
+    $$ u_t(x,t) = \sum_{j=1}^n g_{x_j}(x - tb)\,(-b_j) = -\,b\cdot Dg(x - tb). $$
+    \item Only the $i$-th slot depends on $x_i$, with derivative $1$, so $u_{x_i}(x,t) = g_{x_i}(x - tb)$, i.e.\ $Du(x,t) = Dg(x - tb)$, and $b\cdot Du(x,t) = b\cdot Dg(x - tb)$.
+\end{itemize}
+Adding, $u_t + b\cdot Du = -b\cdot Dg(x - tb) + b\cdot Dg(x - tb) = 0$ everywhere. Finally $u(x,0) = g(x - 0\cdot b) = g(x)$, and $u$ is continuous. So $u$ is a solution of \eqref{eq:transivp}.
+\end{proof}
+
+\emph{Interpretation of \eqref{eq:transsol}.} For $n = 1$, $b > 0$: the graph of $u(\cdot,t)$ is the graph of $g$ shifted to the right by the distance $tb$. The initial profile $g$ is \emph{transported} with velocity $b$, without changing its shape. This is the origin of the name.
+
+\paragraph{Remark.} If $g$ is not $C^1$, then there is obviously no $C^1$ solution of \eqref{eq:transivp}. But even in this case formula \eqref{eq:transsol} certainly provides a strong, and in fact the only reasonable, candidate for a solution. We may thus informally declare $u(x,t) = g(x - tb)$ $(x \in \mathbb{R}^n,\ t \ge 0)$ to be a \emph{weak solution} of \eqref{eq:transivp}, even should $g$ not be $C^1$. This all makes sense even if $g$, and thus $u$, are discontinuous. Such a notion, that a nonsmooth or even discontinuous function may sometimes solve a PDE, will come up again later.
+
+\emph{Proof of the first sentence.} Suppose $u$ is a solution of \eqref{eq:transivp} (so $u \in C^1$ for $t > 0$). By Theorem~\ref{thm:transport}(a), $u(x,t) = g(x - tb)$; take $t = 1$ and $x = y + b$: then $g(y) = u(y + b, 1)$ for every $y \in \mathbb{R}^n$. The map $y \mapsto (y + b,1)$ is smooth with values in $\mathbb{R}^n \times (0,\infty)$, where $u$ is $C^1$. So $g$ is $C^1$, as a composition of $C^1$ maps. Hence: if $g$ is not $C^1$, no solution exists.
+
+%---------------------------------------------------------------------
+\subsubsection{Nonhomogeneous problem}
+
+Next let us look at the associated nonhomogeneous problem
+\begin{equation}\label{eq:transnh}
+\begin{cases} u_t + b\cdot Du = f & \text{in } \mathbb{R}^n \times (0,\infty) \\ u = g & \text{on } \mathbb{R}^n \times \{t = 0\}. \end{cases}
+\end{equation}
+As before fix $(x,t) \in \mathbb{R}^{n+1}$ (with $t > 0$) and, inspired by the calculation above, set $z(s) := u(x + sb, t + s)$ for $s \in \mathbb{R}$ (with $s \geq -t$). Then
+$$ \dot z(s) = Du(x + sb, t + s)\cdot b + u_t(x + sb, t + s) = f(x + sb, t + s). $$
+Consequently
+\begin{align*}
+u(x,t) - g(x - bt) = z(0) - z(-t) &= \int_{-t}^0 \dot z(s)\, ds \\
+&= \int_{-t}^0 f(x + sb, t + s)\, ds \\
+&= \int_0^t f(x + (s - t)b, s)\, ds;
+\end{align*}
+and so
+\begin{equation}\label{eq:transnhsol}
+u(x,t) = g(x - tb) + \int_0^t f(x + (s - t)b, s)\, ds \qquad (x \in \mathbb{R}^n,\ t \geq 0)
+\end{equation}
+solves the initial-value problem \eqref{eq:transnh}.
+
+\emph{The idea.} Along the line through $(x,t)$, $u$ is no longer constant: by the computation of $\dot z$, its rate of change along the line is the given function $f$. So the value at $(x,t)$ is the starting value $g(x - tb)$ at the foot of the line, plus the accumulated change, which is the integral of $f$ along the segment of the line from $(x - tb, 0)$ to $(x,t)$.
+
+We now prove this rigorously. As in the homogeneous case, a \emph{solution} of \eqref{eq:transnh} means $u \in C^1(\mathbb{R}^n\times(0,\infty)) \cap C(\mathbb{R}^n\times[0,\infty))$ satisfying the PDE for $t > 0$ and $u(x,0) = g(x)$. We assume $f$ is continuous on $\mathbb{R}^n \times [0,\infty)$.
+
+\begin{theorem}[Nonhomogeneous transport equation]\label{thm:transportnh}
+Let $f \in C(\mathbb{R}^n \times [0,\infty))$.
+\begin{enumerate}
+    \item[(a)] (Uniqueness) If $u$ is a solution of \eqref{eq:transnh}, then $u$ is given by \eqref{eq:transnhsol}.
+    \item[(b)] (Existence) If $g \in C^1(\mathbb{R}^n)$ and $f \in C^1(\mathbb{R}^n\times[0,\infty))$ (that is, $f$ and its first partial derivatives are continuous up to $t = 0$), then $u$ defined by \eqref{eq:transnhsol} is a solution of \eqref{eq:transnh}.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) Fix $(x,t)$. If $t = 0$, \eqref{eq:transnhsol} reads $u(x,0) = g(x)$, which is the initial condition. Let $t > 0$, and let $z(s) = u(x + sb, t + s)$ for $s \in [-t,0]$. We justify the four equalities of the computation.
+
+\emph{Step 1: the derivative of $z$.} For $s \in (-t,0]$ the point $\gamma(s) = (x + sb, t + s)$ has time coordinate $t + s > 0$. Exactly as in Lemma~\ref{lem:transconst} (chain rule, $\gamma'(s) = (b,1)$),
+$$ \dot z(s) = \big(u_t + b\cdot Du\big)(\gamma(s)) = f(x + sb, t + s) \qquad (-t < s \leq 0), $$
+using the PDE in \eqref{eq:transnh} at the point $\gamma(s)$.
+
+\emph{Step 2: the endpoints.} $z(0) = u(x,t)$, and $z(-t) = u(x - tb,0) = g(x - tb)$ by the initial condition. Also $z$ is continuous on $[-t,0]$ (composition of continuous maps, $u$ being continuous up to $t = 0$).
+
+\emph{Step 3: Fundamental Theorem of Calculus.} The function $\varphi(s) := f(x + sb,t + s)$ is continuous on the closed interval $[-t,0]$ ($f$ is continuous on $\mathbb{R}^n \times [0,\infty)$), hence bounded there, say $|\varphi| \leq M$. Let $-t < a < 0$. On $[a,0]$, $z$ is differentiable with continuous derivative $\dot z = \varphi$, so by the Fundamental Theorem of Calculus
+$$ z(0) - z(a) = \int_a^0 \varphi(s)\, ds. $$
+Now let $a \to -t^+$. The left side tends to $z(0) - z(-t)$ by continuity of $z$ at $-t$. On the right, $\big|\int_{-t}^0\varphi - \int_a^0\varphi\big| = \big|\int_{-t}^a\varphi\big| \le M(a + t) \to 0$. Hence
+$$ u(x,t) - g(x - tb) = z(0) - z(-t) = \int_{-t}^0 f(x + sb, t + s)\, ds. $$
+(We cannot apply the Fundamental Theorem directly on $[-t,0]$, since we do not know that $z$ is differentiable at $s = -t$: the PDE holds only for $t + s > 0$. The limit $a \to -t^+$ avoids this.)
+
+\emph{Step 4: change of variables.} Substitute $\sigma = t + s$, so $s = \sigma - t$, $ds = d\sigma$; $s = -t$ corresponds to $\sigma = 0$ and $s = 0$ to $\sigma = t$:
+$$ \int_{-t}^0 f(x + sb, t + s)\, ds = \int_0^t f(x + (\sigma - t)b, \sigma)\, d\sigma. $$
+Renaming $\sigma$ as $s$ gives \eqref{eq:transnhsol}. Here $\sigma$ is the time coordinate of the point on the segment: $(x + (\sigma - t)b, \sigma)$ is the point of the line through $(x,t)$ at time $\sigma$, for $0 \le \sigma \le t$.
+
+(b) Write $u = u_1 + w$, where $u_1(x,t) := g(x - tb)$ and
+$$ w(x,t) := \int_0^t f(x + (s - t)b, s)\, ds. $$
+By Theorem~\ref{thm:transport}(b), $u_1 \in C^1$, $(u_1)_t + b\cdot Du_1 = 0$ and $u_1(x,0) = g(x)$. So it remains to show: $w \in C^1(\mathbb{R}^n \times (0,\infty)) \cap C(\mathbb{R}^n \times [0,\infty))$, $w_t + b\cdot Dw = f$ and $w(x,0) = 0$. Then $u_t + b\cdot Du = 0 + f = f$ and $u(x,0) = g(x) + 0 = g(x)$.
+
+\emph{Step 1: setting up Lemma~\ref{lem:leibniz}.} The difficulty is that $t$ appears in two places in $w$: in the upper limit and inside the integrand. We separate them. Let $p = (x,t') \in V := \mathbb{R}^{n+1}$ (here $t'$ is any real number) and
+$$ h(p,s) := f(x + (s - t')b,\ s) \qquad (s \geq 0), \qquad H(p,\tau) := \int_0^\tau h(p,s)\, ds. $$
+Then $w(x,t) = H\big((x,t),t\big) =: H(x,t,t)$: we put the same $t$ into the integrand slot $t'$ and the upper limit $\tau$.
+
+$h$ is continuous on $V \times [0,\infty)$ (the argument $(x + (s - t')b, s)$ has time coordinate $s \geq 0$, where $f$ is defined and continuous). Its partial derivatives in $p$ are, by the chain rule,
+\begin{align*}
+\frac{\partial h}{\partial x_i}(p,s) &= f_{x_i}(x + (s - t')b, s), \\
+\frac{\partial h}{\partial t'}(p,s) &= \sum_{j=1}^n f_{x_j}(x + (s - t')b, s)(-b_j) = -\,b\cdot Df(x + (s - t')b, s),
+\end{align*}
+which are continuous because $f \in C^1(\mathbb{R}^n \times [0,\infty))$. By Lemma~\ref{lem:leibniz}, $H$ is continuous on $V \times [0,\infty)$, $C^1$ on $V \times (0,\infty)$, and
+\begin{gather*}
+H_\tau(p,\tau) = h(p,\tau), \qquad H_{x_i}(p,\tau) = \int_0^\tau f_{x_i}(x + (s - t')b, s)\, ds, \\
+H_{t'}(p,\tau) = -\int_0^\tau b\cdot Df(x + (s - t')b, s)\, ds.
+\end{gather*}
+
+\emph{Step 2: regularity of $w$.} $w(x,t) = H(x,t,t)$ is the composition of $H$ with the map $(x,t) \mapsto (x,t,t)$. For $t \ge 0$ this is continuous, so $w \in C(\mathbb{R}^n \times [0,\infty))$; for $t > 0$ both maps are $C^1$, so $w \in C^1(\mathbb{R}^n \times (0,\infty))$. Also $w(x,0) = \int_0^0 \cdots = 0$.
+
+\emph{Step 3: the derivatives of $w$.} By the chain rule, $x_i$ enters $H(x,t,t)$ only through the slot $x_i$, while $t$ enters through both slots $t'$ and $\tau$:
+$$ w_{x_i}(x,t) = H_{x_i}(x,t,t) = \int_0^t f_{x_i}(x + (s - t)b, s)\, ds, $$
+$$ w_t(x,t) = H_{t'}(x,t,t) + H_\tau(x,t,t) = -\int_0^t b\cdot Df(x + (s - t)b, s)\, ds + f(x + (t - t)b, t). $$
+The last term is $f(x,t)$.
+
+\emph{Step 4: the equation.} Multiply $w_{x_i}$ by $b_i$, sum over $i$, and use linearity of the integral:
+$$ b\cdot Dw(x,t) = \int_0^t b\cdot Df(x + (s - t)b, s)\, ds. $$
+Adding this to $w_t$, the two integrals cancel:
+$$ w_t + b\cdot Dw = f(x,t) \qquad (x \in \mathbb{R}^n,\ t > 0). $$
+This completes the proof.
+\end{proof}
+
+We will later employ this formula to solve the one-dimensional wave equation.
+
+\paragraph{Remark.} Observe that we have derived our solutions \eqref{eq:transsol}, \eqref{eq:transnhsol} by in effect converting the partial differential equations into ordinary differential equations. This procedure is a special case of the method of characteristics (Section~\ref{sec:moc}).
+
+Indeed, the ODE is the equation for $z(s)$: $\dot z = 0$ in the homogeneous case, $\dot z = f(x + sb, t + s)$ in the nonhomogeneous case. The lines $L_y$, along which we solved these ODEs, are the \emph{characteristic curves} of \eqref{eq:transport}: they solve $\frac{d}{d\sigma}(x,t) = (b,1)$, the vector of coefficients of the equation $b\cdot Du + 1\cdot u_t = f$.
+
+%---------------------------------------------------------------------
+\subsection{Solution for $n = 1$, d'Alembert's Formula}\label{ssec:dalembert}
+
+We began the study of Laplace's equation and of the heat equation by searching for certain scaling invariant solutions. For the wave equation however we will instead present the (reasonably) elegant method of solving \eqref{eq:wave} first for $n = 1$ directly and then for $n \geq 2$ by the method of spherical means.
+
+We first focus our attention on the initial-value problem for the one-dimensional wave equation in all of $\mathbb{R}$:
+\begin{equation}\label{eq:wave1d}
+\begin{cases} u_{tt} - u_{xx} = 0 & \text{in } \mathbb{R} \times (0,\infty) \\ u = g,\ u_t = h & \text{on } \mathbb{R} \times \{t = 0\}, \end{cases}
+\end{equation}
+where $g, h$ are given. We desire to derive a formula for $u$ in terms of $g$ and $h$.
+
+Here $g$ is the initial value of $u$ and $h$ the initial value of $u_t$: $u(x,0) = g(x)$ and $u_t(x,0) = h(x)$ for all $x \in \mathbb{R}$.
+
+\subsubsection{Derivation}
+
+Throughout the derivation we suppose that $u$ is a solution of \eqref{eq:wave1d} with $u \in C^2(\mathbb{R} \times [0,\infty))$; that is, $u$ and its partial derivatives up to order two are continuous on $\mathbb{R} \times (0,\infty)$ and extend continuously to $t = 0$. We will find that $u$ \emph{must} be given by a certain formula.
+
+\paragraph{Step 1: factoring the operator.} Let us first note the PDE in \eqref{eq:wave1d} can be ``factored'', to read
+\begin{equation}\label{eq:factor}
+\Big(\frac{\partial}{\partial t} + \frac{\partial}{\partial x}\Big)\Big(\frac{\partial}{\partial t} - \frac{\partial}{\partial x}\Big)u = u_{tt} - u_{xx} = 0.
+\end{equation}
+
+\emph{Verification.} First apply the right factor: $\big(\frac{\partial}{\partial t} - \frac{\partial}{\partial x}\big)u = u_t - u_x$. Then apply the left factor to the result:
+$$ \Big(\frac{\partial}{\partial t} + \frac{\partial}{\partial x}\Big)(u_t - u_x) = (u_{tt} - u_{xt}) + (u_{tx} - u_{xx}) = u_{tt} - u_{xx} + (u_{tx} - u_{xt}) = u_{tt} - u_{xx}. $$
+In the last step we used $u_{tx} = u_{xt}$: the mixed partial derivatives of a $C^2$ function are equal. So the second-order operator $\partial_t^2 - \partial_x^2$ is the product of two first-order operators $\partial_t + \partial_x$ and $\partial_t - \partial_x$, just like $a^2 - b^2 = (a + b)(a - b)$. Each factor is a \emph{transport operator}, and we solve two transport equations, one after the other.
+
+\paragraph{Step 2: the first transport equation.} Write
+\begin{equation}\label{eq:vdef}
+v(x,t) := \Big(\frac{\partial}{\partial t} - \frac{\partial}{\partial x}\Big)u(x,t).
+\end{equation}
+Then \eqref{eq:factor} says
+$$ v_t(x,t) + v_x(x,t) = 0 \qquad (x \in \mathbb{R},\ t > 0). $$
+This is a transport equation with constant coefficients. Applying formula \eqref{eq:transsol} (with $n = 1$, $b = 1$), we find
+\begin{equation}\label{eq:vsol}
+v(x,t) = a(x - t)
+\end{equation}
+for $a(x) := v(x,0)$.
+
+\emph{How the transport equation is used here.}
+\begin{itemize}
+    \item \emph{The equation.} $v_t + v_x = 0$ is \eqref{eq:transport} with $n = 1$ and the vector $b$ equal to the number $1$: $u_t + b\cdot Du$ becomes $v_t + 1\cdot v_x$.
+    \item \emph{The hypotheses of Theorem~\ref{thm:transport}(a).} That theorem requires $v \in C^1(\mathbb{R} \times (0,\infty)) \cap C(\mathbb{R} \times [0,\infty))$. Since $u \in C^2(\mathbb{R}\times[0,\infty))$, the functions $u_t$, $u_x$ have continuous first derivatives, so $v = u_t - u_x$ is $C^1$ for $t > 0$ and continuous up to $t = 0$. The initial value of $v$ is the function $a(x) := v(x,0)$. (We do not yet know $a$; we compute it in Step 4.)
+    \item \emph{The conclusion.} Theorem~\ref{thm:transport}(a) gives $v(x,t) = a(x - t\cdot 1) = a(x - t)$.
+    \item \emph{The geometry.} The lines of Lemma~\ref{lem:transgeom} have direction $(b,1) = (1,1)$: they are the lines $x - t = \text{const}$, of slope $1$ in the $(x,t)$-plane. $v$ is constant along each of them. The line through $(x,t)$ meets $t = 0$ at the point $x - t$, and there $v = a(x - t)$.
+\end{itemize}
+
+\paragraph{Step 3: the second transport equation.} Combining now \eqref{eq:factor}--\eqref{eq:vsol}, we obtain
+$$ u_t(x,t) - u_x(x,t) = a(x - t) \qquad \text{in } \mathbb{R} \times (0,\infty). $$
+This is a nonhomogeneous transport equation; and so formula \eqref{eq:transnhsol} (with $n = 1$, $b = -1$, $f(x,t) = a(x - t)$) implies
+\begin{equation}\label{eq:u7}
+\begin{aligned}
+u(x,t) &= \int_0^t a(x + (t - s) - s)\, ds + b(x + t) \\
+&= \frac12\int_{x-t}^{x+t} a(y)\, dy + b(x + t),
+\end{aligned}
+\end{equation}
+where we have $b(x) := u(x,0)$.
+
+\emph{A warning about notation.} In \eqref{eq:u7} the letter $b$ denotes the \emph{function} $b(x) := u(x,0)$, the initial value of $u$. It has nothing to do with the vector (here: number) $b$ in the transport equation, which in this step equals $-1$.
+
+\emph{How the nonhomogeneous transport equation is used here.}
+\begin{itemize}
+    \item \emph{The equation.} $u_t - u_x = a(x - t)$ is \eqref{eq:transnh} with $n = 1$, the coefficient $b = -1$ (since $u_t + (-1)u_x = u_t - u_x$), and right-hand side $f(x,t) = a(x - t)$.
+    \item \emph{The hypotheses of Theorem~\ref{thm:transportnh}(a).} We need $u \in C^1(\mathbb{R}\times(0,\infty)) \cap C(\mathbb{R}\times[0,\infty))$ (true, since $u \in C^2(\mathbb{R}\times[0,\infty))$) and $f$ continuous on $\mathbb{R}\times[0,\infty)$: $a = v(\cdot,0)$ is continuous because $v$ is continuous up to $t = 0$, so $f(x,t) = a(x - t)$ is continuous. The initial value of $u$ is the function $x \mapsto u(x,0)$, which we call $b(x)$.
+    \item \emph{The formula.} \eqref{eq:transnhsol} with coefficient $-1$ reads
+    $$ u(x,t) = \underbrace{u(x - t(-1),\, 0)}_{=\, b(x + t)} + \int_0^t f\big(x + (s - t)(-1),\ s\big)\, ds = b(x + t) + \int_0^t f(x + t - s,\ s)\, ds. $$
+    Now $f(x + t - s, s) = a\big((x + t - s) - s\big) = a(x + (t - s) - s)$. This is the first line of \eqref{eq:u7}.
+    \item \emph{The geometry.} Here the lines have direction $(-1,1)$: they are the lines $x + t = \text{const}$, of slope $-1$. The line through $(x,t)$ meets $t = 0$ at the point $x + t$; this is why $b(x + t) = u(x + t, 0)$ appears. The integral is taken along the segment of this line from $(x + t,0)$ up to $(x,t)$: at time $s$ the segment passes through the point $(x + t - s,\ s)$.
+\end{itemize}
+
+\emph{The change of variables} (second line of \eqref{eq:u7}). Substitute $y = x + t - 2s$. Then $dy = -2\,ds$, i.e.\ $ds = -\frac12 dy$; $s = 0$ gives $y = x + t$, and $s = t$ gives $y = x - t$. So
+$$ \int_0^t a(x + t - 2s)\, ds = \int_{x+t}^{x-t} a(y)\Big(-\frac12\Big)dy = \frac12\int_{x-t}^{x+t} a(y)\, dy, $$
+where reversing the limits of integration removed the minus sign.
+
+\emph{Geometric meaning of $y = x + t - 2s$.} The point $(x + t - s,\, s)$ on the slope $-1$ segment carries the value $f = a\big((x + t - s) - s\big)$. By Step 2, $a(y)$ is the value of $v$ at the foot of the slope $+1$ line through that point, and that foot is $y = (x + t - s) - s = x + t - 2s$. As $s$ goes from $0$ to $t$, the foot $y$ sweeps the whole interval $[x - t, x + t]$. So the value $u(x,t)$ depends only on the initial data on the interval $[x - t, x + t]$: the base of the triangle cut out of the initial line by the two lines through $(x,t)$.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.15]
+  \draw[->] (-0.4,0) -- (8.4,0) node[right] {$x$};
+  \draw[->] (0,-0.3) -- (0,3.5) node[above] {$t$};
+  % triangle
+  \fill[gray!12] (1.5,0) -- (4.5,3) -- (7.5,0) -- cycle;
+  % slope +1 line through (x,t): v-line
+  \draw[very thick,blue!70!black] (1.5,0) -- (4.5,3);
+  % slope -1 line through (x,t): u-line
+  \draw[very thick,red!75!black] (7.5,0) -- (4.5,3);
+  \fill (4.5,3) circle (2pt) node[above] {$(x,t)$};
+  \fill (1.5,0) circle (2pt) node[below] {$x - t$};
+  \fill (7.5,0) circle (2pt) node[below] {$x + t$};
+  % a point at time s on the red segment
+  \fill[red!75!black] (6.3,1.2) circle (2pt) node[right=2pt] {$(x + t - s,\, s)$};
+  % its slope +1 line down to y = x+t-2s
+  \draw[thick,dashed,blue!70!black] (6.3,1.2) -- (5.1,0);
+  \fill (5.1,0) circle (2pt) node[below] {$y = x + t - 2s$};
+  \node[blue!70!black] at (2.4,1.9) {$x - t = $ const};
+  \node[red!75!black] at (7.2,1.9) {$x + t = $ const};
+\end{tikzpicture}
+
+\small The two lines through $(x,t)$: slope $+1$ (where $v$ is constant) and slope $-1$ (along which we integrate). From each point of the slope $-1$ segment, the slope $+1$ line goes down to a point $y \in [x - t, x + t]$.
+\end{center}
+
+\paragraph{Step 4: using the initial conditions.} We lastly invoke the initial conditions in \eqref{eq:wave1d} to compute $a$ and $b$. The first initial condition in \eqref{eq:wave1d} gives
+$$ b(x) = g(x) \qquad (x \in \mathbb{R}); $$
+whereas the second initial condition and \eqref{eq:vdef} imply
+$$ a(x) = v(x,0) = u_t(x,0) - u_x(x,0) = h(x) - g'(x) \qquad (x \in \mathbb{R}). $$
+
+\emph{Details.} $b(x) = u(x,0) = g(x)$ is the definition of $b$ together with the first initial condition. For $a$: $u_t(x,0) = h(x)$ is the second initial condition. And $u_x(x,0) = g'(x)$: the derivative $u_x$ at a point $(x,0)$ is a derivative \emph{along} the line $t = 0$, where $u(\cdot,0) = g$; so $u_x(x,0) = \frac{d}{dx}u(x,0) = g'(x)$. (In particular $g$ must be differentiable; this is part of the regularity we assumed.)
+
+\paragraph{Step 5: d'Alembert's formula.} Our substituting into \eqref{eq:u7} now yields
+$$ u(x,t) = \frac12\int_{x-t}^{x+t} h(y) - g'(y)\, dy + g(x + t). $$
+Hence
+\begin{equation}\label{eq:dalembert}
+u(x,t) = \frac12\big[g(x + t) + g(x - t)\big] + \frac12\int_{x-t}^{x+t} h(y)\, dy \qquad (x \in \mathbb{R},\ t \geq 0).
+\end{equation}
+This is \emph{d'Alembert's formula}.
+
+\emph{Details.} Split the integral and use the Fundamental Theorem of Calculus for the $g'$ term:
+$$ \frac12\int_{x-t}^{x+t} g'(y)\, dy = \frac12\big[g(x + t) - g(x - t)\big]. $$
+Therefore
+$$ u(x,t) = \frac12\int_{x-t}^{x+t}h(y)\, dy - \frac12 g(x + t) + \frac12 g(x - t) + g(x + t) = \frac12 g(x + t) + \frac12 g(x - t) + \frac12\int_{x-t}^{x+t}h(y)\, dy. $$
+
+\emph{Summary of the derivation.} We have shown: \emph{if} $u \in C^2(\mathbb{R}\times[0,\infty))$ solves \eqref{eq:wave1d}, then $u$ is given by \eqref{eq:dalembert}. In particular \eqref{eq:wave1d} has \emph{at most one} such solution (uniqueness). The transport equation was used twice: the homogeneous one ($b = 1$) for $v$, and then the nonhomogeneous one ($b = -1$) for $u$.
+
+\subsubsection{The theorem}
+
+We have derived formula \eqref{eq:dalembert} assuming $u$ is a (sufficiently smooth) solution of \eqref{eq:wave1d}. We need to check that this really is a solution.
+
+\bigskip
+\textbf{Theorem 1 (Solution of wave equation, $n = 1$).} \textit{Assume $g \in C^2(\mathbb{R})$, $h \in C^1(\mathbb{R})$, and define $u$ by d'Alembert's formula \eqref{eq:dalembert}. Then}
+\begin{enumerate}
+    \item[(i)] $u \in C^2(\mathbb{R} \times [0,\infty))$,
+    \item[(ii)] $u_{tt} - u_{xx} = 0$ \textit{in} $\mathbb{R} \times (0,\infty)$,
+\end{enumerate}
+\textit{and}
+\begin{enumerate}
+    \item[(iii)] $\displaystyle\lim_{\substack{(x,t)\to(x^0,0)\\ t>0}} u(x,t) = g(x^0), \qquad \lim_{\substack{(x,t)\to(x^0,0)\\ t>0}} u_t(x,t) = h(x^0)$
+\end{enumerate}
+\textit{for each point $x^0 \in \mathbb{R}$.}
+
+The proof is a straightforward calculation.
+
+\begin{proof}
+\emph{Step 1: rewriting $u$ with an antiderivative of $h$.} Let
+$$ H(z) := \int_0^z h(y)\, dy \qquad (z \in \mathbb{R}). $$
+By the Fundamental Theorem of Calculus, $H' = h$; since $h \in C^1$, we get $H'' = h'$ continuous, so $H \in C^2(\mathbb{R})$. Moreover $\int_{x-t}^{x+t}h(y)\,dy = H(x + t) - H(x - t)$. Hence
+$$ u(x,t) = \frac12\big[g(x + t) + g(x - t)\big] + \frac12\big[H(x + t) - H(x - t)\big]. $$
+This formula makes sense for all $(x,t) \in \mathbb{R}^2$, and $u$ is built from the $C^2$ functions $g, H$ composed with the linear maps $(x,t) \mapsto x + t$ and $(x,t) \mapsto x - t$.
+
+\emph{Step 2: the derivatives.} By the chain rule, $\frac{\partial}{\partial t}$ of $x + t$ is $1$, of $x - t$ is $-1$, and $\frac{\partial}{\partial x}$ of both is $1$. So
+\begin{align*}
+u_t &= \tfrac12\big[g'(x + t) - g'(x - t)\big] + \tfrac12\big[h(x + t) + h(x - t)\big], \\
+u_x &= \tfrac12\big[g'(x + t) + g'(x - t)\big] + \tfrac12\big[h(x + t) - h(x - t)\big], \\
+u_{tt} &= \tfrac12\big[g''(x + t) + g''(x - t)\big] + \tfrac12\big[h'(x + t) - h'(x - t)\big], \\
+u_{xx} &= \tfrac12\big[g''(x + t) + g''(x - t)\big] + \tfrac12\big[h'(x + t) - h'(x - t)\big], \\
+u_{xt} &= u_{tx} = \tfrac12\big[g''(x + t) - g''(x - t)\big] + \tfrac12\big[h'(x + t) + h'(x - t)\big].
+\end{align*}
+(For $u_t$ we used $H' = h$; differentiating $-H(x - t)$ in $t$ gives $-h(x - t)\cdot(-1) = +h(x - t)$. Note the sign changes: each $t$-derivative of a function of $x - t$ produces a factor $-1$, and two of them give $+1$.)
+
+\emph{Proof of (i).} All the derivatives listed are compositions of the continuous functions $g, g', g'', h, h'$ with continuous maps, so they are continuous on all of $\mathbb{R}^2$. Hence $u \in C^2(\mathbb{R}^2)$, and in particular $u \in C^2(\mathbb{R}\times[0,\infty))$.
+
+\emph{Proof of (ii).} The expressions for $u_{tt}$ and $u_{xx}$ are identical, so $u_{tt} - u_{xx} = 0$ at every point, in particular in $\mathbb{R} \times (0,\infty)$.
+
+\emph{Proof of (iii).} Since $u$ and $u_t$ are continuous on $\mathbb{R}^2$, their limits as $(x,t) \to (x^0,0)$ (from $t > 0$ or otherwise) are their values at $(x^0,0)$. Putting $t = 0$ in the formulas:
+$$ u(x^0,0) = \tfrac12\big[g(x^0) + g(x^0)\big] + \tfrac12\big[H(x^0) - H(x^0)\big] = g(x^0), $$
+$$ u_t(x^0,0) = \tfrac12\big[g'(x^0) - g'(x^0)\big] + \tfrac12\big[h(x^0) + h(x^0)\big] = h(x^0). $$
+\end{proof}
+
+\emph{Existence and uniqueness together.} If $g \in C^2(\mathbb{R})$ and $h \in C^1(\mathbb{R})$, the Theorem gives a solution $u \in C^2(\mathbb{R}\times[0,\infty))$ of \eqref{eq:wave1d}, and the derivation shows that every solution in this class is given by \eqref{eq:dalembert}. So \eqref{eq:wave1d} has exactly one solution in $C^2(\mathbb{R}\times[0,\infty))$, namely d'Alembert's.
+
+\paragraph{Remarks.}
+
+(i) In view of \eqref{eq:dalembert}, our solution $u$ has the form
+$$ u(x,t) = F(x + t) + G(x - t) $$
+for appropriate functions $F$ and $G$. Conversely any function of this form solves $u_{tt} - u_{xx} = 0$. Hence the general solution of the one-dimensional wave equation is a sum of the general solution of $u_t - u_x = 0$ and the general solution of $u_t + u_x = 0$. This is a consequence of the factorization \eqref{eq:factor}.
+
+\emph{Explanation.}
+\begin{itemize}
+    \item \emph{The form.} With $H$ as in the proof, $F(z) := \frac12 g(z) + \frac12 H(z)$ and $G(z) := \frac12 g(z) - \frac12 H(z)$ give $F(x + t) + G(x - t) = u(x,t)$.
+    \item \emph{Conversely}, if $F, G \in C^2(\mathbb{R})$ and $u(x,t) = F(x + t) + G(x - t)$, then by the chain rule $u_{tt} = F''(x + t) + G''(x - t) = u_{xx}$.
+    \item \emph{The two pieces.} $F(x + t)$ solves $u_t - u_x = 0$, since $\partial_t F(x + t) = F'(x + t) = \partial_x F(x + t)$. By Theorem~\ref{thm:transport}, the $C^1$ solutions of $u_t - u_x = 0$ (coefficient $b = -1$) are exactly the functions $F(x + t)$, constant along the lines $x + t = $ const. Similarly $G(x - t)$ solves $u_t + u_x = 0$ ($b = 1$), and these are all its solutions; they are constant along the lines $x - t = $ const.
+    \item \emph{Why the factorization explains this.} The two factors commute: $(\partial_t + \partial_x)(\partial_t - \partial_x) = (\partial_t - \partial_x)(\partial_t + \partial_x) = \partial_t^2 - \partial_x^2$ (for $C^2$ functions, by equality of mixed partials). So anything killed by $\partial_t - \partial_x$ is killed by the product, and anything killed by $\partial_t + \partial_x$ is killed by the product; by linearity so is their sum. The derivation shows conversely that every $C^2$ solution is such a sum: a wave $F$ moving to the left with speed one plus a wave $G$ moving to the right with speed one.
+\end{itemize}
+
+(ii) We see from \eqref{eq:dalembert} that if $g \in C^k$ and $h \in C^{k-1}$, then $u \in C^k$, but is not in general smoother. Thus the wave equation does \emph{not} cause instantaneous smoothing of the initial data, as does the heat equation.
+
+\emph{Explanation.} If $g \in C^k$ and $h \in C^{k-1}$ ($k \geq 1$), then $H \in C^k$ (as $H' = h$), and $u = \frac12[g(x+t) + g(x-t)] + \frac12[H(x+t) - H(x-t)]$ is $C^k$ by the chain rule. On the other hand, take $h \equiv 0$ and $g \in C^k$ which is not $C^{k+1}$ (for example $g(x) = x^k|x|$, whose $k$-th derivative is a multiple of $|x|$, which is not differentiable at $0$). Then $u(x,t) = \frac12[g(x + t) + g(x - t)]$. If $u$ were $C^{k+1}$, then so would be $g(x) = u(x,0)$, the restriction of $u$ to the line $t = 0$, a contradiction. So the solution is not smoother than the data, at any time. Compare Theorem 1(i) of Section~\ref{sec:heat}: there $u \in C^\infty$ for $t > 0$ even if $g$ is only continuous and bounded.
+
+
+\subsubsection{The wave equation with speed $c$}\label{sssec:wavec}
+
+In problems one often meets the wave equation in the form
+\begin{equation}\label{eq:wavec}
+\begin{cases} u_{tt} - c^2u_{xx} = 0 & x \in \mathbb{R},\ t > 0 \\ u(x,0) = g(x),\ u_t(x,0) = h(x) & x \in \mathbb{R}, \end{cases}
+\end{equation}
+where $c > 0$ is a constant (the speed of the waves). Its solution is \emph{d'Alembert's formula with speed $c$}:
+\begin{equation}\label{eq:dalembertc}
+\boxed{\ u(x,t) = \frac12\big[g(x + ct) + g(x - ct)\big] + \frac{1}{2c}\int_{x-ct}^{x+ct} h(y)\, dy\ }
+\end{equation}
+For $c = 1$ this is \eqref{eq:dalembert}. Theorem 1 holds verbatim for \eqref{eq:wavec} and \eqref{eq:dalembertc} (with $u_{tt} - c^2u_{xx}$ in (ii)): if $g \in C^2(\mathbb{R})$, $h \in C^1(\mathbb{R})$, then \eqref{eq:dalembertc} is the unique solution in $C^2(\mathbb{R}\times[0,\infty))$.
+
+\emph{How to get it.} There is nothing new to derive; either of the following reduces it to what we have done.
+\begin{itemize}
+    \item \emph{Same derivation.} Factor $u_{tt} - c^2u_{xx} = \big(\partial_t + c\,\partial_x\big)\big(\partial_t - c\,\partial_x\big)u$ and repeat Steps 1--5 with the transport coefficients $b = c$ and then $b = -c$ in place of $1$ and $-1$. The lines are now $x \mp ct = $ const (slopes $\pm\frac1c$), they meet $t = 0$ at $x - ct$ and $x + ct$, and the substitution $y = x + ct - 2cs$ produces the factor $\frac{1}{2c}$.
+    \item \emph{Rescaling time.} Put $w(x,\tau) := u\big(x, \frac{\tau}{c}\big)$, i.e.\ $u(x,t) = w(x,ct)$. By the chain rule $w_\tau = \frac1c u_t$ and $w_{\tau\tau} = \frac{1}{c^2}u_{tt} = u_{xx} = w_{xx}$. So $w$ solves the wave equation with speed $1$, with $w(x,0) = g(x)$ and $w_\tau(x,0) = \frac1c h(x)$. By \eqref{eq:dalembert},
+    $$ w(x,\tau) = \frac12\big[g(x + \tau) + g(x - \tau)\big] + \frac12\int_{x-\tau}^{x+\tau}\frac{h(y)}{c}\, dy, $$
+    and putting $\tau = ct$ gives \eqref{eq:dalembertc}.
+\end{itemize}
+
+As in Remark (i), every solution has the form $u(x,t) = F(x + ct) + G(x - ct)$: a wave moving to the left and a wave moving to the right, both with speed $c$. The value $u(x,t)$ depends only on the initial data on the interval $[x - ct,\, x + ct]$.
+
+
+\subsubsection{Domain of Dependence, Range of Influence and Domain of Determinacy}\label{sssec:dod}
+
+We now make some observations based on d'Alembert's formula \eqref{eq:dalembertc}. Throughout, $c > 0$, $g \in C^2(\mathbb{R})$, $h \in C^1(\mathbb{R})$, and $u$ is the solution of \eqref{eq:wavec}, so
+$$ u(x,t) = \frac12\big[g(x + ct) + g(x - ct)\big] + \frac{1}{2c}\int_{x-ct}^{x+ct} h(y)\, dy. $$
+The basic question is: \emph{which initial data does the value $u(x,t)$ use, and which values of $u$ does a piece of initial data affect?} The answers are read off from the formula, and are described by two families of straight lines in the $(x,t)$-plane, the \emph{characteristics}
+$$ x - ct = \text{const} \ \ (\text{slope } \tfrac1c,\ \text{up to the right}), \qquad x + ct = \text{const} \ \ (\text{slope } -\tfrac1c,\ \text{up to the left}). $$
+These are the lines of the two transport equations in the factorization $(\partial_t + c\partial_x)(\partial_t - c\partial_x)u = 0$. In all pictures below we take $t$ upwards; the initial line $t = 0$ is the $x$-axis.
+
+%-----------------------------
+\paragraph{1. Domain of dependence of a point.}
+
+\begin{definition}[Domain of dependence]\label{def:dod}
+Let $(x,t)$ with $t > 0$. The interval
+$$ [x - ct,\ x + ct] $$
+on the initial line $t = 0$ is called the \emph{domain of dependence} (of the solution) at $(x,t)$.
+\end{definition}
+
+\emph{Meaning.} The value of the solution $u$ at $(x,t)$, $t > 0$, depends on the values of the initial data only in the interval $[x - ct, x + ct]$. Indeed, in d'Alembert's formula, $g$ is evaluated only at the two points $x \pm ct$, and $h$ is integrated only over $[x - ct, x + ct]$. Nothing outside this interval enters.
+
+\emph{Geometry.} Draw the two characteristics through $(x,t)$ backwards in time. The line $x' - ct' = x - ct$ (slope $\frac1c$) meets $t' = 0$ at $x - ct$; the line $x' + ct' = x + ct$ (slope $-\frac1c$) meets $t' = 0$ at $x + ct$. Together with the $x$-axis they form a triangle with top vertex $(x,t)$; the domain of dependence is its base. The base has length $2ct$: the later the time $t$, the longer the interval of initial data on which $u(x,t)$ depends.
+
+\begin{lemma}\label{lem:dod}
+Let $u_1$, $u_2$ be the solutions with data $(g_1,h_1)$, $(g_2,h_2)$. If $g_1 = g_2$ and $h_1 = h_2$ on $[x - ct, x + ct]$, then $u_1(x,t) = u_2(x,t)$.
+\end{lemma}
+\begin{proof}
+By d'Alembert's formula, $u_1(x,t) - u_2(x,t) = \frac12[(g_1 - g_2)(x + ct) + (g_1 - g_2)(x - ct)] + \frac{1}{2c}\int_{x-ct}^{x+ct}(h_1 - h_2)(y)\, dy$. The points $x \pm ct$ lie in the interval, and the integral runs over the interval, where $g_1 - g_2$ and $h_1 - h_2$ vanish. So the difference is $0$.
+\end{proof}
+
+The interval cannot be made smaller: if $[\alpha,\beta] \subset [x - ct, x + ct]$ with $\alpha < \beta$, taking $g = 0$ and $h \ge 0$ a $C^1$ bump which is positive on $(\alpha,\beta)$ and zero elsewhere gives $u(x,t) = \frac{1}{2c}\int_\alpha^\beta h > 0$, while for $h = 0$ we get $u(x,t) = 0$. So the data at every part of the interval does matter.
+
+%-----------------------------
+\paragraph{2. Range of influence of a point.}
+
+\begin{definition}[Range of influence of a point]\label{def:roi}
+Let $y \in \mathbb{R}$. The set
+$$ \big\{(x,t) : t > 0,\ x \in [y - ct,\ y + ct]\big\} = \big\{(x,t) : t > 0,\ |x - y| \leq ct\big\} $$
+is called the \emph{range of influence} of the point $(y,0)$. At a fixed time $t > 0$ it is the line segment $\{(x,t) : x \in [y - ct, y + ct]\}$.
+\end{definition}
+
+\emph{Meaning.} The initial data at the point $y$ can influence the value of $u$ at time $t > 0$ only on the segment $[y - ct, y + ct]$. This is the reverse of the previous question: there we fixed $(x,t)$ and asked which $y$ matter; here we fix $y$ and ask which $(x,t)$ it reaches.
+
+\emph{The two notions are dual.} For $t > 0$:
+$$ y \in [x - ct, x + ct] \iff |x - y| \leq ct \iff x \in [y - ct, y + ct]. $$
+That is: \emph{$(x,t)$ lies in the range of influence of $(y,0)$ if and only if $y$ lies in the domain of dependence of $(x,t)$.}
+
+\emph{Geometry.} From $(y,0)$ draw the two characteristics forward in time: $x - ct = y$ (to the right) and $x + ct = y$ (to the left). The range of influence is the wedge (an upside-down triangle, opening upwards) between them. At time $t$ its width is $2ct$: the influence of $(y,0)$ spreads to the left and to the right with speed exactly $c$.
+
+\begin{lemma}[Finite speed of propagation]\label{lem:roi}
+Let $\varepsilon > 0$, and suppose the data $(g_1,h_1)$ and $(g_2,h_2)$ agree outside $(y - \varepsilon, y + \varepsilon)$. Then $u_1(x,t) = u_2(x,t)$ whenever $|x - y| \geq ct + \varepsilon$.
+\end{lemma}
+\begin{proof}
+Let $|x - y| \ge ct + \varepsilon$ and $z \in [x - ct, x + ct]$. Then $|z - y| \geq |x - y| - |z - x| \geq ct + \varepsilon - ct = \varepsilon$, so $z \notin (y - \varepsilon, y + \varepsilon)$. Thus the data agree on the domain of dependence $[x - ct, x + ct]$, and Lemma~\ref{lem:dod} gives $u_1(x,t) = u_2(x,t)$.
+\end{proof}
+So a change of the data near $y$ is felt only in (a slightly widened version of) the range of influence of $(y,0)$; letting $\varepsilon \to 0$ we recover the wedge $|x - y| \le ct$. Compare the heat equation, where a change of the data anywhere changes $u(x,t)$ at every $x$, for every $t > 0$ (Remark (ii) after Theorem 1 of Section~\ref{sec:heat}).
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  % left: domain of dependence
+  \begin{scope}
+    \draw[->] (-0.3,0) -- (5,0) node[right] {$x$};
+    \draw[->] (0,-0.2) -- (0,2.8) node[above] {$t$};
+    \fill[gray!15] (0.8,0) -- (2.4,1.6) -- (4,0) -- cycle;
+    \draw[thick] (0.8,0) -- (2.4,1.6) -- (4,0);
+    \draw[very thick,blue!70!black] (0.8,0) -- (4,0);
+    \fill (2.4,1.6) circle (1.8pt) node[above] {$(x,t)$};
+    \node[below] at (0.8,0) {$x - ct$};
+    \node[below] at (4,0) {$x + ct$};
+    \node at (2.4,-0.9) {\small domain of dependence of $(x,t)$};
+  \end{scope}
+  % right: range of influence of a point
+  \begin{scope}[xshift=7.2cm]
+    \draw[->] (-0.9,0) -- (5,0) node[right] {$x$};
+    \draw[->] (-0.6,-0.2) -- (-0.6,2.8) node[above] {$t$};
+    \fill[gray!15] (2.4,0) -- (0.6,1.8) -- (4.2,1.8) -- cycle;
+    \draw[thick] (0.6,1.8) -- (2.4,0) -- (4.2,1.8);
+    \draw[dashed] (-0.6,1.8) -- (4.7,1.8);
+    \draw[very thick,red!75!black] (0.6,1.8) -- (4.2,1.8);
+    \node[left] at (-0.6,1.8) {$t$};
+    \node[above] at (0.6,1.8) {\small $y - ct$};
+    \node[above] at (4.2,1.8) {\small $y + ct$};
+    \fill (2.4,0) circle (1.8pt) node[below] {$(y,0)$};
+    \node at (2.4,-0.9) {\small range of influence of $(y,0)$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+%-----------------------------
+\paragraph{3. Range of influence of an interval.}
+
+\begin{definition}[Range of influence of an interval]\label{def:roiab}
+Let $a < b$. The set
+$$ \big\{(x,t) : t > 0,\ x \in [a - ct,\ b + ct]\big\} $$
+is called the \emph{range of influence} of the interval $[a,b]$ (on the initial line $t = 0$).
+\end{definition}
+
+\emph{Meaning.} The initial values in the interval $[a,b]$ on $t = 0$ will influence the values of the solution $u$ only in this region.
+
+\emph{It is the union of the ranges of influence of the points of $[a,b]$.} For $t > 0$, $(x,t)$ lies in the range of influence of some $(y,0)$, $y \in [a,b]$
+\begin{align*}
+&\iff \text{there is } y \in [a,b] \text{ with } y \in [x - ct, x + ct] \\
+&\iff [x - ct, x + ct] \cap [a,b] \neq \emptyset \\
+&\iff x - ct \leq b \ \text{ and } \ x + ct \geq a \\
+&\iff a - ct \leq x \leq b + ct.
+\end{align*}
+(Two closed intervals intersect exactly when each one's left end is at most the other's right end.) So the range of influence of $[a,b]$ is the set of points whose domain of dependence \emph{meets} $[a,b]$.
+
+\emph{Geometry.} This is the region between the \emph{diverging} characteristics $x + ct = a$ drawn from the point $(a,0)$ (going up to the left) and $x - ct = b$ drawn from $(b,0)$ (going up to the right). At time $t$ it is the segment $[a - ct, b + ct]$: the interval $[a,b]$ enlarged by $ct$ on each side.
+
+\begin{lemma}\label{lem:roiab}
+If the data $(g_1,h_1)$ and $(g_2,h_2)$ agree outside $[a,b]$, then $u_1(x,t) = u_2(x,t)$ for all $t > 0$ with $x + ct < a$ or $x - ct > b$, i.e.\ outside the range of influence of $[a,b]$. In particular, if $g$ and $h$ vanish outside $[a,b]$, then $u(\cdot,t)$ vanishes outside $[a - ct, b + ct]$.
+\end{lemma}
+\begin{proof}
+If $x + ct < a$, the whole domain of dependence $[x - ct, x + ct]$ lies to the left of $a$; if $x - ct > b$, it lies to the right of $b$. Either way it does not meet $[a,b]$, so the data agree on it, and Lemma~\ref{lem:dod} applies. For the second statement compare with the zero data, whose solution is $u \equiv 0$.
+\end{proof}
+
+%-----------------------------
+\paragraph{4. Domain of determinacy of an interval.}
+
+On the other hand, the \emph{converging} characteristics emanating from $(a,0)$ and $(b,0)$, namely $x - ct = a$ (going up to the right from $a$) and $x + ct = b$ (going up to the left from $b$), meet when $t = \frac{1}{2c}(b - a)$. Indeed, subtracting the two equations gives $2ct = b - a$, and adding them gives $2x = a + b$. So they meet at the point $\big(\frac{a+b}{2},\ \frac{b-a}{2c}\big)$, above the midpoint of $[a,b]$.
+
+\begin{definition}[Domain of determinacy]\label{def:dodet}
+Let $a < b$. The closed triangle with vertices
+$$ (a,0), \qquad (b,0), \qquad \Big(\frac{a+b}{2},\ \frac{b-a}{2c}\Big), $$
+that is, the set
+$$ \big\{(x,t) : t \geq 0,\ a + ct \leq x \leq b - ct\big\}, $$
+is called the \emph{domain of determinacy} of the interval $[a,b]$.
+\end{definition}
+
+\emph{Meaning.} The values of the solution $u$ in this triangle are determined by the initial values within the interval $[a,b]$ at $t = 0$ alone: if we know $g$ and $h$ on $[a,b]$ (and nothing about them outside), we know $u$ everywhere in the triangle.
+
+\emph{It is the set of points whose domain of dependence lies inside $[a,b]$.} For $t \ge 0$,
+$$ [x - ct, x + ct] \subset [a,b] \iff a \leq x - ct \ \text{ and } \ x + ct \leq b \iff a + ct \leq x \leq b - ct. $$
+Such $x$ exist only if $a + ct \leq b - ct$, i.e.\ $t \leq \frac{b - a}{2c}$; at that time the interval shrinks to the single point $x = \frac{a+b}{2}$. The two inequalities say: $(x,t)$ lies to the right of the line $x - ct = a$ and to the left of the line $x + ct = b$. This is the triangle described above. Its two slanted sides are the converging characteristics; its base is $[a,b]$; its height is $\frac{b-a}{2c}$.
+
+\begin{lemma}\label{lem:dodet}
+\begin{enumerate}
+    \item[(a)] If the data $(g_1,h_1)$ and $(g_2,h_2)$ agree on $[a,b]$, then $u_1 = u_2$ in the domain of determinacy of $[a,b]$.
+    \item[(b)] The domain of determinacy is the largest set with this property: if $t > 0$ and $(x,t)$ is not in it, there are data which agree on $[a,b]$ but give different values at $(x,t)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) If $(x,t)$ lies in the triangle, its domain of dependence $[x - ct, x + ct]$ lies in $[a,b]$, where the data agree; Lemma~\ref{lem:dod} gives $u_1(x,t) = u_2(x,t)$. (For $t = 0$ simply $u_i(x,0) = g_i(x)$ with $x \in [a,b]$.)
+
+(b) If $(x,t)$ is not in the triangle, then $x + ct > b$ or $x - ct < a$. Say $x + ct > b$ (the other case is symmetric). The interval $(\max\{b, x - ct\},\ x + ct)$ is nonempty and lies inside the domain of dependence but outside $[a,b]$. Take $g_1 = g_2 = 0$, $h_1 = 0$, and $h_2 \geq 0$ a $C^1$ bump which is positive on this interval and zero elsewhere. Then the data agree on $[a,b]$, $u_1(x,t) = 0$, and $u_2(x,t) = \frac{1}{2c}\int_{x-ct}^{x+ct}h_2 > 0$.
+\end{proof}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  % left: range of influence of [a,b]
+  \begin{scope}
+    \draw[->] (-0.8,0) -- (6.0,0) node[right] {$x$};
+    \draw[->] (-0.6,-0.2) -- (-0.6,2.8) node[above] {$t$};
+    \fill[gray!15] (2,0) -- (0.6,1.4) -- (5.2,1.4) -- (3.8,0) -- cycle;
+    \draw[thick] (2,0) -- (0.6,1.4);
+    \draw[thick] (3.8,0) -- (5.2,1.4);
+    \draw[very thick,blue!70!black] (2,0) -- (3.8,0);
+    \node[below] at (2,0) {$a$};
+    \node[below] at (3.8,0) {$b$};
+    \node[above] at (0.6,1.4) {\small $x + ct = a$};
+    \node[above] at (5.2,1.4) {\small $x - ct = b$};
+    \node at (2.9,-0.9) {\small range of influence of $[a,b]$};
+  \end{scope}
+  % right: domain of determinacy
+  \begin{scope}[xshift=8.6cm]
+    \draw[->] (-0.9,0) -- (5.4,0) node[right] {$x$};
+    \draw[->] (-0.7,-0.2) -- (-0.7,2.8) node[above] {$t$};
+    \fill[gray!15] (0.8,0) -- (2.6,1.8) -- (4.4,0) -- cycle;
+    \draw[thick] (0.8,0) -- (2.6,1.8) -- (4.4,0);
+    \draw[very thick,blue!70!black] (0.8,0) -- (4.4,0);
+    \fill (2.6,1.8) circle (1.8pt) node[above] {$\big(\frac{a+b}{2},\frac{b-a}{2c}\big)$};
+    \node[below] at (0.8,0) {$a$};
+    \node[below] at (4.4,0) {$b$};
+    \node[anchor=east] at (1.3,0.8) {\small $x - ct = a$};
+    \node[anchor=west] at (3.9,0.8) {\small $x + ct = b$};
+    \node at (2.6,-0.9) {\small domain of determinacy of $[a,b]$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+%-----------------------------
+\paragraph{Summary.} Everything is decided by the domain of dependence $[x - ct, x + ct]$ of each point $(x,t)$, $t > 0$:
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{4.6cm}|p{3.4cm}|p{6cm}|}
+\hline
+\textbf{Notion} & \textbf{Set} & \textbf{Description} \\ \hline
+domain of dependence of $(x,t)$ & $[x - ct,\, x + ct]$ & data used by $u(x,t)$ \\ \hline
+range of influence of $(y,0)$ & $|x - y| \leq ct$ & points $(x,t)$ whose domain of dependence contains $y$ \\ \hline
+range of influence of $[a,b]$ & $a - ct \leq x \leq b + ct$ & points whose domain of dependence \emph{meets} $[a,b]$ \\ \hline
+domain of determinacy of $[a,b]$ & $a + ct \leq x \leq b - ct$ & points whose domain of dependence \emph{lies in} $[a,b]$ \\ \hline
+\end{tabular}
+\end{center}
+\begin{itemize}
+    \item The domain of dependence looks \emph{backwards} from a point $(x,t)$ to the initial line; the ranges of influence look \emph{forwards} from the initial line.
+    \item The range of influence of $[a,b]$ is bounded by the \emph{diverging} characteristics from $a$ and $b$ and grows with $t$; the domain of determinacy is bounded by the \emph{converging} characteristics and ends at the time $\frac{b-a}{2c}$.
+    \item The domain of determinacy lies inside the range of influence ($a + ct \le x \le b - ct$ implies $a - ct \leq x \leq b + ct$). In the triangle the data on $[a,b]$ decides $u$ completely; in the rest of the range of influence the data on $[a,b]$ affects $u$, but data outside $[a,b]$ affects it too; outside the range of influence the data on $[a,b]$ has no effect at all.
+\end{itemize}
+
+%=====================================================================
+\newpage
+\section{Classification of Second-Order PDE}\label{sec:classify}
+
+The three equations we studied,
+$$ \Delta u = u_{xx} + u_{yy} = 0, \qquad u_t - u_{xx} = 0, \qquad u_{tt} - u_{xx} = 0, $$
+behave very differently: harmonic functions are smooth and satisfy mean-value and maximum principles; solutions of the heat equation become smooth instantly, and become positive everywhere at once from nonnegative data; solutions of the wave equation are not smoothed, and propagate with finite speed along characteristic lines. In this section we see that \emph{every} second-order linear equation in two variables is, after a suitable change of variables, of one of these three types (up to lower-order terms). The type is decided by a simple sign condition on the coefficients of the second derivatives.
+
+\subsection{Standard form}
+
+A general linear or semi-linear second-order partial differential equation in two independent variables $(x,y)$ is written in the standard form
+\begin{equation}\label{eq:pde2}
+R\,u_{xx} + S\,u_{xy} + T\,u_{yy} + f(x,y,u,u_x,u_y) = 0,
+\end{equation}
+in an open set $\Omega \subset \mathbb{R}^2$, where:
+\begin{itemize}
+    \item $R$, $S$ and $T$ are the coefficients of the highest-order derivatives ($u_{xx}$, $u_{xy}$, $u_{yy}$ respectively);
+    \item these coefficients can be constants or functions of $x$ and $y$ (we assume they are $C^1$ functions, not all zero at any point);
+    \item $f(x,y,u,u_x,u_y)$ contains all the lower-order terms (first derivatives and the function itself).
+\end{itemize}
+The part $R\,u_{xx} + S\,u_{xy} + T\,u_{yy}$ is called the \emph{principal part}. We always assume $u \in C^2(\Omega)$, so that $u_{xy} = u_{yx}$; this is why there is only one mixed term.
+
+(Some books write the principal part as $a u_{xx} + 2b u_{xy} + c u_{yy}$; then $R = a$, $S = 2b$, $T = c$ and $S^2 - 4RT = 4(b^2 - ac)$.)
+
+\subsection{Classification using $R$, $S$, $T$}
+
+\begin{definition}[Type of a second-order equation]\label{def:type}
+The \emph{discriminant} of \eqref{eq:pde2} at a point $(x,y)$ is
+$$ \Delta(x,y) := S^2 - 4RT. $$
+Equation \eqref{eq:pde2} is called, at the point $(x,y)$,
+\begin{itemize}
+    \item \textbf{hyperbolic} if $S^2 - 4RT > 0$,
+    \item \textbf{parabolic} if $S^2 - 4RT = 0$,
+    \item \textbf{elliptic} if $S^2 - 4RT < 0$.
+\end{itemize}
+It is called hyperbolic (parabolic, elliptic) in $\Omega$ if it is so at every point of $\Omega$.
+\end{definition}
+
+\emph{The model equations} (write $y$ for $t$):
+\begin{itemize}
+    \item Wave equation $u_{xx} - u_{yy} = 0$: $R = 1$, $S = 0$, $T = -1$, $S^2 - 4RT = 4 > 0$: hyperbolic.
+    \item Heat equation $u_{xx} - u_y = 0$: $R = 1$, $S = 0$, $T = 0$, $S^2 - 4RT = 0$: parabolic. (The term $-u_y$ is of lower order; it is part of $f$.)
+    \item Laplace's equation $u_{xx} + u_{yy} = 0$: $R = 1$, $S = 0$, $T = 1$, $S^2 - 4RT = -4 < 0$: elliptic.
+\end{itemize}
+
+\emph{Why the names?} The quadratic form $R\xi^2 + S\xi\eta + T\eta^2$ (replace $\partial_x \to \xi$, $\partial_y \to \eta$ in the principal part) is a hyperbola, parabola or ellipse when set equal to $1$, according to exactly the same sign condition, as in the classification of conics in analytic geometry.
+
+\emph{The type may change from point to point} when $R, S, T$ depend on $(x,y)$. For example, for $y\,u_{xx} + u_{yy} = 0$ we get $S^2 - 4RT = -4y$: the equation is elliptic in $y > 0$, hyperbolic in $y < 0$ and parabolic on the line $y = 0$. So we always classify in a region where the sign of $S^2 - 4RT$ is constant.
+
+%---------------------------------------------------------------------
+\subsection{Change of independent variables}\label{ssec:changevar}
+
+The idea is to introduce new independent variables
+$$ \xi = \xi(x,y), \qquad \eta = \eta(x,y), $$
+chosen so that in the new variables the principal part becomes as simple as possible. We assume $\xi, \eta \in C^2(\Omega)$ and that the \emph{Jacobian}
+$$ J := \frac{\partial(\xi,\eta)}{\partial(x,y)} = \det\begin{pmatrix} \xi_x & \xi_y \\ \eta_x & \eta_y \end{pmatrix} = \xi_x\eta_y - \xi_y\eta_x $$
+is nonzero in $\Omega$. Then, by the Inverse Function Theorem (Theorem~\ref{thm:inverse}), near each point the map $(x,y) \mapsto (\xi,\eta)$ is invertible with a $C^2$ inverse $(\xi,\eta) \mapsto (x,y)$. So $(\xi,\eta)$ are honest new coordinates, and we can express everything in them.
+
+We define the new unknown $w$ by
+$$ u(x,y) = w\big(\xi(x,y),\ \eta(x,y)\big), $$
+i.e.\ $w(\xi,\eta)$ is the same function $u$ written in the new coordinates. ($w \in C^2$, since $u$ and the inverse map are $C^2$.) In examples one usually keeps the letter $u$ and writes $u_\xi$, $u_{\xi\eta}$, etc.; here we write $w$ to make clear which function is differentiated with respect to which variables.
+
+\subsubsection{The first derivatives}
+$w$ depends on $x$ through \emph{both} $\xi$ and $\eta$. By the chain rule,
+\begin{align}
+u_x &= w_\xi\,\xi_x + w_\eta\,\eta_x, \label{eq:ux}\\
+u_y &= w_\xi\,\xi_y + w_\eta\,\eta_y. \label{eq:uy}
+\end{align}
+Here $w_\xi$, $w_\eta$ are evaluated at $(\xi(x,y),\eta(x,y))$, and $\xi_x$, $\eta_x$, \dots at $(x,y)$.
+
+\subsubsection{The second derivatives}
+\emph{Computing $u_{xx}$.} Differentiate \eqref{eq:ux} with respect to $x$. Each term is a product, so we use the product rule:
+$$ u_{xx} = \frac{\partial}{\partial x}\big(w_\xi\big)\,\xi_x + w_\xi\,\xi_{xx} + \frac{\partial}{\partial x}\big(w_\eta\big)\,\eta_x + w_\eta\,\eta_{xx}. $$
+Now $w_\xi$ and $w_\eta$ are again functions of $(\xi,\eta)$, so the chain rule \eqref{eq:ux} applies to them as well (with $w$ replaced by $w_\xi$, resp.\ $w_\eta$):
+$$ \frac{\partial}{\partial x}\big(w_\xi\big) = w_{\xi\xi}\,\xi_x + w_{\xi\eta}\,\eta_x, \qquad \frac{\partial}{\partial x}\big(w_\eta\big) = w_{\eta\xi}\,\xi_x + w_{\eta\eta}\,\eta_x. $$
+Substituting, and using $w_{\eta\xi} = w_{\xi\eta}$ ($w \in C^2$),
+\begin{equation}\label{eq:uxx}
+u_{xx} = w_{\xi\xi}\,\xi_x^2 + 2w_{\xi\eta}\,\xi_x\eta_x + w_{\eta\eta}\,\eta_x^2 + w_\xi\,\xi_{xx} + w_\eta\,\eta_{xx}.
+\end{equation}
+
+\emph{Computing $u_{xy}$.} Differentiate \eqref{eq:ux} with respect to $y$, in the same way:
+\begin{align*}
+u_{xy} &= \big(w_{\xi\xi}\,\xi_y + w_{\xi\eta}\,\eta_y\big)\xi_x + w_\xi\,\xi_{xy} + \big(w_{\eta\xi}\,\xi_y + w_{\eta\eta}\,\eta_y\big)\eta_x + w_\eta\,\eta_{xy},
+\end{align*}
+that is,
+\begin{equation}\label{eq:uxy}
+u_{xy} = w_{\xi\xi}\,\xi_x\xi_y + w_{\xi\eta}\,(\xi_x\eta_y + \xi_y\eta_x) + w_{\eta\eta}\,\eta_x\eta_y + w_\xi\,\xi_{xy} + w_\eta\,\eta_{xy}.
+\end{equation}
+
+\emph{Computing $u_{yy}$.} Differentiate \eqref{eq:uy} with respect to $y$; it is \eqref{eq:uxx} with $x$ replaced by $y$:
+\begin{equation}\label{eq:uyy}
+u_{yy} = w_{\xi\xi}\,\xi_y^2 + 2w_{\xi\eta}\,\xi_y\eta_y + w_{\eta\eta}\,\eta_y^2 + w_\xi\,\xi_{yy} + w_\eta\,\eta_{yy}.
+\end{equation}
+
+\emph{Observe the structure.} Each second derivative of $u$ consists of (i) second derivatives of $w$ multiplied by \emph{products of first derivatives} of $\xi, \eta$, and (ii) first derivatives of $w$ multiplied by \emph{second derivatives} of $\xi, \eta$. Only part (i) contributes to the new principal part.
+
+\subsubsection{The transformed equation}
+Substitute \eqref{eq:uxx}, \eqref{eq:uxy}, \eqref{eq:uyy} into \eqref{eq:pde2}, i.e.\ multiply them by $R$, $S$, $T$ respectively and add. Collecting the coefficients of $w_{\xi\xi}$, $w_{\xi\eta}$, $w_{\eta\eta}$, we obtain
+\begin{equation}\label{eq:newpde}
+A\,w_{\xi\xi} + B\,w_{\xi\eta} + C\,w_{\eta\eta} + F(\xi,\eta,w,w_\xi,w_\eta) = 0,
+\end{equation}
+where
+\begin{align}
+A &= R\,\xi_x^2 + S\,\xi_x\xi_y + T\,\xi_y^2, \label{eq:A}\\
+B &= 2R\,\xi_x\eta_x + S\,(\xi_x\eta_y + \xi_y\eta_x) + 2T\,\xi_y\eta_y, \label{eq:B}\\
+C &= R\,\eta_x^2 + S\,\eta_x\eta_y + T\,\eta_y^2, \label{eq:C}
+\end{align}
+and $F$ collects all the rest:
+$$ F = \big(R\xi_{xx} + S\xi_{xy} + T\xi_{yy}\big)w_\xi + \big(R\eta_{xx} + S\eta_{xy} + T\eta_{yy}\big)w_\eta + f, $$
+with $f$ evaluated at $(x, y, w, u_x, u_y)$, $u_x$ and $u_y$ replaced by \eqref{eq:ux}, \eqref{eq:uy}, and finally all $x$, $y$ expressed through $\xi$, $\eta$ by the inverse map.
+
+\emph{How to remember $A$, $B$, $C$.} $A$ is the principal symbol $R p^2 + Spq + Tq^2$ evaluated at $(p,q) = (\xi_x,\xi_y)$, i.e.\ at the gradient of $\xi$; $C$ is the same expression at the gradient of $\eta$; and $B$ is the corresponding ``mixed'' (polarized) expression. In matrix form, with
+$$ M := \begin{pmatrix} R & S/2 \\ S/2 & T \end{pmatrix}, \qquad P := \begin{pmatrix} \xi_x & \xi_y \\ \eta_x & \eta_y \end{pmatrix}, \qquad M' := \begin{pmatrix} A & B/2 \\ B/2 & C \end{pmatrix}, $$
+one checks directly (multiply out) that
+\begin{equation}\label{eq:PMPt}
+M' = P\,M\,P^{T}.
+\end{equation}
+For example, the $(1,1)$ entry of $PMP^T$ is $(\xi_x,\xi_y)M(\xi_x,\xi_y)^T = R\xi_x^2 + S\xi_x\xi_y + T\xi_y^2 = A$, and the $(1,2)$ entry is $(\xi_x,\xi_y)M(\eta_x,\eta_y)^T = R\xi_x\eta_x + \frac S2(\xi_x\eta_y + \xi_y\eta_x) + T\xi_y\eta_y = \frac B2$.
+
+\begin{theorem}[The type is invariant]\label{thm:typeinv}
+Under a change of variables with $J \neq 0$,
+$$ B^2 - 4AC = (S^2 - 4RT)\,J^2. $$
+In particular the new equation \eqref{eq:newpde} has the same type as \eqref{eq:pde2} at corresponding points.
+\end{theorem}
+\begin{proof}
+Take determinants in \eqref{eq:PMPt}: $\det M' = \det P\cdot\det M\cdot\det P^T = J^2\det M$. Now $\det M = RT - \frac{S^2}{4} = -\frac14(S^2 - 4RT)$ and likewise $\det M' = -\frac14(B^2 - 4AC)$. Multiply by $-4$. Since $J^2 > 0$, the two discriminants have the same sign.
+\end{proof}
+
+So the type is a property of the equation, not of the coordinates. What we \emph{can} change by choosing $\xi,\eta$ cleverly is the \emph{form} of the principal part. The simplest forms, called \emph{canonical forms}, are:
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Type} & \textbf{Canonical form} & \textbf{Model} \\ \hline
+hyperbolic & $w_{\xi\eta} + \text{(lower order)} = 0$ & wave equation \\ \hline
+parabolic & $w_{\eta\eta} + \text{(lower order)} = 0$ & heat equation \\ \hline
+elliptic & $w_{\alpha\alpha} + w_{\beta\beta} + \text{(lower order)} = 0$ & Laplace's equation \\ \hline
+\end{tabular}
+\end{center}
+
+%---------------------------------------------------------------------
+\subsection{Characteristics: how to choose $\xi$ and $\eta$}
+
+\subsubsection{Killing the coefficient $A$}
+We try to choose $\xi$ so that $A = 0$, i.e.
+$$ R\,\xi_x^2 + S\,\xi_x\xi_y + T\,\xi_y^2 = 0. $$
+Suppose $\xi_y \neq 0$, and divide by $\xi_y^2$. Writing $\lambda := \dfrac{\xi_x}{\xi_y}$, the condition becomes
+\begin{equation}\label{eq:charq}
+R\lambda^2 + S\lambda + T = 0.
+\end{equation}
+This is the \emph{characteristic equation} of \eqref{eq:pde2}: a quadratic in $\lambda$ whose coefficients are those of the principal part. Its roots are
+$$ \lambda_{1,2} = \frac{-S \pm \sqrt{S^2 - 4RT}}{2R} \qquad (R \neq 0), $$
+so the discriminant decides everything:
+\begin{itemize}
+    \item \textbf{hyperbolic}: two distinct real roots $\lambda_1 \neq \lambda_2$;
+    \item \textbf{parabolic}: one repeated real root $\lambda_1 = \lambda_2 = -\frac{S}{2R}$;
+    \item \textbf{elliptic}: two complex conjugate roots $\lambda = m \pm in$, $n \neq 0$.
+\end{itemize}
+(If $R = 0$ at a point, we interchange the roles of $x$ and $y$, i.e.\ use $\mu = \xi_y/\xi_x$ and $T\mu^2 + S\mu + R = 0$. If $R = T = 0$, the equation is $S u_{xy} + \dots = 0$, already in hyperbolic canonical form.)
+
+\subsubsection{From $\lambda$ to an ODE: the characteristic curves}
+The condition $\xi_x = \lambda(x,y)\,\xi_y$ is a first-order PDE for $\xi$. We solve it by looking at the \emph{level curves} of $\xi$.
+
+\emph{If $\xi$ satisfies $\xi_x = \lambda\xi_y$, its level curves solve an ODE.} Let $\xi(x,y) = c$ be a level curve, written as a graph $y = y(x)$. Differentiating the identity $\xi(x,y(x)) = c$ with respect to $x$ (chain rule):
+$$ \xi_x + \xi_y\,\frac{dy}{dx} = 0 \quad\Longrightarrow\quad \frac{dy}{dx} = -\frac{\xi_x}{\xi_y} = -\lambda. $$
+So the level curves of $\xi$ satisfy the \emph{characteristic ODE}
+\begin{equation}\label{eq:charode}
+\frac{dy}{dx} + \lambda(x,y) = 0.
+\end{equation}
+
+\emph{Conversely, a first integral of the ODE gives $\xi$.} Suppose we have integrated \eqref{eq:charode} and written its general solution in the form
+$$ \varphi(x,y) = c \qquad (c \text{ an arbitrary constant}), $$
+with $\varphi \in C^2$, $\varphi_y \neq 0$. Then $\varphi$ is constant along every solution curve $y(x)$: $\frac{d}{dx}\varphi(x,y(x)) = \varphi_x + \varphi_y y' = \varphi_x - \lambda\varphi_y = 0$. Through every point of $\Omega$ passes a solution curve (by the existence theorem for ODEs), so $\varphi_x = \lambda\varphi_y$ at every point. Therefore $\xi := \varphi$ satisfies $A = 0$.
+
+The curves $\varphi(x,y) = c$ are called the \emph{characteristic curves} (or \emph{characteristics}) of \eqref{eq:pde2}. Recall the lines $x \pm ct = $ const for the wave equation in Section~\ref{sssec:dod}: they are exactly the characteristics of $u_{tt} - c^2u_{xx} = 0$.
+
+\emph{Summary.} To make $A = 0$: solve $R\lambda^2 + S\lambda + T = 0$, solve the ODE $\frac{dy}{dx} + \lambda = 0$, write its solution as $\varphi(x,y) = c$, and take $\xi = \varphi$. The same applies to $\eta$ and $C$, since $C$ is the same expression with $\eta$ in place of $\xi$.
+
+\subsubsection{The three cases}
+
+\paragraph{Hyperbolic case ($S^2 - 4RT > 0$).} Two distinct real roots $\lambda_1 \ne \lambda_2$ give two families of real characteristics $\varphi_1 = c_1$, $\varphi_2 = c_2$. Set
+$$ \xi = \varphi_1(x,y), \qquad \eta = \varphi_2(x,y). $$
+Then $A = 0$ (since $\xi_x = \lambda_1\xi_y$) and $C = 0$ (since $\eta_x = \lambda_2\eta_y$). The Jacobian is
+$$ J = \xi_x\eta_y - \xi_y\eta_x = \lambda_1\xi_y\eta_y - \xi_y\lambda_2\eta_y = (\lambda_1 - \lambda_2)\,\xi_y\eta_y \neq 0. $$
+By Theorem~\ref{thm:typeinv}, $B^2 = B^2 - 4AC = (S^2 - 4RT)J^2 > 0$, so $B \neq 0$. Dividing \eqref{eq:newpde} by $B$:
+$$ w_{\xi\eta} = -\frac{F}{B} \qquad (\text{first canonical form}). $$
+If one prefers, put further $p = \xi + \eta$, $q = \xi - \eta$; since $w_\xi = W_p + W_q$ and $w_{\xi\eta} = W_{pp} - W_{qq}$ for $W(p,q) = w$, this gives $W_{pp} - W_{qq} = $ lower order (second canonical form, the form of the wave equation).
+
+\paragraph{Parabolic case ($S^2 - 4RT = 0$).} There is only one root $\lambda = -\frac{S}{2R}$, hence one family of characteristics $\varphi = c$. Set
+$$ \xi = \varphi(x,y), \qquad \eta = \text{any } C^2 \text{ function with } J \neq 0 \ (\text{often simply } \eta = x \text{ or } \eta = y). $$
+Then $A = 0$. Now the important point: \emph{$B$ vanishes automatically.} Indeed, by Theorem~\ref{thm:typeinv},
+$$ B^2 - 4AC = (S^2 - 4RT)J^2 = 0, \qquad \text{and } A = 0, \qquad \text{so } B^2 = 0. $$
+This is why, in parabolic examples, all terms with $w_{\xi\xi}$ and $w_{\xi\eta}$ cancel. Finally $C \neq 0$: since $S^2 = 4RT$, one checks $C = R\eta_x^2 + S\eta_x\eta_y + T\eta_y^2 = R(\eta_x - \lambda\eta_y)^2$, while $J = \xi_x\eta_y - \xi_y\eta_x = \xi_y(\lambda\eta_y - \eta_x)$; so $J \neq 0$ forces $\eta_x - \lambda\eta_y \neq 0$ and $C \ne 0$. Dividing by $C$:
+$$ w_{\eta\eta} = -\frac{F}{C} \qquad (\text{canonical form, the form of the heat equation}). $$
+The second variable $\eta$ is not unique; the only requirement is $J \ne 0$, i.e.\ $\eta$ must not be constant along the characteristics.
+
+\paragraph{Elliptic case ($S^2 - 4RT < 0$).} The roots $\lambda, \bar\lambda$ are complex, and so is the characteristic ODE: there are no real characteristics. Integrating \eqref{eq:charode} formally with $\lambda = m + in$ we get a complex-valued $\xi = \varphi(x,y) = \alpha(x,y) + i\beta(x,y)$ with $A(\xi) = 0$ (and $\eta = \bar\xi$, which adds nothing new). We use its real and imaginary parts as the new real variables:
+$$ \alpha = \operatorname{Re}\xi = \frac{\xi + \bar\xi}{2}, \qquad \beta = \operatorname{Im}\xi = \frac{\xi - \bar\xi}{2i}. $$
+
+\emph{Why this works.} Write $Q(\varphi,\psi) := R\varphi_x\psi_x + \frac S2(\varphi_x\psi_y + \varphi_y\psi_x) + T\varphi_y\psi_y$; this is symmetric and bilinear, and \eqref{eq:A}--\eqref{eq:C} say $A = Q(\xi,\xi)$, $B = 2Q(\xi,\eta)$, $C = Q(\eta,\eta)$. Expanding $Q(\alpha + i\beta, \alpha + i\beta) = 0$ by bilinearity:
+$$ Q(\alpha,\alpha) - Q(\beta,\beta) + 2i\,Q(\alpha,\beta) = 0. $$
+Real and imaginary parts give $Q(\alpha,\alpha) = Q(\beta,\beta)$ and $Q(\alpha,\beta) = 0$. So in the real variables $(\alpha,\beta)$ the new coefficients are
+$$ A' = Q(\alpha,\alpha), \qquad B' = 2Q(\alpha,\beta) = 0, \qquad C' = Q(\beta,\beta) = A', $$
+and $A' \ne 0$ (else the whole principal part would vanish, contradicting Theorem~\ref{thm:typeinv}). Dividing by $A'$:
+$$ w_{\alpha\alpha} + w_{\beta\beta} = -\frac{F}{A'} \qquad (\text{canonical form, the form of Laplace's equation}). $$
+(One also checks $J = \alpha_x\beta_y - \alpha_y\beta_x \neq 0$ in each example. In general, the existence of such $\xi$ requires more regularity of the coefficients; in our examples $\xi$ is found explicitly.)
+
+%---------------------------------------------------------------------
+\subsection{Step-by-step procedure to reduce to canonical form}
+
+\paragraph{Step 1: Identify coefficients and classify.} Extract $R$, $S$ and $T$ from the PDE and evaluate $S^2 - 4RT$ to determine the type (and the region where it holds).
+
+\paragraph{Step 2: Find the characteristic roots.} Form the characteristic quadratic equation
+$$ R\lambda^2 + S\lambda + T = 0 $$
+and solve for $\lambda$ to find the roots $\lambda_1$ and $\lambda_2$:
+\begin{itemize}
+    \item hyperbolic: two distinct real roots;
+    \item parabolic: one repeated real root ($\lambda_1 = \lambda_2$);
+    \item elliptic: two complex conjugate roots ($\lambda = m \pm in$).
+\end{itemize}
+
+\paragraph{Step 3: Solve the characteristic ODEs.} Set up the ordinary differential equations
+$$ \frac{dy}{dx} + \lambda_1 = 0 \qquad\text{and}\qquad \frac{dy}{dx} + \lambda_2 = 0. $$
+Integrate both to find the characteristic curves $\varphi_1(x,y) = c_1$ and $\varphi_2(x,y) = c_2$. (Write the answer with the constant alone on one side.)
+
+\paragraph{Step 4: Define the canonical variables $(\xi,\eta)$.}
+\begin{itemize}
+    \item Hyperbolic: set $\xi = \varphi_1(x,y)$ and $\eta = \varphi_2(x,y)$.
+    \item Parabolic: set $\xi = \varphi_1(x,y)$ and choose $\eta$ as any independent function of $x$ and $y$ (often simply $\eta = x$ or $\eta = y$), checking $J \ne 0$.
+    \item Elliptic: the roots give a complex function $\xi = \varphi_1$. Take its real and imaginary parts $\alpha = \operatorname{Re}\xi$, $\beta = \operatorname{Im}\xi$ as the new variables.
+\end{itemize}
+In all cases check that the Jacobian $J = \xi_x\eta_y - \xi_y\eta_x$ is nonzero in the region considered.
+
+\paragraph{Step 5: Apply the chain rule.} Calculate the required partial derivatives in terms of the new variables:
+$$ u_x = u_\xi\,\xi_x + u_\eta\,\eta_x, \qquad u_y = u_\xi\,\xi_y + u_\eta\,\eta_y. $$
+Differentiate again to find $u_{xx}$, $u_{xy}$ and $u_{yy}$, using \eqref{eq:uxx}--\eqref{eq:uyy} or (better, in examples) by differentiating $u_x$ and $u_y$ directly. Remember: when differentiating $u_\xi$ or $u_\eta$ with respect to $x$ or $y$, the chain rule must be applied again.
+
+\paragraph{Step 6: Substitute and simplify.} Plug these new derivative expressions back into the original PDE. The equation will collapse into its simplified canonical form: in the hyperbolic case the $u_{\xi\xi}$ and $u_{\eta\eta}$ terms cancel; in the parabolic case the $u_{\xi\xi}$ and $u_{\xi\eta}$ terms cancel; in the elliptic case the mixed term cancels and the coefficients of $u_{\alpha\alpha}$, $u_{\beta\beta}$ become equal. Divide by the remaining coefficient and replace any remaining $x$ and $y$ by their expressions in terms of the new variables.
+
+\emph{A check.} Before the long computation of Step 5 one can compute $A$, $B$, $C$ from \eqref{eq:A}--\eqref{eq:C}; they must come out as predicted ($A = C = 0$, resp.\ $A = B = 0$, resp.\ $B = 0$ and $A = C$). If not, there is an error in Steps 2--4.
+
+%---------------------------------------------------------------------
+\subsection{Worked examples}
+
+In the examples we follow the usual practice and keep the letter $u$ for the unknown in the new variables, writing $u_\xi$, $u_{\xi\eta}$, etc.
+
+\subsubsection{Hyperbolic equations}
+
+\paragraph{Example 1.} $u_{xx} + 4u_{xy} + 3u_{yy} = 0$.
+
+\emph{1. Classify.} $R = 1$, $S = 4$, $T = 3$. Discriminant $S^2 - 4RT = 16 - 12 = 4 > 0$: hyperbolic in all of $\mathbb{R}^2$.
+
+\emph{2. Roots.} $\lambda^2 + 4\lambda + 3 = (\lambda + 1)(\lambda + 3) = 0$, so $\lambda_1 = -1$, $\lambda_2 = -3$.
+
+\emph{3. ODEs.}
+$$ \frac{dy}{dx} - 1 = 0 \implies y = x + c_1 \implies y - x = c_1; \qquad \frac{dy}{dx} - 3 = 0 \implies y - 3x = c_2. $$
+The characteristics are two families of parallel straight lines, of slopes $1$ and $3$.
+
+\emph{4. Variables.} $\xi = y - x$, $\eta = y - 3x$. Then $\xi_x = -1$, $\xi_y = 1$, $\eta_x = -3$, $\eta_y = 1$, and all second derivatives of $\xi,\eta$ vanish. $J = \xi_x\eta_y - \xi_y\eta_x = -1 + 3 = 2 \ne 0$.
+
+\emph{5. Derivatives.}
+$$ u_x = u_\xi\xi_x + u_\eta\eta_x = -u_\xi - 3u_\eta, \qquad u_y = u_\xi + u_\eta. $$
+Differentiate again (each of $u_\xi$, $u_\eta$ is again differentiated by the chain rule; e.g.\ $\partial_x(u_\xi) = u_{\xi\xi}\xi_x + u_{\xi\eta}\eta_x = -u_{\xi\xi} - 3u_{\xi\eta}$):
+\begin{align*}
+u_{xx} &= \partial_x(-u_\xi - 3u_\eta) = -(-u_{\xi\xi} - 3u_{\xi\eta}) - 3(-u_{\xi\eta} - 3u_{\eta\eta}) = u_{\xi\xi} + 6u_{\xi\eta} + 9u_{\eta\eta}, \\
+u_{xy} &= \partial_y(-u_\xi - 3u_\eta) = -(u_{\xi\xi} + u_{\xi\eta}) - 3(u_{\xi\eta} + u_{\eta\eta}) = -u_{\xi\xi} - 4u_{\xi\eta} - 3u_{\eta\eta}, \\
+u_{yy} &= \partial_y(u_\xi + u_\eta) = (u_{\xi\xi} + u_{\xi\eta}) + (u_{\xi\eta} + u_{\eta\eta}) = u_{\xi\xi} + 2u_{\xi\eta} + u_{\eta\eta}.
+\end{align*}
+
+\emph{6. Substitute.} $u_{xx} + 4u_{xy} + 3u_{yy}$ has
+$$ u_{\xi\xi}: \ 1 - 4 + 3 = 0, \qquad u_{\xi\eta}: \ 6 - 16 + 6 = -4, \qquad u_{\eta\eta}: \ 9 - 12 + 3 = 0. $$
+So the equation becomes $-4u_{\xi\eta} = 0$, i.e.\ the canonical form
+$$ u_{\xi\eta} = 0. $$
+(Check: $B^2 - 4AC = 16 = (S^2 - 4RT)J^2 = 4\cdot 4$.)
+
+\emph{Bonus: the general solution.} $u_{\xi\eta} = (u_\xi)_\eta = 0$ means $u_\xi$ does not depend on $\eta$: $u_\xi = \tilde F(\xi)$. Integrating in $\xi$: $u = F(\xi) + G(\eta)$, with $F' = \tilde F$ and $G$ arbitrary. Hence
+$$ u(x,y) = F(y - x) + G(y - 3x) $$
+for arbitrary $C^2$ functions $F, G$. This is exactly how the general solution $F(x + ct) + G(x - ct)$ of the wave equation arises: for $u_{tt} - c^2u_{xx} = 0$ the same procedure gives $\xi = x + ct$, $\eta = x - ct$ and $u_{\xi\eta} = 0$.
+
+\paragraph{Example 2.} $u_{xx} - x^2u_{yy} = 0$ \quad ($x \ne 0$).
+
+\emph{1. Classify.} $R = 1$, $S = 0$, $T = -x^2$. Discriminant $0 - 4(1)(-x^2) = 4x^2 > 0$ for $x \neq 0$: hyperbolic in $\{x \neq 0\}$ (parabolic on the line $x = 0$).
+
+\emph{2. Roots.} $\lambda^2 - x^2 = 0$, so $\lambda_1 = x$, $\lambda_2 = -x$.
+
+\emph{3. ODEs.}
+$$ \frac{dy}{dx} + x = 0 \implies y = -\frac{x^2}{2} + c_1 \implies y + \frac{x^2}{2} = c_1; \qquad \frac{dy}{dx} - x = 0 \implies y - \frac{x^2}{2} = c_2. $$
+The characteristics are two families of parabolas.
+
+\emph{4. Variables.} $\xi = y + \frac{x^2}{2}$, $\eta = y - \frac{x^2}{2}$. Then
+$$ \xi_x = x, \quad \xi_y = 1, \quad \eta_x = -x, \quad \eta_y = 1, \quad \xi_{xx} = 1, \quad \eta_{xx} = -1, $$
+all other second derivatives being $0$. $J = \xi_x\eta_y - \xi_y\eta_x = x + x = 2x \neq 0$ for $x \neq 0$.
+
+\emph{5. Derivatives.}
+$$ u_x = x\,u_\xi - x\,u_\eta = x(u_\xi - u_\eta), \qquad u_y = u_\xi + u_\eta. $$
+For $u_{xx}$ use the product rule on $x\cdot(u_\xi - u_\eta)$: the derivative of the factor $x$ is $1$, and
+$$ \partial_x(u_\xi - u_\eta) = (u_{\xi\xi}\,x + u_{\xi\eta}(-x)) - (u_{\eta\xi}\,x + u_{\eta\eta}(-x)) = x(u_{\xi\xi} - 2u_{\xi\eta} + u_{\eta\eta}). $$
+Hence
+$$ u_{xx} = (u_\xi - u_\eta) + x^2(u_{\xi\xi} - 2u_{\xi\eta} + u_{\eta\eta}) = x^2u_{\xi\xi} - 2x^2u_{\xi\eta} + x^2u_{\eta\eta} + u_\xi - u_\eta, $$
+$$ u_{yy} = \partial_y(u_\xi + u_\eta) = u_{\xi\xi} + 2u_{\xi\eta} + u_{\eta\eta}. $$
+
+\emph{6. Substitute.}
+$$ \big(x^2u_{\xi\xi} - 2x^2u_{\xi\eta} + x^2u_{\eta\eta} + u_\xi - u_\eta\big) - x^2\big(u_{\xi\xi} + 2u_{\xi\eta} + u_{\eta\eta}\big) = 0 $$
+simplifies to $-4x^2u_{\xi\eta} + u_\xi - u_\eta = 0$. Since $\xi - \eta = x^2$, the canonical form is
+$$ u_{\xi\eta} = \frac{1}{4(\xi - \eta)}\,(u_\xi - u_\eta) \qquad (\xi > \eta). $$
+Note that $F$ is not zero here: the second derivatives $\xi_{xx}$, $\eta_{xx}$ produce first-order terms.
+
+\subsubsection{Parabolic equations}
+
+\paragraph{Example 3.} $4u_{xx} + 4u_{xy} + u_{yy} + u_x = 0$.
+
+\emph{1. Classify.} $R = 4$, $S = 4$, $T = 1$. Discriminant $16 - 16 = 0$: parabolic in $\mathbb{R}^2$.
+
+\emph{2. Roots.} $4\lambda^2 + 4\lambda + 1 = (2\lambda + 1)^2 = 0$, so $\lambda = -\frac12$ (double root).
+
+\emph{3. ODE.} $\dfrac{dy}{dx} - \dfrac12 = 0 \implies y - \dfrac x2 = c \implies 2y - x = c_1$ (any function of a constant is a constant, so we may multiply by $2$).
+
+\emph{4. Variables.} $\xi = 2y - x$ and, as second variable, $\eta = y$. Then $\xi_x = -1$, $\xi_y = 2$, $\eta_x = 0$, $\eta_y = 1$; second derivatives vanish. $J = (-1)(1) - (2)(0) = -1 \neq 0$. (The choice $\eta = x$ would also do: $J = -2$.)
+
+\emph{5. Derivatives.}
+$$ u_x = -u_\xi, \qquad u_y = 2u_\xi + u_\eta, $$
+\begin{align*}
+u_{xx} &= \partial_x(-u_\xi) = -(u_{\xi\xi}(-1) + u_{\xi\eta}\cdot 0) = u_{\xi\xi}, \\
+u_{xy} &= \partial_y(-u_\xi) = -(2u_{\xi\xi} + u_{\xi\eta}), \\
+u_{yy} &= \partial_y(2u_\xi + u_\eta) = 2(2u_{\xi\xi} + u_{\xi\eta}) + (2u_{\xi\eta} + u_{\eta\eta}) = 4u_{\xi\xi} + 4u_{\xi\eta} + u_{\eta\eta}.
+\end{align*}
+
+\emph{6. Substitute.} $4u_{xx} + 4u_{xy} + u_{yy}$ has
+$$ u_{\xi\xi}: \ 4 - 8 + 4 = 0, \qquad u_{\xi\eta}: \ -4 + 4 = 0, \qquad u_{\eta\eta}: \ 1, $$
+as predicted (both $A$ and $B$ vanish). Adding $u_x = -u_\xi$, the equation becomes $u_{\eta\eta} - u_\xi = 0$, i.e.
+$$ u_\xi = u_{\eta\eta}. $$
+This is the heat equation, with $\xi$ playing the role of time and $\eta$ of space.
+
+\paragraph{Example 4.} $y^2u_{xx} - 2xy\,u_{xy} + x^2u_{yy} = 0$ \quad ($y \ne 0$).
+
+\emph{1. Classify.} $R = y^2$, $S = -2xy$, $T = x^2$. Discriminant $(-2xy)^2 - 4y^2x^2 = 0$: parabolic.
+
+\emph{2. Roots.} $y^2\lambda^2 - 2xy\lambda + x^2 = (y\lambda - x)^2 = 0$, so $\lambda = \dfrac{x}{y}$ (double root).
+
+\emph{3. ODE.} $\dfrac{dy}{dx} + \dfrac xy = 0 \implies y\,dy + x\,dx = 0 \implies \dfrac{y^2}{2} + \dfrac{x^2}{2} = c \implies x^2 + y^2 = c_1$. The characteristics are circles centred at the origin.
+
+\emph{4. Variables.} $\xi = x^2 + y^2$, and $\eta = x$. Then
+$$ \xi_x = 2x, \quad \xi_y = 2y, \quad \xi_{xx} = \xi_{yy} = 2, \quad \xi_{xy} = 0, \qquad \eta_x = 1, \quad \eta_y = 0, $$
+and $J = (2x)(0) - (2y)(1) = -2y \neq 0$ for $y \neq 0$.
+
+\emph{5. Derivatives.}
+$$ u_x = 2x\,u_\xi + u_\eta, \qquad u_y = 2y\,u_\xi. $$
+Using $\partial_x(u_\xi) = 2x\,u_{\xi\xi} + u_{\xi\eta}$, $\partial_x(u_\eta) = 2x\,u_{\xi\eta} + u_{\eta\eta}$, $\partial_y(u_\xi) = 2y\,u_{\xi\xi}$, $\partial_y(u_\eta) = 2y\,u_{\xi\eta}$ and the product rule:
+\begin{align*}
+u_{xx} &= 2u_\xi + 2x(2x\,u_{\xi\xi} + u_{\xi\eta}) + (2x\,u_{\xi\eta} + u_{\eta\eta}) = 4x^2u_{\xi\xi} + 4x\,u_{\xi\eta} + u_{\eta\eta} + 2u_\xi, \\
+u_{xy} &= 2x(2y\,u_{\xi\xi}) + 2y\,u_{\xi\eta} = 4xy\,u_{\xi\xi} + 2y\,u_{\xi\eta}, \\
+u_{yy} &= 2u_\xi + 2y(2y\,u_{\xi\xi}) = 4y^2u_{\xi\xi} + 2u_\xi.
+\end{align*}
+
+\emph{6. Substitute.}
+\begin{align*}
+y^2u_{xx} &= 4x^2y^2u_{\xi\xi} + 4xy^2u_{\xi\eta} + y^2u_{\eta\eta} + 2y^2u_\xi, \\
+-2xy\,u_{xy} &= -8x^2y^2u_{\xi\xi} - 4xy^2u_{\xi\eta}, \\
+x^2u_{yy} &= 4x^2y^2u_{\xi\xi} + 2x^2u_\xi.
+\end{align*}
+Adding: the $u_{\xi\xi}$ terms give $4 - 8 + 4 = 0$ and the $u_{\xi\eta}$ terms give $4 - 4 = 0$, leaving
+$$ y^2u_{\eta\eta} + 2(x^2 + y^2)u_\xi = 0. $$
+Now $x^2 + y^2 = \xi$ and $y^2 = \xi - x^2 = \xi - \eta^2$. Hence the canonical form is
+$$ u_{\eta\eta} = -\frac{2\xi}{\xi - \eta^2}\,u_\xi \qquad (\xi > \eta^2). $$
+
+\subsubsection{Elliptic equations}
+
+\paragraph{Example 5.} $u_{xx} + 2u_{xy} + 2u_{yy} = 0$.
+
+\emph{1. Classify.} $R = 1$, $S = 2$, $T = 2$. Discriminant $4 - 8 = -4 < 0$: elliptic in $\mathbb{R}^2$.
+
+\emph{2. Roots.} $\lambda^2 + 2\lambda + 2 = 0 \implies \lambda = \dfrac{-2 \pm \sqrt{-4}}{2} = -1 \pm i$.
+
+\emph{3. ODE.} Take $\lambda_1 = -1 + i$: $\dfrac{dy}{dx} + (-1 + i) = 0 \implies \dfrac{dy}{dx} = 1 - i \implies y = (1 - i)x + c \implies (y - x) + ix = c_1$.
+
+\emph{4. Variables.} $\xi = (y - x) + ix$; real and imaginary parts
+$$ \alpha = y - x, \qquad \beta = x. $$
+Then $\alpha_x = -1$, $\alpha_y = 1$, $\beta_x = 1$, $\beta_y = 0$; second derivatives vanish. $J = \alpha_x\beta_y - \alpha_y\beta_x = 0 - 1 = -1 \neq 0$.
+
+\emph{5. Derivatives.}
+$$ u_x = -u_\alpha + u_\beta, \qquad u_y = u_\alpha, $$
+\begin{align*}
+u_{xx} &= \partial_x(-u_\alpha + u_\beta) = -(-u_{\alpha\alpha} + u_{\alpha\beta}) + (-u_{\alpha\beta} + u_{\beta\beta}) = u_{\alpha\alpha} - 2u_{\alpha\beta} + u_{\beta\beta}, \\
+u_{xy} &= \partial_y(-u_\alpha + u_\beta) = -u_{\alpha\alpha} + u_{\alpha\beta}, \\
+u_{yy} &= \partial_y(u_\alpha) = u_{\alpha\alpha}.
+\end{align*}
+
+\emph{6. Substitute.} $u_{xx} + 2u_{xy} + 2u_{yy}$ has
+$$ u_{\alpha\alpha}: \ 1 - 2 + 2 = 1, \qquad u_{\alpha\beta}: \ -2 + 2 = 0, \qquad u_{\beta\beta}: \ 1. $$
+The canonical form is Laplace's equation
+$$ u_{\alpha\alpha} + u_{\beta\beta} = 0. $$
+(Check: $B'^2 - 4A'C' = -4 = (S^2 - 4RT)J^2 = -4\cdot 1$.)
+
+\paragraph{Example 6.} $u_{xx} + x^2u_{yy} = 0$ \quad ($x \neq 0$).
+
+\emph{1. Classify.} $R = 1$, $S = 0$, $T = x^2$. Discriminant $0 - 4x^2 < 0$ for $x \neq 0$: elliptic in $\{x \neq 0\}$.
+
+\emph{2. Roots.} $\lambda^2 + x^2 = 0$, so $\lambda = \pm ix$.
+
+\emph{3. ODE.} Take $\lambda = -ix$: $\dfrac{dy}{dx} - ix = 0 \implies y = \dfrac{ix^2}{2} + c \implies$ multiplying by $i$: $iy + \dfrac{x^2}{2} = c_1$.
+
+\emph{4. Variables.} $\xi = \dfrac{x^2}{2} + iy$; real and imaginary parts
+$$ \alpha = \frac{x^2}{2}, \qquad \beta = y. $$
+Then $\alpha_x = x$, $\alpha_{xx} = 1$, $\alpha_y = 0$, $\beta_x = 0$, $\beta_y = 1$. $J = \alpha_x\beta_y - \alpha_y\beta_x = x \neq 0$ for $x \neq 0$.
+
+\emph{5. Derivatives.} $u_x = x\,u_\alpha$, $u_y = u_\beta$, and by the product rule
+$$ u_{xx} = u_\alpha + x\,\partial_x(u_\alpha) = u_\alpha + x(x\,u_{\alpha\alpha}) = x^2u_{\alpha\alpha} + u_\alpha, \qquad u_{yy} = u_{\beta\beta}. $$
+
+\emph{6. Substitute.}
+$$ (x^2u_{\alpha\alpha} + u_\alpha) + x^2u_{\beta\beta} = 0 \implies x^2(u_{\alpha\alpha} + u_{\beta\beta}) + u_\alpha = 0. $$
+Since $x^2 = 2\alpha$, the canonical form is
+$$ u_{\alpha\alpha} + u_{\beta\beta} = -\frac{1}{2\alpha}\,u_\alpha \qquad (\alpha > 0). $$
+As predicted, the mixed term is absent and $u_{\alpha\alpha}$, $u_{\beta\beta}$ have equal coefficients ($x^2$) before dividing.
 
 \end{document}
